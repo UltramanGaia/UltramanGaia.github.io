@@ -725,7 +725,7 @@
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2020-07-16 00:52:02'>2018-10-18 16:25</time>
+            发布时间 : <time class="date" title='最后更新: 2020-07-18 12:29:55'>2018-10-18 16:25</time>
         
     </div>
     <div class="article-meta">
@@ -823,7 +823,7 @@
 &lt;script &gt;alert(token);&lt;/script&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<p><img src="assets/image-20200611002320667.png" alt="image-20200611002320667"></p>
+<p><img src="/img/xssi/image-20200611002320667.png" alt="image-20200611002320667"></p>
 <p>例2：敏感信息被外部函数处理</p>
 <p><a href="http://vuln.com/dynamic1.js" target="_blank" rel="noopener">http://vuln.com/dynamic1.js</a></p>
 <pre><code class="javascript">(function(){
@@ -841,7 +841,7 @@
 &lt;script src=&quot;http://vuln.com/dynamic1.js&quot;&gt;&lt;/script&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<p><img src="assets/image-20200611004323610.png" alt="image-20200611004323610"></p>
+<p><img src="/img/xssi/image-20200611004323610.png" alt="image-20200611004323610"></p>
 <h5 id="2-利用原型链窃取敏感信息"><a href="#2-利用原型链窃取敏感信息" class="headerlink" title="2. 利用原型链窃取敏感信息"></a>2. 利用原型链窃取敏感信息</h5><p>对于非常规情况，可以考虑操纵原型链来实现窃取敏感信息</p>
 <p>例3：非常规情况</p>
 <p><a href="http://vuln.com/dynamic2.js" target="_blank" rel="noopener">http://vuln.com/dynamic2.js</a></p>
@@ -860,7 +860,7 @@
 &lt;script src=&quot;http://vuln.com/dynamic2.js&quot;&gt;&lt;/script&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-<p><img src="assets/image-20200611005327350.png" alt="image-20200611005327350"></p>
+<p><img src="/img/xssi/image-20200611005327350.png" alt="image-20200611005327350"></p>
 <h3 id="XSSI窃取非JS文件的敏感信息"><a href="#XSSI窃取非JS文件的敏感信息" class="headerlink" title="XSSI窃取非JS文件的敏感信息"></a>XSSI窃取非JS文件的敏感信息</h3><h4 id="JSON劫持"><a href="#JSON劫持" class="headerlink" title="JSON劫持"></a>JSON劫持</h4><h4 id="现代浏览器防御方案"><a href="#现代浏览器防御方案" class="headerlink" title="现代浏览器防御方案"></a>现代浏览器防御方案</h4><p><code>X-Content-Type-Options</code>响应头，<br>当响应头状态为<code>nosniff</code>时，</p>
 <pre><code class="shell">X-Content-Type-Options: nosniff</code></pre>
 <p>会阻止请求类型是”script” 但是 MIME 类型不是  JavaScript MIME 类型。</p>
